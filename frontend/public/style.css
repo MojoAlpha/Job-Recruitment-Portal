@@ -1,0 +1,16 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding:0;
+}
+
+.logo{
+    font-size:2rem;
+    font-weight: bold;
+}
+.font-primary{
+    font-family: 'Roboto', sans-serif;
+}
+.font-secondary{
+    font-family: 'Lato', sans-serif;
+}
