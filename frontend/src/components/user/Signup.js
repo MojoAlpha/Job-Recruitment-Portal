@@ -25,7 +25,6 @@ export default function Signup() {
 
     const onSubmit = event => {
         event.preventDefault();
-        setValues({ ...values, error:[] }); //reset the fields once submitted
         
         if(role==1){
             userSignup({ name,email,password })
