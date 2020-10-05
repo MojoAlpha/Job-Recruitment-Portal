@@ -36,6 +36,7 @@ exports.userSignup = (req, res) => {
                 return res.status(500).json({err: err, success: false})
             }
 
+            console.log(user.email)
             var mailOptions = {
                 to: user.email,
                 from: keys.EMAIL_ADDR,
@@ -53,11 +54,11 @@ exports.userSignup = (req, res) => {
     
                 console.log("Confirmation Email Sent!!")
             })
-        })
 
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.json({success: true, msg: "Successfully Registered!!"})
+            res.statusCode = 200
+            res.setHeader('Content-Type', 'application/json')
+            res.json({success: true, msg: "Successfully Registered!!"})
+        })
     })
 }
 
@@ -199,7 +200,14 @@ exports.isVerified = (req, res, next) => {
                 err: "Not Verified!!"
             })
         }
-        req.root = user
+        var reqUser = new Object({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            dp: user.dp
+        })
+
+        req.root = reqUser
         next()
     })
 }

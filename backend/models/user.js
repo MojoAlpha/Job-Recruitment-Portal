@@ -33,7 +33,7 @@ var User = new Schema({
         type: Object
     }],
     skills: [{
-        type: Object
+        type: String
     }],
     connections: [{
         type: Object
