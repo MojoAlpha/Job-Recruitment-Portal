@@ -26,7 +26,7 @@ export default function Signup() {
     const onSubmit = event => {
         event.preventDefault();
         
-        if(role==1){
+        if(role===1){
             userSignup({ name,email,password })
                 .then(res => {
                     console.log(res);
@@ -47,13 +47,13 @@ export default function Signup() {
                 })
                 .catch(console.log("Error in signup"));
         }
-        else if(role==2){
+        else if(role===2){
             //TODO :company signup
         }
     }
 
     const errors = error.map((err)=>(
-        <p>{err.msg}</p>
+        <p key={err}>{err.msg}</p>
     ))
     const errorMessage = ()=>(
         <div
@@ -109,6 +109,9 @@ export default function Signup() {
                             Sign Up
                         </button>
                     </form>
+                    <div className="text-center pt-3">
+                        already have an account? <Link to="/signin">Login</Link>
+                    </div>
                 </div>
             </div>
             </div>    
