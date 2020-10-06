@@ -1,7 +1,8 @@
 *{
-    box-sizing: border-box;
+    box-sizing: border-box!important;
     margin: 0;
     padding:0;
+    /* outline:2px solid yellow */
 }
 
 .logo{
@@ -13,4 +14,61 @@
 }
 .font-secondary{
     font-family: 'Lato', sans-serif;
+}
+
+
+img{
+    max-width: 100%;
+}
+
+#landing{
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.navbar{
+    margin-bottom: 2em;
+}
+.hero-left{
+    padding: 1em;
+}
+.hero-left-subcontainer{
+    max-width: 600px;
+}
+.hero-title,.hero-subtitle
+{
+    font-weight: 900;
+    margin: 0;
+}
+.hero-subtitle{
+    font-size:1.5rem;
+}
+.hero-title{
+    font-size: clamp(2.5em,5vw,6em);
+    margin-bottom: 1.5em;
+}
+.hero-desc{
+    width: 100%;
+    line-height: 1.5;
+    font-size: 1.25rem;
+    font-size: clamp(1.25em,2vw,3em);
+    margin-bottom: 4em;
+    text-align: justify;
+}
+.hero-form{
+    width: 100%;
+}
+
+
+.hero-right{
+    background:url('images/hero.jpg');
+    background-size: cover;
+    background-position:  top center;
+}
+
+@media screen and (min-width:650px)
+{
+    .hero-left,.hero-right{
+        width: 50%;
+    }
 }
