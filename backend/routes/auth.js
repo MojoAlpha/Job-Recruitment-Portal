@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser')
 const { body } = require('express-validator')
-var { userSignup, userVerfication, userForgetVerify, userForgetReset } = require('../controllers/auth')
+var { userSignup, userVerfication, userForgetVerify, userForgetReset } = require('../controllers/auth');
 
 var authRouter = express.Router();
 authRouter.use(bodyParser.json());
