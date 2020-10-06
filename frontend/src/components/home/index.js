@@ -1,5 +1,6 @@
 import React from "react";
 import Landing from "./Landing"
+import Tesimonial from "./Testimonial"
 
 export default function Home() {
     return (
@@ -17,6 +18,7 @@ export default function Home() {
                 </div> */}
             </nav>
             <Landing/>
+            <Tesimonial/>
             </div>
     );
 }
