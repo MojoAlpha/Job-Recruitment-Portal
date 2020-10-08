@@ -10,6 +10,9 @@ var Vacancy = new Schema({
         type: String,
         required: true
     },
+    desig: {
+        type: String
+    },
     desc: {
         type: String
     },
@@ -17,8 +20,8 @@ var Vacancy = new Schema({
         type: Boolean,
         default: true
     },
-    required: [{
-        type: Object
+    requiredSkill: [{
+        type: String
     }],
     applicants: [{
         type: Object

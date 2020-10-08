@@ -6,7 +6,6 @@ var { Signup, Login, Verfication, ForgetVerify, ForgetReset, resendVerify } = re
 var authRouter = express.Router();
 authRouter.use(bodyParser.json());
 
-// USER AUTH ROUTES
 // type :- "U" - Normal User
 //         "C" - Company User
 
