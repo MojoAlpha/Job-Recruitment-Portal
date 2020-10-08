@@ -24,7 +24,8 @@ var User = new Schema({
         type: String
     },
     dp: {
-        type: String
+        type: String,
+        default: 'dp/default.png'
     },
     links: [{
         type: Object

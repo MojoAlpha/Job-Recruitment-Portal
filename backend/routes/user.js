@@ -24,7 +24,7 @@ userRouter.put('/details/dp/edit', isSignedIn, isVerified, userDpStore.single('d
                 {err: "...", success: false} , if Any Error Occurs Or invalid format of newPassword */
 userRouter.put('/details/password/edit', isSignedIn, isVerified, [
     body('newPassword').isLength({min: 8}).withMessage('Password should be greater than equal to 8')
-                        .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d@$.!%*#?&]/).withMessage('Password must contain alphabets, numbers & symbols')
+                        .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d@$.!%*#?&]/).withMessage('Password must contain alphabets & numbers')
                 ], chngPassword)
 
 /*  PUT Route :- Updating OR Changing User Details

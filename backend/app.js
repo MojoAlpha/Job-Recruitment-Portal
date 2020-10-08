@@ -4,7 +4,6 @@ var logger = require('morgan');
 var cors = require('cors')
 var {connectDB} = require('./config/db')
 
-var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 var userRouter = require('./routes/user')
 var skillRouter = require('./routes/skill')
@@ -25,7 +24,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Main Routes
-app.use('/', indexRouter);
 app.use('/auth/', authRouter);
 app.use('/user/', userRouter);
 app.use('/skill/', skillRouter);
