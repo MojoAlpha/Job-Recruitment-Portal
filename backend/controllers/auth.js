@@ -3,7 +3,6 @@ var Company = require('../models/company')
 const {validationResult} = require('express-validator')
 var crypto = require('crypto')
 var jwt = require('jsonwebtoken')
-var expressJwt = require('express-jwt')
 var keys = require('../config/keys');
 var {emailVerification, welcomeEmail, forgetPassMail} = require('../config/mailTemplate')
 
@@ -11,10 +10,10 @@ var {emailVerification, welcomeEmail, forgetPassMail} = require('../config/mailT
 exports.Signup = (req, res) => {
     const errors = validationResult(req);
 
-    if(!errors.isEmpty())
+    if(!errors.isEmpty())       // Checking Any Errors From Express-Validator
         return res.status(400).json({err: errors.array()[0].msg, success: false})
     
-    User.findOne({ email: req.body.email }, (err, user) => {
+    User.findOne({ email: req.body.email }, (err, user) => {        // Checking For The Email ID In Both Collections
         Company.findOne({ email: req.body.email }, (err, company) => {            
             if(err)
                 return res.status(500).json({ err: err, success: false})
@@ -27,20 +26,20 @@ exports.Signup = (req, res) => {
                     name: req.body.name,
                     email: req.body.email,
                     password: req.body.password,
-                    verifyToken: crypto.randomBytes(30).toString('hex')
+                    verifyToken: crypto.randomBytes(30).toString('hex')     // Generating Random String For Verify Token
                 })
 
-                newUser.save((err, user) => {
+                newUser.save((err, user) => {       // Saving A New User As A Developer
                     if(err)
                         return res.status(500).json({err: err, success: false})
                     
-                    emailVerification(user.email, user.name, `http://localhost:8000/auth/verify/U/${user.verifyToken}`)
+                    emailVerification(user.email, user.name, `http://localhost:8000/auth/verify/U/${user.verifyToken}`)     // Sending Verify Token Via Email
                     res.statusCode = 200
                     res.setHeader('Content-Type', 'application/json')
                     res.json({success: true, msg: "User Successfully Registered!!"})
                 })
             }
-            else if(req.body.type === "C") {
+            else if(req.body.type === "C") {        // Saving A New User As A Company
                 var newCompany = new Company({
                     name: req.body.name,
                     email: req.body.email,
@@ -76,10 +75,10 @@ exports.Verfication = (req, res) => {
                 if(err)
                     return res.status(500).json({err: err, success: false})
                 
-                welcomeEmail(user.email, user.name)
+                welcomeEmail(user.email, user.name)     // Sending Welcome Email 
                 res.statusCode = 200
-                res.setHeader('Content-Type', 'application/json')
-                res.json({ msg: "Verification Successfull!!", success: true, token: jwt.sign({_id: user._id, type: "U"}, keys.authKey, {expiresIn: 604800}) })  // 28 days validation
+                res.setHeader('Content-Type', 'application/json')       // AuthToken Expires After 28 Days
+                res.json({ msg: "Verification Successfull!!", success: true, token: jwt.sign({_id: user._id, type: "U"}, keys.authKey, {expiresIn: 604800}) })
             })
         })
     } 
@@ -108,13 +107,13 @@ exports.Login = (req, res) => {
     if(req.body.email === undefined || req.body.password === undefined)
         return res.status(400).json({ err: "Please Fill All The Fields!!", success: false})
     
-    User.findOne({ email: req.body.email }, (err, user) => {
+    User.findOne({ email: req.body.email }, (err, user) => {        // Checking Both Collections For Existing Users OR Companies
         Company.findOne({ email: req.body.email }, (err, company) => {
             if(err)
                 return res.status(500).json({ err: err, success: false })
             
             if(user) {
-                if(!user.authenticate(req.body.password)) {
+                if(!user.authenticate(req.body.password)) {     // Authenticate Method From User Model
                     return res.status(401).json({err: "Email & Password Don't Match!!", success: false})
                 }
 
@@ -123,7 +122,7 @@ exports.Login = (req, res) => {
                 res.json({msg: 'Login Success As A Developer!!', success: true, token: jwt.sign({_id: user._id, type: "U"}, keys.authKey, {expiresIn: 604800})})
             }
             else if(company) {
-                if(!company.authenticate(req.body.password)) {
+                if(!company.authenticate(req.body.password)) {      // Authenticate Method From Comapany Model
                     return res.status(401).json({err: "Emaill & Password Don't Match!!", success: false})
                 }
 
@@ -148,7 +147,7 @@ exports.ForgetVerify = (req, res) => {
             
             if(user) {
                 user.verifyToken = crypto.randomBytes(30).toString('hex');
-                user.tokenExpiry = Date.now() + 3600000                     // verify token expires after 1 hour
+                user.tokenExpiry = Date.now() + 3600000                     // Generating A Token With An Expiry Time Of 1 Hour
                 user.save((err, user) => {
                     if(err)
                         return res.status(500).json({err: err, success: false})
@@ -238,7 +237,7 @@ exports.ForgetReset = (req, res) => {
         return res.status(400).json({err: "Invalid Request!!", success: false})
 }
 
-exports.resendVerify = (req, res) => {
+exports.resendVerify = (req, res) => {      // Resending The Verification Mail
     if(req.body.email === undefined)
         return res.status(400).json({ err: "Email Not Specified!!", success: false})
     User.findOne({ email: req.body.email }, (err, user) => {
@@ -257,40 +256,5 @@ exports.resendVerify = (req, res) => {
             res.setHeader('Content-Type', 'application/json')
             res.json({success: true, msg: "Email Resend Complete!!"})
         })
-    })
-}
-
-
-// Custom Middlewares
-
-// Decoding jwt Token & Storing it in req.auth
-exports.isSignedIn = expressJwt({
-    secret: keys.authKey,
-    algorithms: ['HS256'],
-    userProperty: "auth"
-})
-
-// Checking for the user in DB & Storing it in req.root
-exports.isVerified = (req, res, next) => {
-    User.findById(req.auth._id, (err, user) => {
-        if(err || !user) {
-            return res.status(403).json({
-                err: "Not Authenticated!!"
-            })
-        }
-        else if(user.isVerified === false) {
-            return res.status(403).json({
-                err: "Not Verified!!"
-            })
-        }
-        var reqUser = new Object({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            dp: user.dp
-        })
-
-        req.root = reqUser
-        next()
     })
 }

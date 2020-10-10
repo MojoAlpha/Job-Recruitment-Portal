@@ -6,8 +6,10 @@ var {connectDB} = require('./config/db')
 
 var authRouter = require('./routes/auth');
 var userRouter = require('./routes/user')
+var companyRouter = require('./routes/company')
 var skillRouter = require('./routes/skill')
 var searchRouter = require('./routes/search')
+var vacancyRouter = require('./routes/vacancy')
 
 var app = express();
 
@@ -26,6 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Main Routes
 app.use('/auth/', authRouter);
 app.use('/user/', userRouter);
+app.use('/company/', companyRouter);
+app.use('/vacancy/', vacancyRouter);
 app.use('/skill/', skillRouter);
 app.use('/s/', searchRouter);
 

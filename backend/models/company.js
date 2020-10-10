@@ -40,6 +40,10 @@ var Company = new Schema({
     isVerified: {
         type: Boolean,
         default: false
+    },
+    adminVerified: {
+        type: Boolean,
+        default: false
     }
 },
 {timestamps: true})
