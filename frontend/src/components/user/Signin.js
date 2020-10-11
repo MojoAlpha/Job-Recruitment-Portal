@@ -7,26 +7,25 @@ export default function Signin() {
     const [values, setValues] = useState({
         email: "",
         password: "",
-        error: "",
+        error: false,
         didRedirect: false,
-        success: true
       });
 
-    const { email, password, error, didRedirect, success } = values;
+    const { email, password, error, didRedirect } = values;
     const { user } = isAutheticated();
 
     const handleChange = name => event => {
-        setValues({ ...values, error: false,success:true ,[name]: event.target.value });
+        setValues({ ...values, error: false,[name]: event.target.value });
       };
 
     const onSubmit = event => {
-        event.preventDefault();
-        setValues({ ...values, error: false, loading: true });
+        // event.preventDefault();
+
         signin({ email, password })
           .then(data => {
-              console.log(data)
+              console.log("data: "+JSON.stringify(data))
             if (data.err) {
-              setValues({ ...values, error: data.err,success:false ,loading: false });
+              setValues({ ...values, error: data.err,loading: false });
             } else {
               authenticate(data, () => {
                 setValues({
@@ -58,9 +57,9 @@ export default function Signin() {
     const errorMessage = ()=>(
         <div
             className="alert alert-danger"
-            style={{ display: success? "none":""}}
+            style={{ display: !error? "none":""}}
         >
-            {error.toString()}
+            {error}
         </div>
     )
     const signInForm = () => (
@@ -77,7 +76,7 @@ export default function Signin() {
                 </div>
                 <div className="col-6">
                     {errorMessage()}
-                    <form>
+                    <form className="needs-validation">
                         <div className="form-group">
                             <label>Email</label>
                             <input 
@@ -85,7 +84,10 @@ export default function Signin() {
                                 onChange={handleChange("email")}
                                 type="email"
                                 value={email}
+                                required
+                                aria-describedby="inputGroupPrepend"
                             />
+                            <div className="invalid-feedback">Email cannot be empty</div>
                         </div>
                         <div className="form-group">
                             <label>Password</label>
@@ -94,7 +96,10 @@ export default function Signin() {
                                 onChange={handleChange("password")}
                                 type="password"
                                 value={password}
+                                aria-describedby="inputGroupPrepend"
+                                required
                             />
+                            <div class="invalid-feedback">Password cannot be empty</div>
                         </div>
                         <button onClick={onSubmit} className="btn btn-primary btn-block">
                             Sign In

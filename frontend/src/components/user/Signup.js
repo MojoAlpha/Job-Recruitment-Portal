@@ -9,58 +9,52 @@ export default function Signup() {
         name:"",
         email:"",
         password:"",
-        error:[],
+        error:false,
         success:true,
-        role:1 /*1-developer
-                 2-company*/
+        type : "" /*
+                    U: normal user
+                    C: company
+                    */
     })
 
     //deconstructing the state values
-    const { name,email,password,error,success,role } = values; 
+    const { name,email,password,error,success,type } = values; 
 
     //handling the change of any input fields 
     const handleChange = name => event => {
-        setValues({ ...values, error: [], [name]: event.target.value });
+        setValues({ ...values, error: false, [name]: event.target.value });
     }
 
     const onSubmit = event => {
         event.preventDefault();
         
-        if(role===1){
-            userSignup({ name,email,password })
-                .then(res => {
-                    console.log(res);
-                    // data.err is custom message written in backend
-                    if(!res.success)  
-                        setValues({ ...values, error: res.err, success: false });
-                    else {
-                        setValues({
-                            ...values,
-                            name: "",
-                            email: "",
-                            password: "",
-                            error: [],
-                            success :true,
-                            role :1
-                        })
-                    }
-                })
-                .catch(console.log("Error in signup"));
-        }
-        else if(role===2){
-            //TODO :company signup
-        }
+        userSignup({ name,email,password,type })
+            .then(res => {
+                console.log(res);
+                // data.err is custom message written in backend
+                if(!res.success)  
+                setValues({ ...values, error: res.err, success: false });
+                else {
+                    setValues({
+                        ...values,
+                        name: "",
+                        email: "",
+                        password: "",
+                        error: false,
+                        success :true,
+                        type :""
+                    })
+                }
+            })
+            .catch(console.log("Error in signup"));
     }
 
-    const errors = error.map((err)=>(
-        <p key={err}>{err.msg}</p>
-    ))
     const errorMessage = ()=>(
         <div
             className="alert alert-danger"
-            style={{ display: success? "none":""}}
+            style={{ display: !error? "none":""}}
         >
-            {errors}
+            {error}
         </div>
     )
     const signUpForm = () => (
@@ -103,7 +97,30 @@ export default function Signup() {
                                 onChange={handleChange("password")}
                                 type="password"
                                 value={password}
+                                name="type"
                             />
+                        </div>
+                        <div className="form-group d-flex justify-content-around">
+                            <div className="form-check">
+                                <input 
+                                    className="form-check-input"
+                                    onChange={handleChange("type")}
+                                    type="radio"
+                                    value="U"
+                                    name="type"
+                                />
+                                <label>Developer</label>
+                            </div>
+                            <div className="form-check">
+                                <input 
+                                    className="form-check-input"
+                                    onChange={handleChange("type")}
+                                    type="radio"
+                                    value="C"
+                                    name="type"
+                                />
+                                <label>Company</label>
+                            </div>
                         </div>
                         <button onClick={onSubmit} className="btn btn-primary btn-block">
                             Sign Up
