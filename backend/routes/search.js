@@ -1,13 +1,18 @@
 var express = require('express')
 var bodyParser = require('body-parser')
-var { isSignedIn, isVerified } = require('../middleware')
 var {skillSearch, mainSearch} = require('../controllers/search')
 
 var searchRouter = express.Router();
 searchRouter.use(bodyParser.json())
 
-searchRouter.get('/skill', isSignedIn, isVerified, skillSearch)
+/*  GET Route :- Get List Corresponding To Your Query
+    Req :- Query Params -- search
+    Res Body :- {skills, success: true} */
+searchRouter.get('/skill', skillSearch)
 
+/*  GET Route :- Get Users & Companies List Corresponding To Your Query
+    Req :- Query Params -- search
+    Res Body :- {users, companies, success: true} */
 searchRouter.get('/all', mainSearch)
 
 module.exports = searchRouter;

@@ -39,23 +39,23 @@ userRouter.put('/me/edit', isSignedIn, isVerified, updateDetails)
                 {err: "...", success: false} , if Any Error Occurs */
 userRouter.post('/me/link', isSignedIn, isVerified, addLink)
 
-/*  PUT Route :- Removing Unwanted Links
+/*  DELETE Route :- Removing Unwanted Links
     Req Body :- {link: {title: "...", link: "..."}} 
     Res Body :- {msg: "...", success: true} , if Sucessfully Removed
                 {err: "...", success: false} , if Any Error Occurs */
-userRouter.put('/me/link', isSignedIn, isVerified, removeLink)
+userRouter.delete('/me/link', isSignedIn, isVerified, removeLink)
 
 /*  POST Route :- Adding Important Skills, such as Java, React etc.
-    Req Body :- {skillNm: "..."} 
+    Req Body :- {skillId} 
     Res Body :- {msg: "...", success: true} , if Sucessfully Added
                 {err: "...", success: false} , if Any Error Occurs */
 userRouter.post('/me/skill', isSignedIn, isVerified, addSkill)
 
-/*  PUT Route :- Removing Links
-    Req Body :- {skillNm: "..."} 
+/*  PUT Route :- Removing Skills
+    Req Body :- {skillId} 
     Res Body :- {msg: "...", success: true} , if Sucessfully Removed
                 {err: "...", success: false} , if Any Error Occurs */
-userRouter.put('/me/skill', isSignedIn, isVerified, removeSKill)
+userRouter.delete('/me/skill', isSignedIn, isVerified, removeSKill)
 
 /*  POST Route :- Adding Educational Qualifications
     Req Body :- {edu: {degree: "...", insti: "...", year: "..."}} 
@@ -67,6 +67,6 @@ userRouter.post('/me/edu', isSignedIn, isVerified, addEducation);
     Req Body :- {edu: {degree: "...", insti: "...", year: "..."}}
     Res Body :- {msg: "...", success: true} , if Sucessfully Removed
                 {err: "...", success: false} , if Any Error Occurs */
-userRouter.put('/me/edu', isSignedIn, isVerified, removeEducation);
+userRouter.delete('/me/edu', isSignedIn, isVerified, removeEducation);
 
 module.exports = userRouter;

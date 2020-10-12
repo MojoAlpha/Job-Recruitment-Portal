@@ -63,6 +63,7 @@ exports.Signup = (req, res) => {
     })
 }
 
+// USER EMAIL VERIFICATION CONTROLLER
 exports.Verfication = (req, res) => {
     if(req.params.type === "U") {
         User.findOne({verifyToken: req.params.token}, (err, user) => {
@@ -103,6 +104,7 @@ exports.Verfication = (req, res) => {
         return res.status(400).json({err: "Invalid Request!!", success: false})
 }
 
+// LOGIN CONTROLLER
 exports.Login = (req, res) => {
     if(req.body.email === undefined || req.body.password === undefined)
         return res.status(400).json({ err: "Please Fill All The Fields!!", success: false})
@@ -134,6 +136,7 @@ exports.Login = (req, res) => {
     })
 }
 
+// FORGOT PASSWORD VERIFICATION EMAIL CONTROLLER
 exports.ForgetVerify = (req, res) => {
 
     if(req.body.email === undefined) {
@@ -152,7 +155,7 @@ exports.ForgetVerify = (req, res) => {
                     if(err)
                         return res.status(500).json({err: err, success: false})
 
-                    forgetPassMail(user.email, `http://localhost:8000/auth/forget/U/${user.verifyToken}`)
+                    forgetPassMail(user.email, `http://localhost:8000/auth/forget/U/${user.verifyToken}`)  // Sending random generated string via Email
                     res.statusCode = 200
                     res.setHeader('Content-Type', 'application/json')
                     res.json({msg: "Mail Sent!!", success: true})
@@ -177,6 +180,7 @@ exports.ForgetVerify = (req, res) => {
     })
 }
 
+// FORGOT PASSWORD RESET CONTROLLER
 exports.ForgetReset = (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
@@ -188,7 +192,7 @@ exports.ForgetReset = (req, res) => {
             if(err || !user)
                 return res.status(404).json({err: "Invalid Token", success: false})
     
-            if(user.tokenExpiry < Date.now()) {
+            if(user.tokenExpiry < Date.now()) {     // Check fot the expiry of the Verification Token
                 user.verifyToken = undefined
                 user.tokenExpiry = undefined
                 user.save()
@@ -237,7 +241,8 @@ exports.ForgetReset = (req, res) => {
         return res.status(400).json({err: "Invalid Request!!", success: false})
 }
 
-exports.resendVerify = (req, res) => {      // Resending The Verification Mail
+// RESEND EMAIL CONTROLLER
+exports.resendVerify = (req, res) => {
     if(req.body.email === undefined)
         return res.status(400).json({ err: "Email Not Specified!!", success: false})
     User.findOne({ email: req.body.email }, (err, user) => {

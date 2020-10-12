@@ -27,6 +27,9 @@ var Company = new Schema({
     webLink: {
         type: String
     },
+    followers: [{
+        type: String
+    }],
     salt : String,
     verifyToken: {
         type: String

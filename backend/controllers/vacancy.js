@@ -1,7 +1,8 @@
 var Vacancy = require('../models/vacancy')
 var Company = require('../models/company')
-const company = require('../models/company')
-const vacancy = require('../models/vacancy')
+var Skill = require('../models/skill')
+var User = require('../models/user')
+var mongoose = require('mongoose')
 
 exports.createVacancy = (req, res) => {
     if(req.body.title === undefined || req.body.title === "" || req.body.desig === undefined || req.body.desig === "")
@@ -31,16 +32,21 @@ exports.getVacancy = (req, res) => {
         if(err || !vacancy)
             return res.status(404).json({err: "Vacancy Not Found!!", success: false})
         
+        var skill_ids = vacancy.requiredSkill.map((id) => { return mongoose.mongo.ObjectID(id) })
+
         Company.findById(vacancy.owner, (err, company) => {
-            res.status(200).json({
-                title: vacancy.title,
-                desig: vacancy.desig,
-                desc: vacancy.desc,
-                isOpen: vacancy.isOpen,
-                requiredSkill: vacancy.requiredSkill,
-                Oname: company.name,
-                Oemail: company.email,
-                Ologo: company.logo
+            Skill.find({ _id: { $in: skill_ids }}, (err, skills) => {
+                res.status(200).json({
+                    title: vacancy.title,
+                    desig: vacancy.desig,
+                    desc: vacancy.desc,
+                    isOpen: vacancy.isOpen,
+                    requiredSkill: skills,
+                    applicantCount: vacancy.applicants.length,
+                    Oname: company.name,
+                    Oemail: company.email,
+                    Ologo: company.logo
+                })
             })
         })
     })
@@ -103,7 +109,10 @@ exports.getVacanyApplicants = (req, res) => {
         if(req.root._id.toString() !== vacancy.owner.toString())
             return res.status(401).json({err: "Not Authorised To Access Applicants!!", success: false})
         
-        res.status(200).json({applicants: vacancy.applicants, success: true})
+        var applicant_id = vacancy.applicants.map((id) => { return mongoose.mongo.ObjectID(id) })
+        User.find({ _id: { $in: applicant_id }}, {_id: 1, name: 1, dp: 1, email: 1 }, (err, applicants) => {
+            res.status(200).json({ applicants: applicants, success: true})
+        })
     })
 }
 
@@ -115,11 +124,7 @@ exports.vacancyApply = (req, res) => {
         if(err || !vacancy)
             return res.status(404).json({err: "Vacancy Not Found!!", success: false})
 
-        vacancy.applicants.push({
-            name: req.root.name,
-            dp: req.root.dp,
-            _id: req.root._id
-        })
+        vacancy.applicants.push(req.root._id)
 
         vacancy.save((err, vacancy) => {
             if(err)

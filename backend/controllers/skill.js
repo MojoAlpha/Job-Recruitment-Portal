@@ -1,10 +1,11 @@
 var Skill = require('../models/skill');
 
+// Listing All The Skills --   ADMIN ROUTE
 exports.listSkill = (req, res) => {
     let skip = 0
     if(req.body.skip !== undefined)
         skip = req.body.skip
-    Skill.find({})
+    Skill.find({})              // Feature to get 15 skills at a time, depending on skip
     .sort({name: 1})
     .skip(15 * skip)
     .limit(15)
@@ -19,6 +20,7 @@ exports.listSkill = (req, res) => {
     }, (err) => res.status(400).json({err: "Cannot Fetch List"}))
 }
 
+// Creating A New Skill -- ADMIN ROUTE
 exports.createSkill = (req, res) => {
     if(req.body.name === undefined) {
         return res.status(400).json({err: "Skill Name isn't specified!!", success: false})
@@ -45,6 +47,7 @@ exports.createSkill = (req, res) => {
     })
 }
 
+// Deleting A New Skill -- ADMIN ROUTE
 exports.deleteSkill = (req, res) => {
     if(req.body.skillId === undefined) {
         return res.status(400).json({err: "Skill ID isn't specified!!", success: false})

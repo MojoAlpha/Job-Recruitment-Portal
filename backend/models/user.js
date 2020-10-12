@@ -55,7 +55,9 @@ var User = new Schema({
     }
 },
 {timestamps: true})
+// Timestamps to store createdAt & updatedAt fields to the document
 
+// Virtual Function to run before saving an object into Database
 User.virtual("password")
     .set(function(password) {
         this._password = password

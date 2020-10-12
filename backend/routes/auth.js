@@ -27,6 +27,10 @@ authRouter.post('/signup', [
                 {err: "...", success: false} , if Any Error Occurs */
 authRouter.put('/verify/:type/:token', Verfication)
 
+/*  POST Route :- User Login
+    Req Body :- {email password}
+    Res Body :- {msg: "...", success: true, token} , if Sucessful Registered
+                {err: "...", success: false} , if Any Error Occurs */
 authRouter.post('/login', Login)
 
 /*  PUT Route :- Forget Password Email Verificaiton
@@ -45,6 +49,9 @@ authRouter.put('/forget/:type/:token', [
                        .withMessage('Password must contain alphabets, numbers & symbols')
 ], ForgetReset)
 
+/*  GET Route :- Resending Vefication Email
+    Res Body :- {msg: "...", success: true}, if Successfully Sent
+                {err: "...", success: false}, if Any Error Occurs */
 authRouter.get('/verify/resend', resendVerify)
 
 module.exports = authRouter;

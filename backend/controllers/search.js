@@ -2,6 +2,7 @@ var Skill = require('../models/skill')
 var User = require('../models/user')
 var Company = require('../models/company')
 
+// Search For The Query On skills Database
 exports.skillSearch = (req, res) => {
     if(req.query.search === undefined)
         return res.status(400).json({err: "Specify Search Query", success: false})
@@ -22,10 +23,11 @@ exports.skillSearch = (req, res) => {
     })
     .sort({name: 1})
     .then((skillList) => {
-        res.send(skillList)
+        res.json({skills: skillList, success: true})
     })
 }
 
+// Search For Users & Companies Registered
 exports.mainSearch = (req, res) => {
     if(req.query.search === undefined)
         return res.status(400).json({err: "Specify Search Query", success: false})
@@ -40,7 +42,7 @@ exports.mainSearch = (req, res) => {
     if(search.length > 1)
         pattern = pattern + search.charAt(search.length - 1) + ".*"
     
-    User.find({ name: {$regex: pattern, $options: 'si'} }, (err, userList) => {
+    User.find({ name: {$regex: pattern, $options: 'si'} }, (err, userList) => {     // Using RegEx & Options(eg. si) For Searching DB
         Company.find({ name: {$regex: pattern, $options: 'si'}}, (err, companyList) => {
             res.statusCode = 200
             res.setHeader('Content-Type', 'application/json')

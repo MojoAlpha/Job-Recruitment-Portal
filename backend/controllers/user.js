@@ -1,33 +1,43 @@
 var User = require('../models/user');
 var Skill = require('../models/skill')
 var fs = require('fs')
-var {validationResult} = require('express-validator')
+var {validationResult} = require('express-validator');
+const mongoose = require('mongoose');
 
+// USER DETAIL CONTROLLER
 exports.userDetails = (req, res) => {
     User.findById(req.root._id, (err, user) => {
         if(err || !user)
             return res.status(404).json({err: "Not Availble!!"})
+        
+        var skill_ids = user.skills.map((id) => { return mongoose.mongo.ObjectId(id) })
 
-        return res.status(200).json({
-            name: user.name,
-            email: user.email,
-            bio: user.bio,
-            education: user.education,
-            addr: user.addr,
-            phone: user.phone,
-            links: user.links,
-            skills: user.skills,
-            dp: user.dp,
-            connectionCount: user.connections.length
+        // Aggregating the objects from skills collection to currecnt object
+        Skill.find({ _id: { $in: skill_ids }}, (err, skills) => {
+
+            return res.status(200).json({   // Passing Public Inforamation
+                name: user.name,
+                email: user.email,
+                bio: user.bio,
+                education: user.education,
+                addr: user.addr,
+                phone: user.phone,
+                links: user.links,
+                dp: user.dp,
+                skills: skills,
+                connectionCount: user.connections.length
+            })
         })
     })
 }
 
+// PROFILE PICTURE CHANGE CONTROLLER
 exports.chngProfilePicture = (req, res) => {
     User.findById(req.root._id, (err, user) => {
         if(err || !user)
             return res.status(404).json({err: err, success: false})
-
+        
+        // To Delete Your Profile Picture, If it is Changed
         if(user.dp !== 'dp/default.png')
             fs.unlinkSync(`./public/${user.dp}`)
         
@@ -44,6 +54,7 @@ exports.chngProfilePicture = (req, res) => {
     })
 }
 
+// CHANGING PASSWORD CONTROLLER
 exports.chngPassword = (req, res) => {
     const errors = validationResult(req);
 
@@ -54,7 +65,7 @@ exports.chngPassword = (req, res) => {
         if(err || !user)
             return res.status(404).json({err: err, success: false})
 
-        if(!user.authenticate(req.body.currPassword))
+        if(!user.authenticate(req.body.currPassword))   // Checking Validity Of User, via Current Password Match!!
             return res.status(401).json({err: "Current Password Doesn't Match!!", success: false})
 
         if(req.body.currPassword === req.body.newPassword)
@@ -72,6 +83,7 @@ exports.chngPassword = (req, res) => {
     })
 }
 
+// BASIC DETAILS UPDATE CONTROLLER
 exports.updateDetails = (req, res) => {
     User.findById(req.root._id, (err, user) => {
         if(err || !user)
@@ -98,6 +110,7 @@ exports.updateDetails = (req, res) => {
     })
 }
 
+// ADD LINK TO USER DOCUMENT CONTROLLER
 exports.addLink = (req, res) => {
     if(req.body.link.title === undefined || req.body.link.link === undefined)
         return res.status(400).json({err: "Link Not Found", success: false})
@@ -118,6 +131,7 @@ exports.addLink = (req, res) => {
     })
 }
 
+// REMOVE LINK FROM USER DOCUMENT CONTROLLER
 exports.removeLink = (req, res) => {
     if(req.body.link === undefined || req.body.link.link === undefined)
         return res.status(400).json({err: "Link Not Found", success: false})
@@ -126,7 +140,7 @@ exports.removeLink = (req, res) => {
         if(err || !user)
             return res.status(404).json({err: err, success: false})
 
-        for(let i = 0; i < user.links.length; ++i) {
+        for(let i = 0; i < user.links.length; ++i) {        
             if(user.links[i].title === req.body.link.title && user.links[i].link === req.body.link.link) {
                 user.links.splice(i, 1);
                 break;
@@ -144,19 +158,23 @@ exports.removeLink = (req, res) => {
     })
 }
 
+// ADD SKILL CONTROLLER
 exports.addSkill = (req, res) => {
-    if(req.body.skillNm === undefined)
-        return res.status(400).json({err: "Skill Name not specified!!"})
+    if(req.body.skillId === undefined)
+        return res.status(400).json({err: "Skill not specified!!"})
 
     User.findById(req.root._id, (error, user) => {
-        Skill.find({name: req.body.skillNm}, (err, skill) => {
+        if(error || !user)
+            return res.status(404).json({err: "User Not Found!!", success: false})
+
+        Skill.findById(req.body.skillId, (err, skill) => {
             if(err || !skill)
                 return res.status(404).json({err: "Skill Not Found!!", success: false})
 
-            if(user.skills.indexOf(req.body.skillNm) > -1)
+            if(user.skills.indexOf(req.body.skillId) > -1)      // Check if skill exists or not
                 return res.status(403).json({err: "Skill Already Exists", success: false})
 
-            user.skills.push(req.body.skillNm)
+            user.skills.push(req.body.skillId)      // Storing Skill ID as a String
             user.save((err, user) => {
                 if(err)
                     return res.status(500).json({err: "Internal Error", success: false})
@@ -169,14 +187,18 @@ exports.addSkill = (req, res) => {
     })
 }
 
+// REMOVE SKILL CONTROLLER
 exports.removeSKill = (req, res) => {
-    if(req.body.skillNm === undefined)
-        return res.status(400).json({err: "Skill Name not specified!!"})
+    if(req.body.skillId === undefined)
+        return res.status(400).json({err: "Skill not specified!!"})
 
     User.findById(req.root._id, (error, user) => {
-        let elemIndex = user.skills.indexOf(req.body.skillNm)
+        if(error || !user)
+            return res.status(404).json({err: "User Not Found!!", success: false})
+
+        let elemIndex = user.skills.indexOf(req.body.skillId)
         if(elemIndex < 0)
-            return res.status(404).json({err: "You Don't have this skill!!"})
+            return res.status(404).json({err: "You Don't have this skill!!", success: false})
 
         user.skills.splice(elemIndex, 1)
         user.save((err, user) => {
@@ -190,6 +212,7 @@ exports.removeSKill = (req, res) => {
     })
 }
 
+// ADD EDUCATION DETAILS CONTROLLER
 exports.addEducation = (req, res) => {
     if(req.body.edu.degree === undefined || req.body.edu.insti === undefined || req.body.edu.year === undefined)
         return res.status(400).json({err: "Education Details Not Found", success: false})
@@ -198,7 +221,7 @@ exports.addEducation = (req, res) => {
         if(err || !user)
             return res.status(404).json({err: err, success: false})
 
-        user.education.push(req.body.edu)
+        user.education.push(req.body.edu)       // Directly pushing the education object into the document
         user.save((err, user) => {
             if(err)
                 return res.status(400).json({err: err, success: false})
@@ -210,6 +233,7 @@ exports.addEducation = (req, res) => {
     })
 }
 
+// REMOVE EDUCATION DETAILS CONTROLLER
 exports.removeEducation = (req, res) => {
     if(req.body.edu.degree === undefined || req.body.edu.insti === undefined || req.body.edu.year === undefined)
         return res.status(400).json({err: "Education Details Not Found", success: false})

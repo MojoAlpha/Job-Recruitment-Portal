@@ -24,7 +24,7 @@ var Vacancy = new Schema({
         type: String
     }],
     applicants: [{
-        type: Object
+        type: String
     }]
 },
 {timestamps: true})

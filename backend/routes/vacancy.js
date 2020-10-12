@@ -7,7 +7,7 @@ var vacancyRouter = express.Router();
 vacancyRouter.use(bodyParser.json());
 
 /*  POST Route :- To Create Vacancy, Only Company is Authorized
-    Req Body :- { title, desig, desc, requiredSkill[{ Strings }] }
+    Req Body :- { title, desig, desc, requiredSkill[ IdStrings ] }
     Res Body :- {msg: "...", success: true} , if Sucessfully Created
                 {err: "...", success: false} , if Any Error Occurs */
 vacancyRouter.post('/create', isSignedIn, isVerified, isCompanyVerified, createVacancy)
