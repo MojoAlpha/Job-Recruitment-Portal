@@ -5,6 +5,15 @@
     /* outline:2px solid yellow */
 }
 /* ###################### general classes ############ */
+.bg-primary,.btn-primary,.btn-outline-primary:hover,a.bg-primary:hover,a.bg-primary:focus{
+    background: #11B0BB!important;
+    border-color: #11B0BB!important;
+}
+
+.bg-gray
+{
+    background: #F4F4F4;
+}
 .logo{
     font-size:2rem;
     font-weight: bold;
