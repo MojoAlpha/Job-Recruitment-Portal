@@ -1,0 +1,26 @@
+var express = require('express');
+var { body } = require('express-validator')
+
+const { isSignedIn, isVerified } = require('../../../middleware');
+const { userErrors } = require('../../../services/userServices/errHandler');
+const { addSkill, removeSkill } = require('../../../services/userServices/skill');
+
+var router = express.Router();
+
+/*  POST Route :- Adding Important Skills, such as Java, React etc.
+    Req Body :- {skillId} 
+    Res Body :- {msg: "...", success: true} , if Sucessfully Added
+                {err: "...", success: false} , if Any Error Occurs */
+router.post('/', isSignedIn, isVerified, [
+    body('skillId').notEmpty().withMessage('Skill Should Be Specified!!')
+], userErrors, addSkill)
+
+/*  DELETE Route :- Removing Skills
+    Req Body :- {skillId}
+    Res Body :- {msg: "...", success: true} , if Sucessfully Removed
+                {err: "...", success: false} , if Any Error Occurs */
+router.delete('/', isSignedIn, isVerified, [
+    body('skillId').notEmpty().withMessage('Skill Should Be Specified!!')
+], userErrors, removeSkill)
+
+module.exports = router;
