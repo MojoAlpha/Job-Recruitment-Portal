@@ -19,7 +19,7 @@ export default function Signin() {
       };
 
     const onSubmit = event => {
-        // event.preventDefault();
+        event.preventDefault();
 
         signin({ email, password })
           .then(data => {
