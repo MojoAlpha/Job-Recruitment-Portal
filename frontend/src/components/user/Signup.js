@@ -120,8 +120,8 @@ export default function Signup() {
                                     name="type"
                                 />
                             </div>
-                            <div className="form-group d-flex justify-content-around">
-                                <div className="form-check">
+                            <div className="form-group d-flex flex-column justify-content-around">
+                                {/* <div className="form-check">
                                     <input
                                         className="form-check-input"
                                         onChange={handleChange("type")}
@@ -129,8 +129,8 @@ export default function Signup() {
                                         value="U"
                                         name="type"
                                     />
-                                </div>
-                                <div className="form-group">
+                                </div> */}
+                                {/* <div className="form-group">
                                     <label>Password</label>
                                     <input
                                         className="form-control"
@@ -139,7 +139,7 @@ export default function Signup() {
                                         value={password}
                                         name="type"
                                     />
-                                </div>
+                                </div> */}
                                 <div className="form-group d-flex justify-content-around">
                                     <div className="form-check">
                                         <input
@@ -167,8 +167,8 @@ export default function Signup() {
                                 </button>
                             </div>
                         </form>
-                        <div className="p-5">
-                            dont have an account yet ? <Link to="/signup">Signup</Link>
+                        <div className="p-5 text-center">
+                            already have an account? <Link to="/signin">SignIn</Link>
                         </div>
                     </div>
                 </div>
