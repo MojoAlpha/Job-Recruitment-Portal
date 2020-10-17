@@ -8,10 +8,9 @@ export default function Signin() {
         email: "",
         password: "",
         error: false,
-        didRedirect: false,
       });
 
-    const { email, password, error, didRedirect } = values;
+    const { email, password, error } = values;
     const { user } = isAutheticated();
 
     const handleChange = name => event => {
@@ -39,18 +38,11 @@ export default function Signin() {
       };
 
     const performRedirect = () => {
-        //TODO: do a redirect here
-        if (didRedirect) {
-          if (user && user.role === 1) {
-            return <p>redirect to user dashboard</p>;
-          } else if(user && user.role === 2) {
-            return <p>redirect to user dashboard</p>;
-          } else{
-              return <p></p>
-          }
-        }
-        if (isAutheticated()) {
-          return <Redirect to="/" />;
+        const user = isAutheticated();
+        if(user && user.type==="U"){
+          return <Redirect to="/user"/>
+        } else if(user && user.type==="C"){
+          return <Redirect to="/"/>
         }
       };
 
@@ -63,21 +55,28 @@ export default function Signin() {
         </div>
     )
     const signInForm = () => (
-        <div className="container-fluid">
-            <Link to="/home" style={{textDecoration:"none"}}>
-            <h3 className="row font-weight-bold p-5" style={{color: "#11B0BB"}}>
-                DEVHUB
-            </h3>
-            </Link>
+        <div className="container bg-white" style={{
+          boxShadow: "0px 3px 6px #00000029",
+          padding:"0px 0px 0px 0px"
+        }}>
             <div className="container mt-5">
-                <div className="row">
-                <div className="col-6">
-                    <img src="" alt="Some random image"/>
+                <div className="row px-0">
+                <div className="col-0 col-md-6 px-0" style={{
+                  backgroundImage:`url(${process.env.PUBLIC_URL}/images/form.jpg)`,
+                  backgroundRepeat:"no-repeat",
+                  backgroundSize:"cover",
+                  backgroundPosition:"left"
+                }}>
+                  <div className="h-100 w-100" style={{
+                    background:"#11B0BB42 0% 0% no-repeat padding-box"
+                  }}>
+                  </div>
                 </div>
-                <div className="col-6">
+                <div className="col-12 col-md-6">
+                    <h3 className="font-weight-bold p-5">Welcome Back</h3>
                     {errorMessage()}
-                    <form className="needs-validation">
-                        <div className="form-group">
+                    <form className="needs-validation mt-5">
+                        <div className="form-group px-5 pt-3">
                             <label>Email</label>
                             <input 
                                 className="form-control"
@@ -89,7 +88,7 @@ export default function Signin() {
                             />
                             <div className="invalid-feedback">Email cannot be empty</div>
                         </div>
-                        <div className="form-group">
+                        <div className="form-group px-5">
                             <label>Password</label>
                             <input 
                                 className="form-control"
@@ -101,17 +100,34 @@ export default function Signin() {
                             />
                             <div class="invalid-feedback">Password cannot be empty</div>
                         </div>
-                        <button onClick={onSubmit} className="btn btn-primary btn-block">
-                            Sign In
-                        </button>
+                        <div className="px-5 mt-5">
+                          <button onClick={onSubmit} className="btn btn-primary btn-block">
+                              Sign In
+                          </button>
+                        </div>
+                        
                     </form>
+                    <div className="p-5">
+                      dont have an account yet ? <Link to="/signup">Signup</Link>
+                    </div>
                 </div>
             </div>
             </div>    
         </div>
     )
     return (
-        <div>
+        <div style={{
+          backgroundImage:`url(${process.env.PUBLIC_URL}/images/wave.svg)`,
+                  backgroundRepeat:"no-repeat",
+                  backgroundSize:"cover",
+                  backgroundPosition:"center",
+                  height:"100vh"
+        }}>
+          <Link to="/home" style={{textDecoration:"none"}}>
+            <h3 className="row font-weight-bold p-5" style={{color: "#11B0BB"}}>
+                DEVHUB
+            </h3>
+          </Link>
             {performRedirect()}
             {signInForm()}
         </div>

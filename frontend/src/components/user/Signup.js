@@ -58,20 +58,27 @@ export default function Signup() {
         </div>
     )
     const signUpForm = () => (
-        <div className="container-fluid">
-            <Link to="/home" style={{textDecoration:"none"}}>
-            <h3 className="row font-weight-bold p-5" style={{color: "#11B0BB"}}>
-                DEVHUB
-            </h3>
-            </Link>
-            <div className="container mt-5">
-                <div className="row">
-                <div className="col-6">
-                    <img src="" alt="Some random image"/>
-                </div>
-                <div className="col-6">
-                    {errorMessage()}
-                    <form>
+        <div className="container bg-white" style={{
+            boxShadow: "0px 3px 6px #00000029",
+            padding:"0px 0px 0px 0px"
+          }}>
+              <div className="container mt-5">
+                  <div className="row px-0">
+                  <div className="col-0 col-md-6 px-0" style={{
+                    backgroundImage:`url(${process.env.PUBLIC_URL}/images/form.jpg)`,
+                    backgroundRepeat:"no-repeat",
+                    backgroundSize:"cover",
+                    backgroundPosition:"left"
+                  }}>
+                    <div className="h-100 w-100" style={{
+                      background:"#11B0BB42 0% 0% no-repeat padding-box"
+                    }}>
+                    </div>
+                  </div>
+                  <div className="col-12 col-md-6">
+                      <h3 className="font-weight-bold p-5">Welcome Back</h3>
+                      {errorMessage()}
+                      <form className="px-5">
                         <div className="form-group">
                             <label>Name</label>
                             <input 
@@ -126,18 +133,28 @@ export default function Signup() {
                             Sign Up
                         </button>
                     </form>
-                    <div className="text-center pt-3">
-                        already have an account? <Link to="/signin">Login</Link>
-                    </div>
-                </div>
-            </div>
-            </div>    
-        </div>
-    )
+                      <div className="p-5">
+                        dont have an account yet ? <Link to="/signup">Signup</Link>
+                      </div>
+                  </div>
+              </div>
+              </div>    
+          </div>
+      )
     return (
-        <div>
-            {signUpForm()}
-            {/* <p className="text-center"> {JSON.stringify(values)} </p> */}
-        </div>
+        <div style={{
+            backgroundImage:`url(${process.env.PUBLIC_URL}/images/wave.svg)`,
+                    backgroundRepeat:"no-repeat",
+                    backgroundSize:"cover",
+                    backgroundPosition:"center",
+                    height:"100vh"
+          }}>
+            <Link to="/home" style={{textDecoration:"none"}}>
+              <h3 className="row font-weight-bold p-5" style={{color: "#11B0BB"}}>
+                  DEVHUB
+              </h3>
+            </Link>
+              {signUpForm()}
+          </div>
     )
 }
