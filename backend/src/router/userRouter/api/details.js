@@ -1,7 +1,6 @@
 var express = require('express');
 var { body } = require('express-validator')
 
-const { isSignedIn, isVerified } = require('../../../middleware');
 const { detailUpdate, passwdUpdate, dpUpdate } = require('../../../services/userServices/detail');
 const { userErrors } = require('../../../services/userServices/errHandler');
 const { userDpStore } = require('../../../config/multerStore')
@@ -12,7 +11,7 @@ var router = express.Router();
     Req Body :- {name, bio, addr, phone}  OPTIONAL 
     Res Body :- {msg: "...", success: true} , if Sucessfully Updated
                 {err: "...", success: false} , if Any Error Occurs */
-router.put('/details', isSignedIn, isVerified, detailUpdate)
+router.put('/details', detailUpdate)
 
 /*  PUT Route :- Changing User Password
     Req Body :- {currPassword, newPassword} 
@@ -22,12 +21,12 @@ router.put('/password', [
     body('currPassword').notEmpty().withMessage('Current Password Should Be Preovided!'),
     body('newPassword').isLength({min: 8, max: 20}).withMessage('Size Of Password Should Be Between 8-20 Letters')
                         .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d@$.!%*#?&]/).withMessage('Password must contain alphabets & numbers')
-], userErrors, isSignedIn, isVerified, passwdUpdate)
+], userErrors, passwdUpdate)
 
 /*  PUT Route :- Updating Profile Picture Of User
     Req Body :- {dp: file} in form-data format
     Res Body :- {msg: "...", success: true} , if Sucessfully Updated
                 {err: "...", success: false} , if Any Error Occurs  */
-router.put('/dp', isSignedIn, isVerified, userDpStore.single('dp'), dpUpdate)
+router.put('/dp', userDpStore.single('dp'), dpUpdate)
 
 module.exports = router;

@@ -19,6 +19,30 @@ exports.getVacApplicants = (req, res) => {
     })
 }
 
+exports.vacancySelect = (req, res, next) => {
+
+    if(req.body.userId === undefined)
+        return res.status(400).json({err: "Please Provide User ID", success: false})
+
+    Vacancy.findById(rq.params.vacancyId, (err, vacancy) => {
+        if(err)
+            return res.status(500).json({err: err, success: false})
+        
+        let applicInd = vacancy.applicants.indexOf(req.body.userId)
+        if(applicInd < 0)
+            return res.status(404).json({err: "User Has Not Applied!!", success: false})
+        
+        vacancy.accepted.push(req.body.userId)
+        vacancy.applicants.splice(applicInd, 1);
+        vacancy.save()
+        .catch((err) => {
+            return res.status(500).json({err: err, success: false})
+        })
+
+        next()
+    })
+}
+
 exports.vacancyApply = (req, res) => {
     if(req.root.type !== "U")
         return res.status(400).json({err: "You Cannot Proceed With Application!!", success: false})
@@ -26,6 +50,9 @@ exports.vacancyApply = (req, res) => {
     Vacancy.findById(req.params.vacancyId, (err, vacancy) => {
         if(!vacancy)
             return res.status(404).json({err: "Vacancy Not Found!!", success: false})
+        
+        if(vacancy.isOpen === false)
+            return res.status(403).json({err: "Vacancy Has Been Closed!!", success: false})
 
         vacancy.applicants.push(req.root._id)
 
@@ -38,18 +65,22 @@ exports.vacancyApply = (req, res) => {
     })
 }
 
-exports.vacancyClose = (req, res) => {
+exports.vacancyClose = (req, res, next) => {
     
     Vacancy.findById(req.params.vacancyId, (err, vacancy) => {
         if(!vacancy)
             return res.status(404).json({err: "Vacancy Not Found!!", success: false})
+
+        if(vacancy.owner.toString() !== req.root._id.toString())
+            return res.status(401).json({err: "You Are Not Authorised To Close This Vacancy!!", success: false})
         
         vacancy.isOpen = false
         vacancy.save()
         .catch((err) => {
             return res.status(500).json({err: err, success: false})
         })
+        req.root.vacancyId = req.params.vacancyId
 
-        return res.status(200).json({err: "Applied!!", success: true})
+        next()
     })
 }

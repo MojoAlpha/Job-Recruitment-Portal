@@ -1,14 +1,31 @@
 var express = require('express')
-var {isSignedIn, isVerified, isCompanyVerified} = require('../../../middleware')
-const { getVacApplicants, vacancyApply,  } = require('../../../services/vacancyServices/vacancy')
+var { isCompanyVerified} = require('../../../middleware')
+
+const { selectedNotify, closeNotify } = require('../../../services/NotfiyServices/vacancyNotify')
+const { getVacApplicants, vacancyApply, vacancyClose, vacancySelect,  } = require('../../../services/vacancyServices/vacancy')
 
 
 var router = express.Router()
 
-router.get('/applicant/:vacancyId', isSignedIn, isVerified, isCompanyVerified, getVacApplicants)
+/*  GET Route :- To Get The List Of Applicants In A Vacancy, Only Company is Authorized
+    Res Body :- {applicantsList, success: true} , if Sucessfully Created
+                {err: "...", success: false} , if Any Error Occurs */
+router.get('/applicant/:vacancyId', isCompanyVerified, getVacApplicants)
 
-router.post('/apply/:vacancyId', isSignedIn, isVerified, vacancyApply)
+/*  POST Route :- To Select An Applicant, Only Company is Authorized
+    Req Body :- { userId }
+    Res Body :- {msg: "...", success: true} , if Sucessfully Created
+                {err: "...", success: false} , if Any Error Occurs */
+router.post('/select/:vacancyId', isCompanyVerified, vacancySelect, selectedNotify)
 
-router.post('/close/:vacancyId', isSignedIn, isVerified, isCompanyVerified, )
+/*  POST Route :- To Apply In A Vacancy
+    Res Body :- {msg: "...", success: true} , if Sucessfully Created
+                {err: "...", success: false} , if Any Error Occurs */
+router.post('/apply/:vacancyId', vacancyApply)
+
+/*  POST Route :- To Close Vacancy, Only Company is Authorized
+    Res Body :- {msg: "...", success: true} , if Sucessfully Created
+                {err: "...", success: false} , if Any Error Occurs */
+router.post('/close/:vacancyId', isCompanyVerified, vacancyClose, closeNotify)
 
 module.exports = router

@@ -1,7 +1,6 @@
 var express = require('express');
 var { body } = require('express-validator')
 
-const { isSignedIn, isVerified } = require('../../../middleware');
 const { userErrors } = require('../../../services/userServices/errHandler');
 const { addSkill, removeSkill } = require('../../../services/userServices/skill');
 
@@ -11,7 +10,7 @@ var router = express.Router();
     Req Body :- {skillId} 
     Res Body :- {msg: "...", success: true} , if Sucessfully Added
                 {err: "...", success: false} , if Any Error Occurs */
-router.post('/', isSignedIn, isVerified, [
+router.post('/', [
     body('skillId').notEmpty().withMessage('Skill Should Be Specified!!')
 ], userErrors, addSkill)
 
@@ -19,7 +18,7 @@ router.post('/', isSignedIn, isVerified, [
     Req Body :- {skillId}
     Res Body :- {msg: "...", success: true} , if Sucessfully Removed
                 {err: "...", success: false} , if Any Error Occurs */
-router.delete('/', isSignedIn, isVerified, [
+router.delete('/', [
     body('skillId').notEmpty().withMessage('Skill Should Be Specified!!')
 ], userErrors, removeSkill)
 
