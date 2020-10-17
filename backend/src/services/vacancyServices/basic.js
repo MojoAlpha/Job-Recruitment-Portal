@@ -3,7 +3,7 @@ var Company = require('../../models/company')
 var Skill = require('../../models/skill')
 var mongoose = require('mongoose')
 
-exports.postVacancy = (req, res) => {
+exports.postVacancy = (req, res, next) => {
 
     var newVacancy = new Vacancy({
         owner: req.root._id,
@@ -18,7 +18,7 @@ exports.postVacancy = (req, res) => {
         return res.status(500).json({err: err, success: false})
     })
 
-    return res.status(200).json({ msg: "Vacancy Created!", success: true })
+    next()
 }
 
 exports.getVacancy = (req, res) => {

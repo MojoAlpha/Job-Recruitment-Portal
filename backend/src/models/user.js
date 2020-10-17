@@ -36,6 +36,9 @@ var User = new Schema({
     skills: [{
         type: String
     }],
+    connRequests: [{
+        type: String
+    }],
     connections: [{
         type: String
     }],
