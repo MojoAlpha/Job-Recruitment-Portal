@@ -1,10 +1,12 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import Signup from "./components/user/Signup";
-import Home from "./components/home/index";
-import Signin from "./components/user/Signin";
-import RegisteredUser from "./components/registeredUser/index";
+import Signup from './components/user/Signup';
+import Home from './components/home/index';
+import Signin from './components/user/Signin';
+import RegisteredUser from './components/registeredUser/index'
+import PrivateRouteComp from './auth/PrivateRouteComp';
+import PrivateRouteDev from './auth/PrivateRouteDev';
 
 function App() {
   return (
@@ -14,8 +16,8 @@ function App() {
         <Route path="/home" exact component={Home} />
         <Route path="/signup" exact component={Signup} />
         <Route path="/signin" exact component={Signin} />
-        <Route path="/user" exact component={RegisteredUser} />
-        {/* <Route path="/mynetwork" exact component={RegisteredUser} /> */}
+        {/* <PrivateRouteComp /> For refrence*/}
+        <PrivateRouteDev path="/user" exact component={RegisteredUser} />
       </Switch>
     </BrowserRouter>
   );

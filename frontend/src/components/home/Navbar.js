@@ -1,0 +1,26 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
+export default function Navbar() {
+  return (
+    <div>
+      <nav className="navbar">
+        <a href="/" className="navbar-brand" style={{fontWeight:"bold",fontSize:"40px"}}>
+          DEVHUB
+        </a>
+        <ul className="nav">
+          <li className="nav-item">
+            <Link to="/signin" className="btn btn-primary px-4 m-3">
+              <span style={{fontWeight:"bold",fontSize:"30px"}}>Login</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/signup" className="btn btn-primary px-4 m-3">
+              <span style={{fontWeight:"bold",fontSize:"30px"}}>Signup</span>
+            </Link>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  );
+}

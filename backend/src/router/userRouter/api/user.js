@@ -1,7 +1,15 @@
 var express = require('express')
 
-const { isSignedIn, isVerified } = require('../../../middleware')
-const { extraUserDetails, userDetails, userConnect, userDisconnect } = require('../../../services/userServices/user')
+const {
+    isSignedIn,
+    isVerified
+} = require('../../../middleware')
+const {
+    extraUserDetails,
+    userDetails,
+    userConnect,
+    userDisconnect
+} = require('../../../services/userServices/user')
 
 var router = express.Router()
 

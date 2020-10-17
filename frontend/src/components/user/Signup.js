@@ -70,20 +70,28 @@ export default function Signup() {
         </div>
     )
     const signUpForm = () => (
-        <div className="container-fluid">
-            <Link to="/home" style={{ textDecoration: "none" }}>
-                <h3 className="row font-weight-bold p-5" style={{ color: "#11B0BB" }}>
-                    DEVHUB
-            </h3>
-            </Link>
+        <div className="container bg-white" style={{
+            boxShadow: "0px 3px 6px #00000029",
+            padding: "0px 0px 0px 0px",
+        }}
+        >
             <div className="container mt-5">
-                <div className="row">
-                    <div className="col-6">
-                        <img src="" alt="Some random image" />
+                <div className="row px-0">
+                    <div className="col-0 col-md-6 px-0" style={{
+                        backgroundImage: `url(${process.env.PUBLIC_URL}/images/form.jpg)`,
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "cover",
+                        backgroundPosition: "left"
+                    }}>
+                        <div className="h-100 w-100" style={{
+                            background: "#11B0BB42 0% 0% no-repeat padding-box"
+                        }}>
+                        </div>
                     </div>
-                    <div className="col-6">
+                    <div className="col-12 col-md-6">
+                        <h3 className="font-weight-bold p-5">Welcome Back</h3>
                         {errorMessage()}
-                        <form>
+                        <form className="px-5">
                             <div className="form-group">
                                 <label>Name</label>
                                 <input
@@ -121,44 +129,67 @@ export default function Signup() {
                                         value="U"
                                         name="type"
                                     />
-                                    <label>Developer</label>
                                 </div>
-                                <div className="form-check">
+                                <div className="form-group">
+                                    <label>Password</label>
                                     <input
-                                        className="form-check-input"
-                                        onChange={handleChange("type")}
-                                        type="radio"
-                                        value="C"
+                                        className="form-control"
+                                        onChange={handleChange("password")}
+                                        type="password"
+                                        value={password}
                                         name="type"
                                     />
-                                    <label>Company</label>
                                 </div>
+                                <div className="form-group d-flex justify-content-around">
+                                    <div className="form-check">
+                                        <input
+                                            className="form-check-input"
+                                            onChange={handleChange("type")}
+                                            type="radio"
+                                            value="U"
+                                            name="type"
+                                        />
+                                        <label>Developer</label>
+                                    </div>
+                                    <div className="form-check">
+                                        <input
+                                            className="form-check-input"
+                                            onChange={handleChange("type")}
+                                            type="radio"
+                                            value="C"
+                                            name="type"
+                                        />
+                                        <label>Company</label>
+                                    </div>
+                                </div>
+                                <button onClick={onSubmit} className="btn btn-primary btn-block">
+                                    Sign Up
+                                </button>
                             </div>
-                            <button onClick={onSubmit} className="btn btn-primary btn-block">
-                                Sign Up
-                        </button>
                         </form>
-                        <div className="text-center pt-3">
-                            already have an account? <Link to="/signin">Login</Link>
+                        <div className="p-5">
+                            dont have an account yet ? <Link to="/signup">Signup</Link>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     )
-
-    // const popUpProps = {
-    //     showPopup,
-    //     setShowPopup: setShowPopup()
-    // }
     return (
-
-        <div>
+        <div style={{
+            backgroundImage: `url(${process.env.PUBLIC_URL}/images/wave.svg)`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            height: "100vh"
+        }}>
+            <Link to="/home" style={{ textDecoration: "none" }}>
+                <h3 className="row font-weight-bold p-5" style={{ color: "#11B0BB" }}>
+                    DEVHUB
+              </h3>
+            </Link>
             {signUpForm()}
-
-
-            {showPopUp ? <PopUp showPopUp togglePopUp={togglePopUp} /> : <></>}
-            {/* <p className="text-center"> {JSON.stringify(values)} </p> */}
         </div>
     )
 }
