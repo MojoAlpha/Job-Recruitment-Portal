@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import NewsFeed from "./NewsFeed";
 import MyNetwork from "./MyNetwork";
-// import Message from "./Message";
+import Profile from "./Profile";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 const navLinkActive =
@@ -108,16 +108,17 @@ export default function RegisteredUser() {
           className="col-12 col-md-9 row bg-gray px-4 pt-4"
           style={{ marginLeft: "25%" }}
         >
-          <BrowserRouter>
-            <Switch>
-              <Route path="/feed" component={NewsFeed} />
-              {/* <Route path="/search" component={Home} /> */}
-              <Route path="/mynetwork" component={MyNetwork} />
-              {/* <Route path="/message" exact component={Message} /> */}
-              {/* <Route path="/user/:username" exact component={RegisteredUser} /> */}
-            </Switch>
-          </BrowserRouter>
-          <NewsFeed />
+          <Profile />
+          {/* <BrowserRouter>
+            <Switch> */}
+          <Route path="/feed" component={NewsFeed} />
+          {/* <Route path="/search" component={Home} /> */}
+          <Route path="/mynetwork" component={MyNetwork} />
+          {/* <Route path="/message" exact component={Message} /> */}
+          {/* <Route path="/user/:username" exact component={RegisteredUser} /> */}
+          {/* </Switch>
+          </BrowserRouter> */}
+          {/* <NewsFeed /> */}
           {/* <GridLayout/> */}
           {/* imported content here */}
         </div>
