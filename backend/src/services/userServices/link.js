@@ -16,6 +16,23 @@ exports.addLink = (req, res) => {
     })
 }
 
+exports.updateLink = (req, res) => {
+
+    User.findById(req.root._id, (err, user) => {
+        if(err)
+            return res.status(500).json({err: err, success: false})
+        
+        user.links[req.body.index].title = req.body.title
+        user.links[req.body.index].url = req.body.url 
+        user.save()
+        .catch((err) => {
+            return res.status(500).json({err: err, success: false})
+        })
+
+        return res.status(200).json({msg: "Link Updated!!", success: true})
+    })
+}
+
 exports.removeLink = (req, res) => {
     
     User.findById(req.root._id, (err, user) => {

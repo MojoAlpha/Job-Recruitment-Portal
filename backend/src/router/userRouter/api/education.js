@@ -11,19 +11,24 @@ var router = express.Router();
     Res Body :- {msg: "...", success: true} , if Sucessfully Added
                 {err: "...", success: false} , if Any Error Occurs */
 router.post('/', [
-    body('degree').notEmpty().withMessage('Degree Should Be Specified!!'),
-    body('insti').notEmpty().withMessage('Institution Should Be Specified!!'),
-    body('year').notEmpty().withMessage('Year Should Be Specified!!')
+    body('degree', 'insti', 'year').notEmpty().withMessage('Degree Should Be Specified!!'),
 ], userErrors, addEducationalQual)
+
+/*  PUT Route :- Updating Educational Qualifications
+    Req Body :- {degree: "...", insti: "...", year: "...", "index": 0,1...} 
+    Res Body :- {msg: "...", success: true} , if Sucessfully Updated
+                {err: "...", success: false} , if Any Error Occurs */
+router.put('/', [
+    body('degree', 'insti', 'year', 'index').notEmpty().withMessage('Degree Should Be Specified!!'),
+], userErrors, )
+
 
 /*  DELETE Route :- Removing Educational Qualifications
     Req Body :- {degree: "...", insti: "...", year: "..."}
     Res Body :- {msg: "...", success: true} , if Sucessfully Removed
                 {err: "...", success: false} , if Any Error Occurs */
 router.delete('/', [
-    body('degree').notEmpty().withMessage('Degree Should Be Specified!!'),
-    body('insti').notEmpty().withMessage('Institution Should Be Specified!!'),
-    body('year').notEmpty().withMessage('Year Should Be Specified!!')
+    body('degree', 'insti', 'year').notEmpty().withMessage('Degree Should Be Specified!!'),
 ], userErrors, removeEducationalQual)
 
 module.exports = router;

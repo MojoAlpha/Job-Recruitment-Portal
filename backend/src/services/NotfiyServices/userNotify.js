@@ -7,7 +7,7 @@ exports.connectionReq = (req, res) => {
         reciever: req.params.userId,
         sender: req.root._id,
         msg: "Sent You A Connection Request",
-        link: "http://localhost:3000/user/"
+        link: `${process.env.HOST}/user/`
     })
 
     newNotify.save()

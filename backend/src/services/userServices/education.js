@@ -16,6 +16,24 @@ exports.addEducationalQual = (req, res) => {
     })
 }
 
+exports.updateEducationalQual = (req, res) => {
+
+    User.findById(req.root._id, (err, user) => {
+        if(err)
+            return res.status(500).json({err: err, success: false})
+
+        user.education[req.body.index].degree = req.body.degree
+        user.education[req.body.index].insti = req.body.insti
+        user.education[req.body.index].year = req.body.year
+        user.save()
+        .catch((err) => {
+            return res.status(500).json({err: err, success: false})
+        })
+
+        return res.status(200).json({msg: "Educational Qualification Updated!!", success: true})
+    })
+}
+
 exports.removeEducationalQual = (req, res) => {
     
     User.findById(req.root._id, (err, user) => {

@@ -13,8 +13,11 @@ var Post = new Schema({
         type: String
     }],
     owner: {
-        type: Object,
+        type: String,
         required: true
+    },
+    type: {
+        type: String
     }
 },
 {timestamps: true})

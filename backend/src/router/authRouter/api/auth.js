@@ -16,8 +16,8 @@ router.post('/signup', [
         body('type').isIn(["U", "C"]).withMessage('Invalid Type Of Account!!'),
         body('name').notEmpty().withMessage("Name Shouldn't Be Kept Empty!!"),
         body('email').isEmail().withMessage('Invalid Email!!'),
-        body('password').isLength({min: 8, max: 20}).withMessage('Password should be greater than equal to 8!!')
-                        .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$.!%*#?&])[A-Za-z\d@$.!%*#?&]{8,}$/)
+        body('password').isLength({min: 8, max: 20}).withMessage('Password should be 8-20 Characters!!')
+                        .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$.!%*#?&])[A-Za-z\d@$.!%*#?&]{8,20}$/)
                         .withMessage('Password must contain alphabets, numbers & symbols!!')
                         // Checks On Validity Of Body Fields
     ]

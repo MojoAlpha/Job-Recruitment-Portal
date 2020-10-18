@@ -12,7 +12,7 @@ exports.postVacancyNotify = (req, res) => {
                 reciever: userId,
                 sender: req.root._id,
                 msg: "A New Job Has Been Posted You Might Want To Have A Look!!",
-                link: "http://localhost:3000/vacancy/"
+                link: `${process.env.HOST}/vacancy/`
             }))
         })
 
@@ -31,7 +31,7 @@ exports.selectedNotify = (req, res) => {
         reciever: req.body.userId,
         sender: req.root._id,
         msg: "Congratulations You Have Been Selected For The Job!!",
-        link: "http://localhost:3000/company/"
+        link: `${process.env.HOST}/company/`
     })
 
     newNotify.save()
@@ -51,7 +51,7 @@ exports.closeNotify = (req, res) => {
                 reciever: id,
                 from: req.root._id,
                 msg: "The Vacancy Has Been Closed. Visit To Know More!!",
-                link: "http://localhost:3000/vacancy/"
+                link: `${process.env.HOST}/vacancy/`
             }))
         })
 

@@ -19,8 +19,8 @@ router.post('/', [
                 {err: "...", success: false} , if Any Error Occurs */
 router.put('/:type/:token', [
     param('type').isIn(["U", "C"]).withMessage("Invalid Request!!"),
-    body('newPassword').isLength({min: 8}).withMessage('Password should be greater than equal to 8')
-                       .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$.!%*#?&])[A-Za-z\d@$.!%*#?&]{8,}$/)
+    body('newPassword').isLength({min: 8}).withMessage('Password should be 8-20 Characters!')
+                       .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$.!%*#?&])[A-Za-z\d@$.!%*#?&]{8,20}$/)
                        .withMessage('Password must contain alphabets, numbers & symbols')
 ], authErrors, userPassReset, companyPassReset)
 

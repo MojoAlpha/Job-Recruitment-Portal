@@ -18,7 +18,7 @@ exports.userForget = (req, res, next) => {
         user.tokenExpiry = Date.now() + 3600000                     // Generating A Token With An Expiry Time Of 1 Hour
         user.save()
         .then((user) => {
-            forgetPassMail(user.email, `http://localhost:3000/forget/verify/U/${user.verifyToken}`)
+            forgetPassMail(user.email, `${process.env.HOST}/forget/verify/U/${user.verifyToken}`)
             })
         .catch((err) => {
             return res.status(500).json({ err: err, success: false })
@@ -41,7 +41,7 @@ exports.companyForget = (req, res, next) => {
         company.tokenExpiry = Date.now() + 3600000
         company.save()
         .then((company) => {
-            forgetPassMail(company.email, `http://localhost:3000/forget/verify/C/${company.verifyToken}`)
+            forgetPassMail(company.email, `${process.env.HOST}/forget/verify/C/${company.verifyToken}`)
         })
         .catch((err) => {
             return res.status(500).json({ err: err, success: false })

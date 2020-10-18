@@ -1,3 +1,4 @@
+require('dotenv').config()
 var User = require('../../models/user');
 var Company = require('../../models/company');
 var { emailVerification } = require('../../config/mailTemplate')
@@ -20,7 +21,7 @@ exports.UserSignup = (req, res, next) => {
 
             newUser.save()
             .then((user) => {
-                emailVerification(user.email, user.name, `http://localhost:3000/auth/verify/U/${user.verifyToken}`)
+                emailVerification(user.email, user.name, `${process.env.HOST}/auth/verify/U/${user.verifyToken}`)
             })
             .catch((err) => {
                 return res.status(500).json({ err: err, success: false })
@@ -53,7 +54,7 @@ exports.CompanySignup = (req, res, next) => {
 
             newCompany.save()
             .then((company) => {
-                emailVerification(company.email, company.name, `http://localhost:3000/auth/verify/C/${company.verifyToken}`)
+                emailVerification(company.email, company.name, `${process.env.HOST}/auth/verify/C/${company.verifyToken}`)
             })
             .catch((err) => {
                 return res.status(500).json({ err: err, success: false })
