@@ -1,8 +1,8 @@
 var express = require('express');
 const { body }  = require('express-validator');
 const { UserSignup, CompanySignup } = require('../../../services/authServices/signup');
-const { authErrors, emailExists, emailNotExists } = require('../../../services/authServices/errHandler');
 const { UserLogin, CompanyLogin } = require('../../../services/authServices/login');
+const { errHandler, emailExists, emailNotExists } = require('../../../services/errValidator');
 
 var router = express.Router();
 
@@ -21,7 +21,7 @@ router.post('/signup', [
                         .withMessage('Password must contain alphabets, numbers & symbols!!')
                         // Checks On Validity Of Body Fields
     ]
-], authErrors, emailExists, UserSignup, CompanySignup)
+], errHandler, emailExists, UserSignup, CompanySignup)
 
 /*  POST Route :- Login Route For User & Company --> U - User; C - Company
     Req Body :- {email,  password}
@@ -30,6 +30,6 @@ router.post('/signup', [
 router.post('/login', [
     body('email').notEmpty().withMessage('Email Cannot Be Empty!!'),
     body('password').notEmpty().withMessage('Password Cannot Be Empty!!')
-], authErrors, emailNotExists, UserLogin, CompanyLogin)
+], errHandler, emailNotExists, UserLogin, CompanyLogin)
 
 module.exports = router;

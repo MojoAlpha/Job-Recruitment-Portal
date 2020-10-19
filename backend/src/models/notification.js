@@ -15,6 +15,10 @@ var Notification = new Schema({
     },
     link: {
         type: String
+    },
+    isRead: {
+        type: Boolean,
+        default: false
     }
 })
 

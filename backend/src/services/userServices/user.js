@@ -1,20 +1,22 @@
 var User = require('../../models/user')
 var Skill = require('../../models/skill')
 var Company = require('../../models/company')
+var Notification = require('../../models/notification')
 var mongoose = require('mongoose')
 
 exports.userDetails = (req, res) => {
     
     User.findById(req.params.userId, (err, user) => {
-        
-        if(!user)
+        Notification.find({ reciever: req.params.userId, isRead: false }).count()
+        .then((unreadCount) => {
+            
+            if(!user)
             return res.status(404).json({err: "User Not Found!", success: false})
         
         var skill_ids = user.skills.map((id) => {return mongoose.mongo.ObjectID(id)})
 
         Skill.find({ _id: { $in: skill_ids }})
         .then((skills) => {
-            
             return res.status(200).json({
                 type: "U",
                 name: user.name,
@@ -26,8 +28,10 @@ exports.userDetails = (req, res) => {
                 links: user.links,
                 dp: user.dp,
                 skills: skills,
+                unreadNotification: unreadCount,
                 connectionCount: user.connections.length
             })
+        })
         })
     })
 }
@@ -48,12 +52,24 @@ exports.extraUserDetails = (req, res) => {
 
                 return res.status(200).json({
                     connections: userList,
-                    followed: followd_ids
+                    followed: companyList
                 })
             })
         })
         
     })
+}
+
+exports.getNotifications = (req, res) => {
+
+    Notification.find({ reciever: req.root._id })
+    .sort({createdAt: -1})
+    .then((notifications) => {
+        res.status(200).json({notifications: notifications, success: true})
+    }, (err) => res.status(500).json({
+        err: err,
+        success: false
+    }))
 }
 
 exports.userConnect = (req, res) => {

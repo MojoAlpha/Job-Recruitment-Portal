@@ -2,7 +2,7 @@ var express = require('express');
 var { body } = require('express-validator')
 
 const { detailUpdate, passwdUpdate, dpUpdate } = require('../../../services/userServices/detail');
-const { userErrors } = require('../../../services/userServices/errHandler');
+const { errHandler } = require('../../../services/errValidator');
 const { userDpStore } = require('../../../config/multerStore')
 
 var router = express.Router();
@@ -21,7 +21,7 @@ router.put('/password', [
     body('currPassword').notEmpty().withMessage('Current Password Should Be Preovided!'),
     body('newPassword').isLength({min: 8, max: 20}).withMessage('Size Of Password Should Be Between 8-20 Letters')
                         .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d@$.!%*#?&]/).withMessage('Password must contain alphabets & numbers')
-], userErrors, passwdUpdate)
+], errHandler, passwdUpdate)
 
 /*  PUT Route :- Updating Profile Picture Of User
     Req Body :- {dp: file} in form-data format

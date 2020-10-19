@@ -2,7 +2,7 @@ var express = require('express')
 var { body } = require('express-validator')
 
 var { isCompanyVerified} = require('../../../middleware')
-var {vacancyErrors} = require('../../../services/vacancyServices/errHandler')
+var { errHandler } = require('../../../services/errValidator')
 const { postVacancy, getVacancy, updateVacancy, deleteVacancy } = require('../../../services/vacancyServices/basic')
 const { postVacancyNotify } = require('../../../services/NotfiyServices/vacancyNotify')
 
@@ -13,10 +13,8 @@ var router = express.Router()
     Res Body :- {msg: "...", success: true} , if Sucessfully Created
                 {err: "...", success: false} , if Any Error Occurs */
 router.post('/', [
-    body('title').notEmpty().withMessage("Title Should Be Provided!"),
-    body('desig').notEmpty().withMessage("Designation Should Be Provided!"),
-    body('desc').notEmpty().withMessage("Description Should Be Provided!")
-] , isCompanyVerified, vacancyErrors, postVacancy, postVacancyNotify)
+    body('title', 'desig', 'desc').notEmpty().withMessage("Vacany Details Should Be Provided!")
+] , isCompanyVerified, errHandler, postVacancy, postVacancyNotify)
 
 /*  GET Route :- Vacancy details For User OR Company
     Res Body :- {Vacancy Details} */

@@ -2,7 +2,7 @@ var express = require('express');
 var { body } = require('express-validator')
 
 const { addEducationalQual, removeEducationalQual } = require('../../../services/userServices/education');
-const { userErrors } = require('../../../services/userServices/errHandler');
+const { errHandler } = require('../../../services/errValidator');
 
 var router = express.Router();
 
@@ -12,7 +12,7 @@ var router = express.Router();
                 {err: "...", success: false} , if Any Error Occurs */
 router.post('/', [
     body('degree', 'insti', 'year').notEmpty().withMessage('Degree Should Be Specified!!'),
-], userErrors, addEducationalQual)
+], errHandler, addEducationalQual)
 
 /*  PUT Route :- Updating Educational Qualifications
     Req Body :- {degree: "...", insti: "...", year: "...", "index": 0,1...} 
@@ -20,7 +20,7 @@ router.post('/', [
                 {err: "...", success: false} , if Any Error Occurs */
 router.put('/', [
     body('degree', 'insti', 'year', 'index').notEmpty().withMessage('Degree Should Be Specified!!'),
-], userErrors, )
+], errHandler, )
 
 
 /*  DELETE Route :- Removing Educational Qualifications
@@ -29,6 +29,6 @@ router.put('/', [
                 {err: "...", success: false} , if Any Error Occurs */
 router.delete('/', [
     body('degree', 'insti', 'year').notEmpty().withMessage('Degree Should Be Specified!!'),
-], userErrors, removeEducationalQual)
+], errHandler, removeEducationalQual)
 
 module.exports = router;

@@ -1,15 +1,7 @@
 var express = require('express')
 
-const {
-    isSignedIn,
-    isVerified
-} = require('../../../middleware')
-const {
-    extraUserDetails,
-    userDetails,
-    userConnect,
-    userDisconnect
-} = require('../../../services/userServices/user')
+const { isSignedIn, isVerified } = require('../../../middleware')
+const { extraUserDetails, userDetails, userConnect, userDisconnect, getNotifications } = require('../../../services/userServices/user')
 
 var router = express.Router()
 
@@ -24,6 +16,10 @@ router.get('/:userId', isSignedIn, isVerified, userDetails)
 /*  GET Route :- Connection List & Followed List Of A User
     Res Body :- {connections, followed} */
 router.get('/:userId/all', isSignedIn, isVerified, extraUserDetails)
+
+/*  GET Route :- Get The Notifications Of The User
+    Res Body :- {notificaitions} */
+router.get('/:userId/notifications', isSignedIn, isVerified, getNotifications)
 
 /*  POST Route :- Connect A User
     Res Body :- {msg: ..., success: true} , if Successfully Followed

@@ -1,7 +1,7 @@
 var express = require('express');
 var { body } = require('express-validator')
 
-const { userErrors } = require('../../../services/userServices/errHandler');
+const { errHandler } = require('../../../services/errValidator');
 const { addSkill, removeSkill } = require('../../../services/userServices/skill');
 
 var router = express.Router();
@@ -12,7 +12,7 @@ var router = express.Router();
                 {err: "...", success: false} , if Any Error Occurs */
 router.post('/', [
     body('skillId').notEmpty().withMessage('Skill Should Be Specified!!')
-], userErrors, addSkill)
+], errHandler, addSkill)
 
 /*  DELETE Route :- Removing Skills
     Req Body :- {skillId}
@@ -20,6 +20,6 @@ router.post('/', [
                 {err: "...", success: false} , if Any Error Occurs */
 router.delete('/', [
     body('skillId').notEmpty().withMessage('Skill Should Be Specified!!')
-], userErrors, removeSkill)
+], errHandler, removeSkill)
 
 module.exports = router;

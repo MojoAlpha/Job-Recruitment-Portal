@@ -1,6 +1,6 @@
 var express = require('express');
 const { param, body } = require('express-validator');
-const { authErrors, emailNotExists } = require('../../../services/authServices/errHandler');
+const { errHandler, emailNotExists } = require('../../../services/errValidator');
 const { userForget, companyForget, userPassReset, companyPassReset } = require('../../../services/authServices/forget');
 
 var router = express.Router();
@@ -11,7 +11,7 @@ var router = express.Router();
                 {err: "...", success: false} , if Any Error Occurs */
 router.post('/', [
     body('email').notEmpty().withMessage('Email Should Not Be Empty!!')
-], authErrors, emailNotExists, userForget, companyForget)
+], errHandler, emailNotExists, userForget, companyForget)
 
 /*  PUT Route :- Resetting The Password
     Req Body :- {newPassword}
@@ -22,6 +22,6 @@ router.put('/:type/:token', [
     body('newPassword').isLength({min: 8}).withMessage('Password should be 8-20 Characters!')
                        .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$.!%*#?&])[A-Za-z\d@$.!%*#?&]{8,20}$/)
                        .withMessage('Password must contain alphabets, numbers & symbols')
-], authErrors, userPassReset, companyPassReset)
+], errHandler, userPassReset, companyPassReset)
 
 module.exports = router;

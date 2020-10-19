@@ -1,6 +1,6 @@
 var express = require('express');
 const { param } = require('express-validator');
-const { authErrors } = require('../../../services/authServices/errHandler');
+const { errHandler } = require('../../../services/errValidator');
 const { userVerification, companyVerification } = require('../../../services/authServices/verification');
 
 var router = express.Router();
@@ -10,6 +10,6 @@ var router = express.Router();
                 {err: "...", success: false} , if Any Error Occurs */
 router.put('/:type/:token',[
     param('type').isIn(["U", "C"]).withMessage("Invalid Request!!")
-] , authErrors, userVerification, companyVerification)
+] , errHandler, userVerification, companyVerification)
 
 module.exports = router;

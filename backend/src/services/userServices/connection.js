@@ -13,6 +13,9 @@ exports.sendConnectReq = (req, res, next) => {
         if(userIndex >= 0)
             return res.status(403).json({err: "Already Sent A Connection Request!!", success: false})
         
+        if(req.params.userId === req.root._id)
+            return res.status(400).json({err: "You Cannot Send Connection Request To Yourself!", success: false})
+        
         user.connRequests.push(req.root._id)
         user.save()
         .catch((err) => {

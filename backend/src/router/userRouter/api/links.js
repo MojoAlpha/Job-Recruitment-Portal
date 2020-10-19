@@ -1,7 +1,7 @@
 var express = require('express');
 var { body } = require('express-validator')
 
-const { userErrors } = require('../../../services/userServices/errHandler');
+const { errHandler } = require('../../../services/errValidator');
 const { addLink, removeLink, updateLink } = require('../../../services/userServices/link');
 
 var router = express.Router();
@@ -12,7 +12,7 @@ var router = express.Router();
                 {err: "...", success: false} , if Any Error Occurs */
 router.post('/', [
     body('title', 'url').notEmpty().withMessage('Title Should Be Specified!!'),
-], userErrors, addLink)
+], errHandler, addLink)
 
 /*  PUT Route :- Updating Important Links, such as gitHub etc.
     Req Body :- {title: "...", url: "...", index: 0,1..} 
@@ -20,7 +20,7 @@ router.post('/', [
                 {err: "...", success: false} , if Any Error Occurs */
 router.put('/', [
     body('title', 'url', 'index').notEmpty().withMessage('Fields Should Not Be Empty')
-], userErrors, updateLink)
+], errHandler, updateLink)
 
 /*  DELETE Route :- Removing Unwanted Links
     Req Body :- {title: "...", url: "..."}
@@ -28,6 +28,6 @@ router.put('/', [
                 {err: "...", success: false} , if Any Error Occurs */
 router.delete('/', [
     body('title', 'url').notEmpty().withMessage('Title Should Be Specified!!'),
-], userErrors, removeLink)
+], errHandler, removeLink)
 
 module.exports = router;

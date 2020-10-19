@@ -1,8 +1,8 @@
 const { validationResult } = require('express-validator');
-var User = require('../../models/user');
-var Company = require('../../models/company');
+var User = require('../models/user');
+var Company = require('../models/company');
 
-exports.authErrors = (req, res, next) => {
+exports.errHandler = (req, res, next) => {
     
     const errors = validationResult(req)
 
