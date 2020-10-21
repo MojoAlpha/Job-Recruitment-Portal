@@ -1,6 +1,6 @@
 import React from "react";
 
-const PopUp = (props) => {
+const VerifyMail = (props) => {
 
     return (
         <div className="container-fluid d-flex justify-content-center align-items-center" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: '#343a40bd', display: props.showPopup ? 'block' : 'none' }}>
@@ -28,4 +28,4 @@ const PopUp = (props) => {
     );
 };
 
-export default PopUp;
+export default VerifyMail;

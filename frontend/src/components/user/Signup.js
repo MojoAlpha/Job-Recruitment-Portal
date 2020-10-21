@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { userSignup } from '../../auth'
 import { Link } from 'react-router-dom';
-import PopUp from './PopUp'
+import VerifyMailPopUP from '../popups/VerifyMailPopUp'
 
 export default function Signup() {
 
@@ -190,6 +190,7 @@ export default function Signup() {
               </h3>
             </Link>
             {signUpForm()}
+            {showPopUp ? <VerifyMailPopUP togglePopUp={togglePopUp} /> : ''}
         </div>
     )
 }
