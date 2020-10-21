@@ -1,6 +1,6 @@
 import React from 'react'
 import EditableLabel from 'react-inline-editing';
-const SocialLink = (props) => {
+const Skill = (props) => {
     console.log(props.index)
     return (
         <div className="d-flex">
@@ -17,4 +17,4 @@ const SocialLink = (props) => {
     )
 }
 
-export default SocialLink
+export default Skill

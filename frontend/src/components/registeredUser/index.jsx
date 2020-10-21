@@ -104,9 +104,8 @@ export default function RegisteredUser() {
             </div>
           </div>
         </div>
-        <div
+        <div id="registered-user-container"
           className="col-12 col-md-9 row bg-gray px-4 pt-4"
-          style={{ marginLeft: "25%" }}
         >
           <Profile />
           {/* <BrowserRouter>
