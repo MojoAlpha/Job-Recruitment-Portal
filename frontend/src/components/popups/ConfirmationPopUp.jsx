@@ -18,7 +18,7 @@ const ConfirmationPopUp = (props) => {
                 <div className="d-flex flex-column flex-md-row mx-4 justify-content-center align-items-center">
 
                     <button class="btn col-12 col-md-3 m-2 btn-outline-primary" onClick={() => props.handleYes(props.index)}>Yes</button>
-                    <button class="btn col-12 col-md-3 m-2 btn-outline-danger" onClick={() => props.handleCancel()}>No,cancel</button>
+                    <button class="btn col-12 col-md-3 m-2 btn-outline-danger" onClick={() => props.handleCancel()}>No, cancel</button>
                 </div>
 
 

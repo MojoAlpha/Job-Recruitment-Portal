@@ -3,7 +3,6 @@ import SkillCard from './components/SkillCard'
 import axios from "axios";
 import SocialLinkCard from './components/SocialLinkCard';
 import EducationCard from './components/EducationCard';
-import ConfiramtionPopUp from '../popups/ConfirmationPopUp'
 const Profile = () => {
     const user = JSON.parse(localStorage.getItem("jwt"))
     //use this name if u need to call with authorisation header
