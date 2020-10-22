@@ -1,3 +1,5 @@
+// Base URL :- http://localhost:8000/auth/forget
+
 var express = require('express');
 const { param, body } = require('express-validator');
 const { errHandler, emailNotExists } = require('../../../services/errValidator');

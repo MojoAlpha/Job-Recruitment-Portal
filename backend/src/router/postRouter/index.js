@@ -1,3 +1,5 @@
+// Base URL :- http://localhost:8000/posts
+
 var express = require('express');
 var bodyParser = require('body-parser')
 

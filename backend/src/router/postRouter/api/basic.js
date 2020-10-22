@@ -1,3 +1,5 @@
+// Base URL :- http://localhost:8000/posts
+
 var express = require('express');
 const { postStore } = require('../../../config/multerStore')
 const { createPost, updatePost, deletePost } = require('../../../services/postServices/basic');

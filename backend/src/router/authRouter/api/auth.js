@@ -1,3 +1,5 @@
+// Base URL :- http://localhost:8000/auth
+
 var express = require('express');
 const { body }  = require('express-validator');
 const { UserSignup, CompanySignup } = require('../../../services/authServices/signup');

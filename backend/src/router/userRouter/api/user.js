@@ -1,3 +1,5 @@
+// Base URL :- http://localhost:8000/user
+
 var express = require('express')
 
 const { isSignedIn, isVerified } = require('../../../middleware')

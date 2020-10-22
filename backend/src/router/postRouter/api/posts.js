@@ -1,3 +1,5 @@
+// Base URL :- http://localhost:8000/posts
+
 var express = require('express');
 const { getPosts } = require('../../../services/postServices/posts');
 

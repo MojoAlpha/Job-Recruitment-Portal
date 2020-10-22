@@ -17,7 +17,7 @@ async function searchSkill(search) {
     const result = await Skill.find({ name: {$regex: pattern, $options: 'si'} })
                               .sort({name: 1})
     
-    console.log(result)
+    return result
 }
 
 async function searchUser(search) {
@@ -34,7 +34,7 @@ async function searchUser(search) {
     
     const result = await User.find({ name: {$regex: pattern, $options: 'si'} }, {_id: 1, name: 1, dp: 1, bio: 1})
     
-    console.log(result)
+    return result
 }
 
 async function searchCompany(search) {
@@ -51,7 +51,7 @@ async function searchCompany(search) {
     
     const result = await Company.find({ name: {$regex: pattern, $options: 'si'} }, {_id: 1, name: 1, dp: 1, bio: 1})
     
-    console.log(result)
+    return result
 }
 
 module.exports = {searchSkill, searchUser, searchCompany}
