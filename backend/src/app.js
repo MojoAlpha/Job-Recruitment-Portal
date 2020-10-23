@@ -15,6 +15,11 @@ var vacancyRouter = require('./router/vacancyRouter/index')
 
 var app = express();
 
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
 // View Engine Setup
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'jade');
@@ -22,7 +27,7 @@ app.set('view engine', 'jade');
 // Middlewares Setup
 app.use(logger('dev'));
 app.use(cookieParser());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../public')));

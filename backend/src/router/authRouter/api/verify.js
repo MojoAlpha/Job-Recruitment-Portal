@@ -1,3 +1,4 @@
+// BASE URL :- http://localhost:8000/auth/verify
 var express = require('express');
 const { param } = require('express-validator');
 const { authErrors } = require('../../../services/authServices/errHandler');
