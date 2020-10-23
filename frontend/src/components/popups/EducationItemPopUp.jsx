@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const EducationItemPopUp = (props) => {
+    // console.log(`popup item ${props.item}`)
+    const [isNew, setIsNew] = useState(false)
+    const [item, setItem] = useState({})
 
-    const [isNew, setIsNew] = useState(true)
+    useEffect(() => {
+        setItem(props.item)
+        if (props.item.insti == '')
+            setIsNew(true)
+        console.log(props.item)
 
-    if (Object.keys(props.item).length !== 0)
-        setIsNew(false)
+    }, [])
 
-    const [item, setItem] = useState({
-        insti: '',
-        degree: '',
-        year: ''
-    })
 
     const handleChange = (event) => {
         const { name, value } = event.target
@@ -27,7 +28,7 @@ const EducationItemPopUp = (props) => {
 
                 <div className="m-4">
                     <h3 className="text-center my-4">{isNew ? 'create new entry' : 'update this entry'}</h3>
-                    <form>
+                    <form method="POST">
                         <div class="form-group">
                             <label className="text-capitalize"> name of the institute</label>
                             <input type="text" class="form-control" placeholder="enter name of your institute" name="insti" onChange={handleChange} value={item.insti} />
@@ -46,12 +47,18 @@ const EducationItemPopUp = (props) => {
 
                         </div>
                         {isNew ?
-                            <button type="submit" class="btn mx-auto btn-lg  mt-4 btn-block  btn-primary" onClick={() => props.createItem(item)}>Add</button>
+                            <button
+                                type="submit"
+                                class="btn mx-auto btn-lg  mt-4 btn-block  btn-primary"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    props.createItem(item)
+                                }}>Add</button>
                             :
                             <button type="submit" class="btn mx-auto btn-lg  mt-4 btn-block  btn-primary" onClick={() => props.updateItem(props.index, item)}>update</button>
                         }
                     </form>
-                    <button class="btn mx-auto btn-lg  mt-4 btn-block  btn-danger" onClick={() => props.showPopUpWithItem({})}>cancel</button>
+                    <button class="btn mx-auto btn-lg  mt-4 btn-block  btn-danger" onClick={() => props.closePopUP()}>cancel</button>
                 </div>
 
 

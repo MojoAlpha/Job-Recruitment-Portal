@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react'
 
 import Skill from './Skill';
+import SkillPill from './SkillPill';
 
 const SkillCard = (props) => {
 
     const [links, setLinks] = useState([]);
     const [currentLink, setCurrentLink] = useState('')
+
+    useEffect(() => {
+        setLinks(props.skills())
+    }, [])
 
     const handleChange = (e) => {
         setCurrentLink(e.target.value);
@@ -32,7 +37,8 @@ const SkillCard = (props) => {
 
 
 
-    const SkillList = links.map((link, index) => <Skill text={link.name} index={link.id} handleDelete={handleDelete} />)
+    const SkillList = links.map((link, index) => <SkillPill className="flex-fill" name={link.name} />)
+    // < Skill text = { link.name } index = { link.id } handleDelete = { handleDelete } />
     return (
 
         <div className="px-4 border bg-white shadow mb-4">
@@ -44,14 +50,16 @@ const SkillCard = (props) => {
                     <button type="submit" class="btn btn-primary mb-2 w-25 btn"  >add</button>
                 </form>
             </div>
-            {SkillList.length ? SkillList :
-                <div>
-                    <h6 className=" mt-4 text-center text-capitalize">adding skills help recruiter to find you easily.</h6>
-                    <div >
-                        <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />
+            <div className="d-flex flex-wrap text-justify">
+                {SkillList.length ? SkillList :
+                    <div>
+                        <h6 className=" mt-4 text-center text-capitalize">adding skills help recruiter to find you easily.</h6>
+                        <div >
+                            <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />
+                        </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div >
     )
 }
