@@ -14,6 +14,7 @@ var companyRouter = require('./router/companyRouter/index')
 var vacancyRouter = require('./router/vacancyRouter/index')
 var postsRouter = require('./router/postRouter/index')
 var searchRouter = require('./router/searchRouter/index')
+var adminRouter = require('./router/adminRouter/index')
 
 var app = express();
 
@@ -40,6 +41,7 @@ app.use('/company', companyRouter);
 app.use('/vacancy', vacancyRouter);
 app.use('/posts', postsRouter);
 app.use('/s', searchRouter);
+app.use('/admin', adminRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -8,8 +8,10 @@ exports.createPost = (req, res) => {
         type: req.root.type,
         desc: req.body.desc,
         links: req.body.links,
-        postImg: req.file.path
     })
+
+    if(req.file !== undefined)
+        newPost.postImg=req.file.path
 
     newPost.save()
     .catch((err) => {

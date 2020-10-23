@@ -28,22 +28,31 @@ exports.sendConnectReq = (req, res, next) => {
 
 exports.acceptConnectReq = (req, res) => {
 
-    User.findById(req.root._id, (err, user) => {
-        if(err)
-            return res.status(500).json({err: err, success: false})
+    User.findById(req.root._id, (err, user1) => {
+        User.findById(req.params.userId, (err, user2) => {
+            
+            if(err || !user2)
+                return res.status(500).json({err: "User Not Found!!", success: false})
 
-        let userIndex = user.connRequests.indexOf(req.params.userId)
-        if(userIndex < 0)
-            return res.status(403).json({err: "Request Not Present!!", success: false})
-        
-        user.connRequests.splice(userIndex, 1)
-        user.connections.push(req.params.userId)
-        user.save()
-        .catch((err) => {
-            return res.status(500).json({err: err, success: false})
+            let userIndex = user1.connRequests.indexOf(req.params.userId)
+            if(userIndex < 0)
+                return res.status(403).json({err: "Request Not Present!!", success: false})
+            
+            user1.connRequests.splice(userIndex, 1)
+            user1.connections.push(req.params.userId)
+            user2.connections.push(req.root._id)
+            user1.save()
+            .catch((err) => {
+                return res.status(500).json({err: err, success: false})
+            })
+
+            user2.save()
+            .catch((err) => {
+                return res.status(500).json({err: err, success: false})
+            })
+
+            return res.status(200).json({msg: "Connection Request Accepted!!", success: true})
         })
-
-        return res.status(200).json({msg: "Connection Request Accepted!!", success: true})
     })
 }
 
