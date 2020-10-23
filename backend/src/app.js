@@ -18,6 +18,7 @@ var searchRouter = require('./router/searchRouter/index')
 var app = express();
 
 var corsOptions = {
+  origin: 'http://localhost:3000',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
@@ -30,7 +31,9 @@ app.use(logger('dev'));
 app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+  extended: false
+}));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Main Routes
@@ -42,19 +45,24 @@ app.use('/posts', postsRouter);
 app.use('/s', searchRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  return res.status(404).json({err: req.method + " method not found!!"})
+app.use(function (req, res, next) {
+  return res.status(404).json({
+    err: req.method + " method not found!!"
+  })
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.json({err: err.message, success: false});
+  res.json({
+    err: err.message,
+    success: false
+  });
 });
 
 module.exports = app;

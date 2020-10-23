@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import NewsFeed from "./NewsFeed";
 import MyNetwork from "./MyNetwork";
 import Profile from "./Profile";
+import JobOpeningDetail from "./components/JobOpeningDetail"
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 const navLinkActive =
@@ -108,6 +109,7 @@ export default function RegisteredUser() {
           className="col-12 col-md-9 row bg-gray px-4 pt-4"
         >
           <Profile />
+          {/* <JobOpeningDetail /> */}
           {/* <BrowserRouter>
             <Switch> */}
           <Route path="/feed" component={NewsFeed} />

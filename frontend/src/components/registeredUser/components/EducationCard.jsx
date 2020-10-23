@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import EducationItem from './EducationItem'
 import EducationItemPopUp from '../../popups/EducationItemPopUp'
-const EducationCard = (props) => {
+import { tokenAxios } from "../../api";
+import axios from 'axios'
+const EducationCard = props => {
     const [educationItems, setEducationItem] = useState([])
     const [showPopUP, setShowPopUp] = useState(false)
     const [item, setItem] = useState({})
+
     useEffect(() => {
-        console.log(`mounted education card ${props}`)
-        setEducationItem(props.user.education)
-
-    }, [props.isLoading])
-
+        setEducationItem(props.details())
+    }, [])
 
     // !props.isLoaing && props.user.education && setEducationItem(props.user.education)
 
@@ -30,41 +30,99 @@ const EducationCard = (props) => {
     // }
     const createItem = (item) => {
         console.log(`creating item ${item}`)
-    }
-    const updateItem = () => {
+        const { token } = JSON.parse(localStorage.getItem("jwt"))
+        var data = JSON.stringify(item);
+        var config = {
+            method: 'post',
+            url: 'http://localhost:8000/user/me/edu',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            data: data
+        };
 
+        axios(config)
+            .then(function (response) {
+
+                if (response.status == 200) {
+                    console.log("success fully created at server")
+                    setEducationItem([...educationItems, item])
+                    setShowPopUp(false)
+                }
+            })
+            .catch(function (error) {
+                console.log(`adding errro: ${error}`)
+                if (error.message === 'Network Error')
+                    alert("internet lgwa le garib aadmi")
+            });
+    }
+    const updateItem = (index, item) => {
+        const newList = [...educationItems]
+        newList.splice(index, 1, item)
+        console.log(`updated item ${newList}`)
+        setEducationItem(newList)
     }
     const deleteItem = (index) => {
-        console.log(`deleting ${index}`)
+        const newList = [...educationItems]
+        const { token } = JSON.parse(localStorage.getItem("jwt"))
+        var data = JSON.stringify(newList[index]);
+        var config = {
+            method: 'delete',
+            url: 'http://localhost:8000/user/me/edu',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            data: data
+        };
+
+        axios(config)
+            .then(function (response) {
+
+                if (response.status == 200) {
+                    newList.splice(index, 1)
+                    setEducationItem(newList)
+                }
+            })
+            .catch(function (error) {
+                if (error.message === 'Network Error')
+                    alert("internet lgwa le garib aadmi")
+            });
+
     }
 
-    const showPopUpWithItem = (item) => {
-        console.log(item)
+    const showPopUPWithItem = (item) => {
+        console.log(`called with item:${item}`)
+        setShowPopUp(true)
         setItem(item)
-        setShowPopUp(!showPopUP)
     }
-    const EducationList = props.user.education && props.user.education.map((item, index) => <EducationItem index={index} self={item} deleteItem={deleteItem} showUpdatePopUp={showPopUpWithItem} />)
-    console.log(EducationList)
-    return (
-        <div className="px-4 border bg-white shadow mb-4">
+    const closePopUP = () => {
+        setShowPopUp(false)
+    }
 
+    const getItem = () => {
+        return item
+    }
+    const EducationList = educationItems.map((item, index) => <EducationItem index={index} self={item} deleteItem={deleteItem} showPopUPWithItem={showPopUPWithItem} closePopUP={closePopUP} />)
+    console.log(`list: ${EducationList}`)
+    return (
+
+        <div className="px-4 border bg-white shadow mb-4">
             <div className="d-flex align-items-center">
                 <h3 className="text-capitalize my-3 flex-grow-1">Education</h3>
-                <button type="submit" class="btn btn-primary mb-2 w-25 btn" onClick={() => showPopUpWithItem({})}  >add</button>
+                <button type="submit" class="btn btn-primary mb-2 w-25 btn" onClick={() => showPopUPWithItem({ college: '', insti: '', year: '' })}  >add</button>
             </div>
-            <EducationItem index={0} deleteItem={deleteItem} showUpdatePopUp={showPopUpWithItem} />
-            <EducationItem index={1} deleteItem={deleteItem} showUpdatePopUp={showPopUpWithItem} />
-            {/* {EducationList.length ? EducationList :
+            {EducationList.length ? EducationList :
                 <div>
                     <h6 className=" mt-4 text-center text-capitalize">adding your Education qulification to find better jobs.</h6>
                     <div >
                         <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />
                     </div>
-                </div>
-            } */}
+                </div>}
 
-            {showPopUP ? <EducationItemPopUp item={item} createItem={createItem} updateItem={updateItem} showPopUpWithItem={showPopUpWithItem} /> : undefined}
-
+            {console.log(`showPopUP : ${showPopUP}`)}
+            {showPopUP && <EducationItemPopUp item={item} createItem={createItem} updateItem={updateItem} showPopUPWithItem={showPopUPWithItem} closePopUP={closePopUP} />}
         </div >
     )
 }

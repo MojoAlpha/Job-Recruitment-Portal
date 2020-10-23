@@ -6,6 +6,10 @@ const SocialLinkCard = (props) => {
     const [links, setLinks] = useState([]);
     const [currentLink, setCurrentLink] = useState('')
 
+    useEffect(() => {
+        setLinks(props.links())
+    }, [])
+
     const handleChange = (e) => {
         setCurrentLink(e.target.value);
     }
@@ -31,7 +35,7 @@ const SocialLinkCard = (props) => {
 
 
 
-    const SocialLinkList = links.map((link, index) => <SocialLink text={link.name} index={link.id} handleDelete={handleDelete} />)
+    const SocialLinkList = links.map((link, index) => <SocialLink name={link.title} url={link.url} index={link.id} handleDelete={handleDelete} />)
     return (
 
         <div className="px-4 mb-4 border bg-white shadow">
