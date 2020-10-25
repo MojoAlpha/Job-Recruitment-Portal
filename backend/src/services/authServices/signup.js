@@ -19,6 +19,7 @@ exports.UserSignup = (req, res, next) => {
                 verifyToken: crypto.randomBytes(30).toString('hex')     // Generating Random String For Verification Token
             })
 
+            // Sending Verification Mail After Successful Save Of The User
             newUser.save()
             .then((user) => {
                 emailVerification(user.email, user.name, `${process.env.HOST}/auth/verify/U/${user.verifyToken}`)

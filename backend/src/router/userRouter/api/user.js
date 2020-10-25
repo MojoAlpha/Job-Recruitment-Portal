@@ -3,13 +3,13 @@
 var express = require('express')
 
 const { isSignedIn, isVerified } = require('../../../middleware')
-const { extraUserDetails, userDetails, getNotifications } = require('../../../services/userServices/user')
+const { extraUserDetails, userDetails, getNotifications, basicDetails } = require('../../../services/userServices/user')
 
 var router = express.Router()
 
 /*  GET Route :- Basic Details Of Logged User
-    Res Body :- {UserDetails} */
-router.get('/me', isSignedIn, isVerified, (req, res) => res.status(200).json(req.root))
+    Res Body :- {UserDetails, unreadNotification} */
+router.get('/me', isSignedIn, isVerified, basicDetails)
 
 /*  GET Route :- All The Main Details Of A User
     Res Body :- {UserDetails} */

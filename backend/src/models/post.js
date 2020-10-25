@@ -9,6 +9,7 @@ var Post = new Schema({
         type: String,
         required: true
     },
+    // Links To Share With The Post
     links: [{
         type: String
     }],

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mailer = require('./nodeMailer')
 
+// Mail Handler For The Verification Mail After Registration
 exports.emailVerification = (email, name, link) => {
     var mailOptions = {
         to: email,
@@ -19,6 +20,7 @@ exports.emailVerification = (email, name, link) => {
     })
 }
 
+// Mail Handler For Welcome Email, After Email ID Verification
 exports.welcomeEmail = (email, name) => {
     var mailOptions = {
         to: email,
@@ -37,6 +39,7 @@ exports.welcomeEmail = (email, name) => {
     })
 }
 
+// Mail Handler For Resetting Password Functionality
 exports.forgetPassMail = (email, link) => {
     var mailOptions = {
         to: email,

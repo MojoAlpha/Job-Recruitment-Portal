@@ -1,6 +1,7 @@
 const User = require("../../models/user")
 var fs = require('fs')
 
+// Updating Basic Details :- Only Email Cannot Be Updated
 exports.detailUpdate = (req, res) => {
 
     User.findById(req.root._id, (err, user) => {
@@ -41,6 +42,7 @@ exports.passwdUpdate = (req, res) => {
     })
 }
 
+// updating the display picture
 exports.dpUpdate = (req, res) => {
 
     if(req.file === undefined)
@@ -48,6 +50,7 @@ exports.dpUpdate = (req, res) => {
 
     User.findById(req.root._id, (err, user) => {
 
+        // deleting the old picture on picture update
         if(user.dp !== 'dp/default.png')
             fs.unlinkSync(`./public/${user.dp}`)
         

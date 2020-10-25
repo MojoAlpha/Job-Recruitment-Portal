@@ -14,6 +14,7 @@ exports.userForget = (req, res, next) => {
             return ;
         }
 
+        // Assigning Random String To The Verify Token & Setting Up An Expiry Timer
         user.verifyToken = crypto.randomBytes(30).toString('hex');
         user.tokenExpiry = Date.now() + 3600000                     // Generating A Token With An Expiry Time Of 1 Hour
         user.save()
@@ -64,7 +65,8 @@ exports.userPassReset = (req, res, next) => {
                 user.save()
                 return res.status(403).json({err: "Token Expired!! Resend the request", success: false})
             }
-    
+            
+            // Nullifying The Temporary Values & Saving New Password
             user.verifyToken = undefined
             user.tokenExpiry = undefined
             user.encry_password =  user.securePassword(req.body.newPassword)
@@ -86,6 +88,7 @@ exports.companyPassReset = (req, res, next) => {
             if(err || !company)
                 return res.status(404).json({err: "Invalid Token!!", success: false})
             
+            // Checking If The Token Is Out Of Expiry
             if(Company.tokenExpiry < Date.now()) {
                 company.verifyToken = undefined
                 company.tokenExpiry = undefined

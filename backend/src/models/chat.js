@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Notification = new Schema({
+var Chat = new Schema({
     reciever: {
         type: String,
         required: true
@@ -13,14 +13,10 @@ var Notification = new Schema({
     msg: {
         type: String
     },
-    link: {
-        type: String
-    },
-    // For The Unread Notification Count
     isRead: {
         type: Boolean,
         default: false
     }
 }, {timestamps: true})
 
-module.exports = mongoose.model('Notification', Notification);
+module.exports = mongoose.model('Chat', Chat);
