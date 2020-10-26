@@ -58,6 +58,7 @@ const SocialLinkCard = (props) => {
             return;
         }
         setShowPopUp(false)
+        const newList = [...links]
         console.log("update started")
         const { token } = JSON.parse(localStorage.getItem("jwt"))
         var data = JSON.stringify({ title, url, index });
@@ -71,13 +72,13 @@ const SocialLinkCard = (props) => {
             },
             data: data
         };
-
+        console.log(newList)
         axios(config)
             .then(function (response) {
                 if (response.status == 200) {
-                    const newList = [...links]
                     newList.splice(index, 1, { title, url })
                     setLinks(newList)
+                    console.log(newList)
                     console.log(response.data.msg)
                 }
                 else

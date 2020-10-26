@@ -46,7 +46,15 @@ const SocailLinksPopUP = (props) => {
                                     props.createItem(item)
                                 }}>Add</button>
                             :
-                            <button type="submit" class="btn mx-auto btn-lg  mt-4 btn-block  btn-primary" onClick={() => props.updateItem(props.index, item)}>update</button>
+                            <button
+                                type="submit"
+                                class="btn mx-auto btn-lg  mt-4 btn-block  btn-primary"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    props.updateItem(item.title, item.url, props.index)
+                                }
+                                }
+                            >update</button>
                         }
                     </form>
                     <button class="btn mx-auto btn-lg  mt-4 btn-block  btn-danger" onClick={() => props.closePopUP()}>cancel</button>
