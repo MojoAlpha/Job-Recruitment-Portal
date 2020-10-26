@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import NewsFeed from "./NewsFeed";
 import MyNetwork from "./MyNetwork";
 import Profile from "./Profile";
-import JobOpeningDetail from "./components/JobOpeningDetail"
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 const navLinkActive =

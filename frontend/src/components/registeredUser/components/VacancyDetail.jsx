@@ -2,7 +2,7 @@ import React from 'react'
 import ListItemWithBtn from './ListItemWithBtn'
 import SkillPill from './SkillPill'
 
-const JobOpeningDetail = () => {
+const VacancyDetail = (props) => {
     return (
         <>
             <div className="container-fluid bg-white p-4  mb-4">
@@ -51,4 +51,4 @@ const JobOpeningDetail = () => {
     )
 }
 
-export default JobOpeningDetail
+export default VacancyDetail

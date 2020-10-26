@@ -1,10 +1,18 @@
 // Base URL :- http://localhost:8000/user/edu
 
 var express = require('express');
-var { body } = require('express-validator')
+var {
+    body
+} = require('express-validator')
 
-const { addEducationalQual, removeEducationalQual } = require('../../../services/userServices/education');
-const { errHandler } = require('../../../services/errValidator');
+const {
+    addEducationalQual,
+    removeEducationalQual,
+    updateEducationalQual
+} = require('../../../services/userServices/education');
+const {
+    errHandler
+} = require('../../../services/errValidator');
 
 var router = express.Router();
 
@@ -22,7 +30,7 @@ router.post('/', [
                 {err: "...", success: false} , if Any Error Occurs */
 router.put('/', [
     body('degree', 'insti', 'year', 'index').notEmpty().withMessage('Degree Should Be Specified!!'),
-], errHandler, )
+], errHandler, updateEducationalQual)
 
 
 /*  DELETE Route :- Removing Educational Qualifications

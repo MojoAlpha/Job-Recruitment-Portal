@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Skill from './Skill';
 import SkillPill from './SkillPill';
+import AutoSuggest from './AutoSuggest'
 
 const SkillCard = (props) => {
 
@@ -48,7 +49,7 @@ const SkillCard = (props) => {
     }
 
     const deleteItem = (index) => {
-        const newList = [...links]
+        const newList = [...skills]
         const { token } = JSON.parse(localStorage.getItem("jwt"))
         var data = JSON.stringify({ "skillId": newList[index]._id });
         var config = {
@@ -66,7 +67,7 @@ const SkillCard = (props) => {
 
                 if (response.status == 200) {
                     newList.splice(index, 1)
-                    setEducationItem(newList)
+                    setSkills(newList)
                 }
                 else
                     console.log(response.err)
@@ -91,10 +92,11 @@ const SkillCard = (props) => {
             <h3 className="text-capitalize my-3">skills</h3>
 
             <div>
-                <form className="d-flex" onSubmit={handleSubmit}>
+                {/* <form className="d-flex" onSubmit={handleSubmit}>
                     <input type="text" class="form-control w-75 mr-2" onChange={handleChange} value={currentLink} placeholder="got a new skill?add here" />
                     <button type="submit" class="btn btn-primary mb-2 w-25 btn"  >add</button>
-                </form>
+                </form> */}
+                <AutoSuggest placeholder="search skill to add" handleSubmit={addItem} />
             </div>
             <div className="d-flex flex-wrap text-justify">
                 {SkillList.length ? SkillList :
