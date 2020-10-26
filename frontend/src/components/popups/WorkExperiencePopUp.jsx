@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 
-const EducationItemPopUp = (props) => {
+const WorkExperiencePopUp = (props) => {
     // console.log(`popup item ${props.item}`)
     const [isNew, setIsNew] = useState(false)
     const [item, setItem] = useState({})
 
     useEffect(() => {
         setItem(props.item)
-        if (props.item.insti == '')
+        if (props.item.company == '')
             setIsNew(true)
         console.log(props.item)
 
@@ -30,20 +30,20 @@ const EducationItemPopUp = (props) => {
                     <h3 className="text-center my-4">{isNew ? 'create new entry' : 'update this entry'}</h3>
                     <form method="POST">
                         <div class="form-group">
-                            <label className="text-capitalize"> name of the institute</label>
-                            <input type="text" class="form-control" placeholder="enter name of your institute" name="insti" onChange={handleChange} value={item.insti} />
+                            <label className="text-capitalize"> name of the companytute</label>
+                            <input type="text" class="form-control" placeholder="enter name of your company" name="company" onChange={handleChange} value={item.company} />
                         </div>
                         <div class="form-group">
                             <label className="text-capitalize">Degree/Course</label>
-                            <input type="text" class="form-control" placeholder="enter your degree/course name (ex. btech)" name="degree" onChange={handleChange} value={item.degree} />
+                            <input type="text" class="form-control" placeholder="enter your designation" name="desig" onChange={handleChange} value={item.desig} />
                         </div>
                         <div class="form-group">
                             <label className="text-capitalize">start year</label>
-                            <input type="text" pattern="\d*" maxlength="4" class="form-control" placeholder="start year" name="year" onChange={handleChange} value={item.year} />
+                            <input type="text" pattern="\d*" maxlength="4" class="form-control" placeholder="start year" name="startYear" onChange={handleChange} value={item.startYear} />
                         </div>
                         <div class="form-group">
                             <label className="text-capitalize">end year (expected)</label>
-                            <input type="text" pattern="\d*" maxlength="4" class="form-control" placeholder="end year" name="year" onChange={handleChange} value={item.year} />
+                            <input type="text" pattern="\d*" maxlength="4" class="form-control" placeholder="end year" name="endYear" onChange={handleChange} value={item.startYear} />
 
                         </div>
                         {isNew ?
@@ -69,4 +69,4 @@ const EducationItemPopUp = (props) => {
     )
 }
 
-export default EducationItemPopUp
+export default WorkExperiencePopUp

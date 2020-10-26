@@ -108,6 +108,7 @@ export default function RegisteredUser() {
           className="col-12 col-md-9 row bg-gray px-4 pt-4"
         >
           <Profile />
+          {/* <JobOpeningDetail /> */}
           {/* <BrowserRouter>
             <Switch> */}
           <Route path="/feed" component={NewsFeed} />
