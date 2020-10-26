@@ -1,7 +1,7 @@
 var Posts = require('../../models/post')
 var User = require('../../models/user')
 
-
+// Getting All The Posts By The User OR Company
 exports.getPosts = (req, res) => {
 
     Posts.find( {owner: req.params.userId} )

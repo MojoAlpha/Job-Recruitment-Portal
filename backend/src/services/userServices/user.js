@@ -4,14 +4,36 @@ var Company = require('../../models/company')
 var Notification = require('../../models/notification')
 var mongoose = require('mongoose')
 
+exports.basicDetails = (req, res) => {
+    
+    Notification.find({ owner: req.root._id, isRead: false}, (err, notifications) => {
+        
+        req.root.unreadNotification = notifications.length
+        return res.status(200).json(req.root)
+    })
+}
+
+/* Connection Status Codes :-
+    0 - Connection
+    1 - Pending Connection Request
+    2 - Neither Of Above */
 exports.userDetails = (req, res) => {
     
     User.findById(req.params.userId, (err, user) => {
-        Notification.find({ reciever: req.params.userId, isRead: false }).count()
-        .then((unreadCount) => {
             
-            if(!user)
+        if(!user)
             return res.status(404).json({err: "User Not Found!", success: false})
+        
+        var connectionStatus
+        let isConnection = User.connections.indexOf(req.params.userId)
+        let isPending = User.connRequests.indexOf(req.params.userId)
+
+        if(isConnection >= 0)
+            connectionStatus = 0
+        else if(isPending >= 0)
+            connectionStatus = 1
+        else
+            connectionStatus = 2
         
         var skill_ids = user.skills.map((id) => {return mongoose.mongo.ObjectID(id)})
 
@@ -28,14 +50,14 @@ exports.userDetails = (req, res) => {
                 links: user.links,
                 dp: user.dp,
                 skills: skills,
-                unreadNotification: unreadCount,
-                connectionCount: user.connections.length
+                connectionCount: user.connections.length,
+                connectionStatus: connectionStatus
             })
-        })
         })
     })
 }
 
+// list of user connections & companies followed
 exports.extraUserDetails = (req, res) => {
     
     User.findById(req.params.userId, (err, user) => {
@@ -60,70 +82,15 @@ exports.extraUserDetails = (req, res) => {
     })
 }
 
+// get the notifications of logged user
 exports.getNotifications = (req, res) => {
 
     Notification.find({ reciever: req.root._id })
-    .sort({createdAt: -1})
+    .sort({updatedAt: -1})
     .then((notifications) => {
         res.status(200).json({notifications: notifications, success: true})
     }, (err) => res.status(500).json({
         err: err,
         success: false
     }))
-}
-
-exports.userConnect = (req, res) => {
-    
-    User.findById(req.root._id, (err, user1) => {
-        User.findById(req.params.userId, (err, user2) => {
-            
-            if(!user2)
-                return res.status(404).json({err: "User Not Found!", success: false})
-            
-            if(user1.connections.indexOf(user2._id.toString()) >= 0)
-                return res.status(403).json({err: "Already A Connection!!", success: false})
-            
-            user1.connections.push(user2._id)
-            user2.connections.push(user1._id)
-            user1.save()
-            .catch((err) => {
-                return res.status(500).json({err: err, success: false})
-            })
-            user2.save()
-            .catch((err) => {
-                return res.status(500).json({err: err, success: false})
-            })
-
-            return res.status(200).json({msg: "User Connected!", success: true})
-        })
-    })
-}
-
-exports.userDisconnect = (req, res) => {
-
-    User.findById(req.root._id, (err, user1) => {
-        User.findById(req.params.userId, (err, user2) => {
-            
-            if(!user2)
-            return res.status(404).json({err: "User Not Found!", success: false})
-            
-            let userInd1 = user1.connections.indexOf(user2._id.toString())
-            let userInd2 = user2.connections.indexOf(user1._id.toString())
-            if(userInd1 < 0 && userInd2 < 0)
-                return res.status(403).json({err: "User Is Not A Connection!!", success: false})
-            
-            user1.connections.splice(userInd1)
-            user2.connections.splice(userInd2)
-            user1.save()
-            .catch((err) => {
-                return res.status(500).json({err: err, success: false})
-            })
-            user2.save()
-            .catch((err) => {
-                return res.status(500).json({err: err, success: false})
-            })
-
-            return res.status(200).json({msg: "User Disconnected!", success: true})
-        })
-    })
 }

@@ -2,7 +2,10 @@ var Skill = require('../../models/skill')
 var User = require('../../models/user')
 var Company = require('../../models/company')
 
+// skill searching method
 async function searchSkill(search) {
+
+    // Building REGEX Pattern String
     let pattern = ""
     pattern = pattern + "^" + search.charAt(0)
     if(search.length > 2)
@@ -20,7 +23,10 @@ async function searchSkill(search) {
     return result
 }
 
+// user searching method
 async function searchUser(search) {
+
+    // Building REGEX Pattern String
     let pattern = ""
     pattern = pattern + "^" + search.charAt(0)
     if(search.length > 2)
@@ -37,7 +43,10 @@ async function searchUser(search) {
     return result
 }
 
+// company searching method
 async function searchCompany(search) {
+
+    // Building REGEX Pattern String
     let pattern = ""
     pattern = pattern + "^" + search.charAt(0)
     if(search.length > 2)

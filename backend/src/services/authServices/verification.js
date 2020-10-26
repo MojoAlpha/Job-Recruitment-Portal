@@ -23,7 +23,7 @@ exports.userVerification = (req, res, next) => {
                 return res.status(500).json({err: err, success: false})
             })
             
-            var token = jwt.sign({_id: user._id, type: "U"}, process.env.AUTH_KEY, {expiresIn: 604800})     // AuthToken Expires After 28 Days
+            var token = jwt.sign({_id: user._id, type: "U"}, process.env.AUTH_KEY, {expiresIn: 604800})     // In Microseconds
             return res.status(200).json({ msg: "Verification Successfull!!", success: true, token: token, type: "U"})
         })
     }

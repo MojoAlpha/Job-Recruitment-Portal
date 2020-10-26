@@ -1,6 +1,7 @@
 var Company = require('../../models/company')
 var fs = require('fs')
 
+// Updating The Details Of Company
 exports.detailUpdate = (req, res) => {
     
     Company.findById(req.root._id, (err, company) => {
@@ -25,6 +26,7 @@ exports.detailUpdate = (req, res) => {
     })
 }
 
+// Updating The Logo Of Company
 exports.logoUpdate = (req, res) => {
     
     Company.findById(req.root._id, (err, company) => {

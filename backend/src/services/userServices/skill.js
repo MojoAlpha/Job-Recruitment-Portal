@@ -1,6 +1,7 @@
 var User = require('../../models/user')
 var Skill = require('../../models/skill')
 
+// adding the skill to one's profile
 exports.addSkill = (req, res) => {
     
     User.findById(req.root._id, (error, user) => {
@@ -25,6 +26,7 @@ exports.addSkill = (req, res) => {
     })
 }
 
+// removing the skill from one's profile
 exports.removeSkill = (req, res) => {
     
     User.findById(req.root._id, (err, user) => {

@@ -2,6 +2,7 @@ var User = require('../../models/user')
 var Vacancy = require('../../models/vacancy')
 var mongoose = require('mongoose')
 
+// get applicants of a vacancy (Only For Owner Company)
 exports.getVacApplicants = (req, res) => {
     Vacancy.findById(req.params.vacancyId, (err, vacancy) => {
 
@@ -19,12 +20,13 @@ exports.getVacApplicants = (req, res) => {
     })
 }
 
+// selecting a vacancy applicant for the job
 exports.vacancySelect = (req, res, next) => {
 
     if(req.body.userId === undefined)
         return res.status(400).json({err: "Please Provide User ID", success: false})
 
-    Vacancy.findById(rq.params.vacancyId, (err, vacancy) => {
+    Vacancy.findById(req.params.vacancyId, (err, vacancy) => {
         if(err)
             return res.status(500).json({err: err, success: false})
         
@@ -39,10 +41,11 @@ exports.vacancySelect = (req, res, next) => {
             return res.status(500).json({err: err, success: false})
         })
 
-        next()
+        next()  // passing the control to notification services
     })
 }
 
+// applying in an open vacancy (Only For Users)
 exports.vacancyApply = (req, res) => {
     if(req.root.type !== "U")
         return res.status(400).json({err: "You Cannot Proceed With Application!!", success: false})
@@ -65,12 +68,14 @@ exports.vacancyApply = (req, res) => {
     })
 }
 
+// closing an open vacancy
 exports.vacancyClose = (req, res, next) => {
     
     Vacancy.findById(req.params.vacancyId, (err, vacancy) => {
         if(!vacancy)
             return res.status(404).json({err: "Vacancy Not Found!!", success: false})
-
+        
+        // giving permission only to the owner of the vacancy
         if(vacancy.owner.toString() !== req.root._id.toString())
             return res.status(401).json({err: "You Are Not Authorised To Close This Vacancy!!", success: false})
         
@@ -81,6 +86,6 @@ exports.vacancyClose = (req, res, next) => {
         })
         req.root.vacancyId = req.params.vacancyId
 
-        next()
+        next()  // passing control to notification services
     })
 }

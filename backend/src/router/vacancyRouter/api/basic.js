@@ -23,7 +23,7 @@ router.post('/', [
 router.get('/:vacancyId', getVacancy)
 
 /*  PUT Route :- Updating Existing Vacancy, Only By Owner
-    Req Body :- { title, desig, desc, requiredSkill[{ Strings }], isOpen } 
+    Req Body :- { title, desig, desc, requiredSkill[{ Strings }] } 
     Res Body :- {msg: "...", success: true} , if Sucessfully Updated
                 {err: "...", success: false} , if Any Error Occurs */
 router.put('/:vacancyId', isCompanyVerified, updateVacancy)

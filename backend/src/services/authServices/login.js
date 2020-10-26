@@ -6,10 +6,7 @@ exports.UserLogin = (req, res, next) => {
     
     User.findOne({ email: req.body.email }, (err, user) => {
         
-        if(err)
-            return res.status(500).json({ err: err, success: false })
-        
-        if(!user) {
+        if(err || !user) {
             next()
             return ;
         }
@@ -18,7 +15,7 @@ exports.UserLogin = (req, res, next) => {
             return res.status(401).json({err: "Email & Password Don't Match!!", success: false})
         }
 
-        var token = jwt.sign({_id: user._id, type: "U"}, process.env.AUTH_KEY, {expiresIn: 604800})
+        var token = jwt.sign({_id: user._id, type: "U"}, process.env.AUTH_KEY, {expiresIn: 604800})     // In Microseconds
         
         return res.status(200).json({msg: 'Login Success As A Developer!!', type: "U", success: true, token: token})
     })
@@ -28,17 +25,14 @@ exports.CompanyLogin = (req, res, next) => {
 
     Company.findOne({ email: req.body.email }, (err, company) => {
         
-        if(err)
-            return res.status(500).json({ err: err, success: false })
-        
-        if(!company)
+        if(err || !company)
             return res.status(404).json({err: "Email Not Registered!!", success: false})
         
         if(!company.authenticate(req.body.password)) {      // Authenticate Method From Comapany Model
             return res.status(401).json({err: "Emaill & Password Don't Match!!", success: false})
         }
 
-        var token = jwt.sign({_id: company._id, type: "C"}, process.env.AUTH_KEY, {expiresIn: 604800})
+        var token = jwt.sign({_id: company._id, type: "C"}, process.env.AUTH_KEY, {expiresIn: 604800})      // Jwt Token Expiry Time :- 28 days
         
         return res.status(200).json({msg: 'Login Success As A Company!!', type: "C", success: true, token: token})
     })

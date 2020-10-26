@@ -2,6 +2,7 @@ var Company = require('../../models/company')
 var Notification = require('../../models/notification')
 const Vacancy = require('../../models/vacancy')
 
+// Generating A Notification For All The Users Following A Company After A Post
 exports.postVacancyNotify = (req, res) => {
     
     Company.findById(req.root._id, (err, company) => {
@@ -25,6 +26,7 @@ exports.postVacancyNotify = (req, res) => {
     })
 }
 
+// Notification For The Selected User In A Vacancy
 exports.selectedNotify = (req, res) => {
 
     var newNotify = new Notification({
@@ -42,6 +44,7 @@ exports.selectedNotify = (req, res) => {
     return res.status(200).json({msg: "User Selected!!", success: true})
 }
 
+// Notification After A Vacancy Is Closed
 exports.closeNotify = (req, res) => {
     
     Vacancy.findById(req.root.vacancyId, (err, vacancy) => {

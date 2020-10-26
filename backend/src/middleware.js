@@ -3,12 +3,14 @@ var expressJwt = require('express-jwt')
 var User = require('./models/user')
 var Company = require('./models/company')
 
+// To Check The Validity Of Jwt Token
 exports.isSignedIn = expressJwt({
     secret: process.env.AUTH_KEY,
     algorithms: ['HS256'],
     userProperty: "auth"
 })
 
+// Check For A Verified User OR Company
 exports.isVerified = (req, res, next) => {
     User.findById(req.auth._id, (err, user) => {
         Company.findById(req.auth._id, (err, company) => {
@@ -45,6 +47,7 @@ exports.isVerified = (req, res, next) => {
     })
 }
 
+// Check For The Company To Be Admin Verified To Post Vacancies
 exports.isCompanyVerified = (req, res, next) => {
     if(req.root.type !== "C") {
         return res.status(401).json({err: "Not Authorized!!", success: false})

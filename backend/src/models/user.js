@@ -14,9 +14,6 @@ var User = new Schema({
     bio: {
         type: String
     },
-    education: [{
-        type: Object
-    }],
     addr: {
         type: String
     },
@@ -30,15 +27,23 @@ var User = new Schema({
     links: [{
         type: Object
     }],
+    education: [{
+        type: Object
+    }],
+    exp: [{
+        type: Object
+    }],
     followed: [{
         type: String
     }],
     skills: [{
         type: String
     }],
+    // Pending Requests
     connRequests: [{
         type: String
     }],
+    // Accepted Requests
     connections: [{
         type: String
     }],

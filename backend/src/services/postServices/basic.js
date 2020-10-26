@@ -1,6 +1,7 @@
 var Posts = require('../../models/post');
 const User = require('../../models/user');
 
+// Creating A Post
 exports.createPost = (req, res) => {
 
     var newPost = new Posts({
@@ -8,8 +9,11 @@ exports.createPost = (req, res) => {
         type: req.root.type,
         desc: req.body.desc,
         links: req.body.links,
-        postImg: req.file.path
     })
+
+    // Saving Post Image Field Only If Image Is Given
+    if(req.file !== undefined)
+        newPost.postImg=req.file.path
 
     newPost.save()
     .catch((err) => {
@@ -19,6 +23,7 @@ exports.createPost = (req, res) => {
     return res.status(200).json({msg: "Successfully Posted", success: true})
 }
 
+// Updating A Post
 exports.updatePost = (req, res) => {
     
     Posts.find( {_id: req.params.postId}, (err, post) => {
@@ -44,12 +49,14 @@ exports.updatePost = (req, res) => {
     })
 }
 
+// Deleting A Post
 exports.deletePost = (req, res) => {
 
     Posts.find( {_id: req.params.postId}, (err, post) => {
         if(err || !post)
             return res.status(404).json({err: "Post Not Found!!", success: false})
         
+        // Check For The Owner & Person Firing The Request
         if(post.owner === req.root._id)
             return res.status(401).json({err: "Unauthorised To Update This Post!", success: false})
         
