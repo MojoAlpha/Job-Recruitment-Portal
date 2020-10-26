@@ -63,30 +63,31 @@ const EducationCard = props => {
         const { token } = JSON.parse(localStorage.getItem("jwt"))
         var data = JSON.stringify({ ...item, index });
         console.log(data)
-        // var config = {
-        //     method: 'put',
-        //     url: 'http://localhost:8000/user/me/edu',
-        //     headers: {
-        //         'Authorization': `Bearer ${token}`,
-        //         'Content-Type': 'application/json'
-        //     },
-        //     data: data
-        // };
-
-        // axios(config)
-        //     .then(function (response) {
-        //         if (response.status == 200) {
-        //             newList.splice(index, 1, item)
-        //             setEducationItem(newList)
-        //             console.log(response.data.msg)
-        //         }
-        //         else
-        //             console.log(response.data.err)
-        //     })
-        //     .catch(function (error) {
-        //         if (error.message === 'Network Error')
-        //             alert("internet lgwa le garib aadmi")
-        //     });
+        var config = {
+            method: 'put',
+            url: 'http://localhost:8000/user/me/edu',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            data: data
+        };
+        console.log("about to fire api")
+        axios(config)
+            .then(function (response) {
+                if (response.status == 200) {
+                    newList.splice(index, 1, item)
+                    setEducationItem(newList)
+                    console.log(response.data.msg)
+                    setShowPopUp(false)
+                }
+                else
+                    console.log(response.data.err)
+            })
+            .catch(function (error) {
+                if (error.message === 'Network Error')
+                    alert("internet lgwa le garib aadmi")
+            });
 
     }
     const deleteItem = (index) => {
