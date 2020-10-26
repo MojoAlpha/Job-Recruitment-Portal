@@ -1,10 +1,18 @@
 // Base URL :- http://localhost:8000/user/edu
 
 var express = require('express');
-var { body } = require('express-validator')
+var {
+    body
+} = require('express-validator')
 
-const { addEducationalQual, removeEducationalQual, updateEducationalQual } = require('../../../services/userServices/education');
-const { errHandler } = require('../../../services/errValidator');
+const {
+    addEducationalQual,
+    removeEducationalQual,
+    updateEducationalQual
+} = require('../../../services/userServices/education');
+const {
+    errHandler
+} = require('../../../services/errValidator');
 
 var router = express.Router();
 

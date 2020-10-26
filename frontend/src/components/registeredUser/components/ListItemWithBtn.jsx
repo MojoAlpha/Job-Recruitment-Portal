@@ -9,7 +9,7 @@ import React from 'react'
  */
 const ListItemWithBtn = (props) => {
     return (
-        <div className="container">
+        <div className="container my-2">
             <div className="px-3 py-2 d-flex flex-column flex-sm-row align-items-center col col-xl-10 shadow-sm border">
                 <div className="d-flex  p-2 flex-grow-1">
                     <img

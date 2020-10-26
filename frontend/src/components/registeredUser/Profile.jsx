@@ -3,6 +3,7 @@ import SkillCard from './components/SkillCard'
 import { tokenAxios } from '../api'
 import SocialLinkCard from './components/SocialLinkCard';
 import EducationCard from './components/EducationCard';
+import VacancyCard from './components/VacancyCard';
 const Profile = () => {
 
 
@@ -31,7 +32,9 @@ const Profile = () => {
             }).catch((error) => console.log(error))
 
     }, [])
-
+    const getUserDetails = () => {
+        return userFullDetails.dp
+    }
     const getSkills = () => {
         return userFullDetails.skills
     }
@@ -41,6 +44,13 @@ const Profile = () => {
     const getEducation = () => {
         return userFullDetails.education
     }
+    // const userDpUrl = getUserDetails()
+    // console.log(userDpUrl)
+    // const userDpName = userDpUrl.split('/').pop()
+    const getDpName = (url) => {
+        console.log(url.split("\\"))
+        return url.split('\\').pop()
+    }
 
     return (
         isLoading ?
@@ -49,7 +59,7 @@ const Profile = () => {
             (<>
                 <div className="container-fluid bg-white p-4  mb-4 shadow rounded">
                     <div className="d-flex flex-column flex-sm-row">
-                        <div className="rounded-circle align-self-center mx-2 mx-xl-5" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/testimonial.jpg)`, backgroundSize: 'cover', height: '20vh', width: '20vh' }}>
+                        <div className="rounded-circle align-self-center mx-2 mx-xl-5" style={{ backgroundImage: `url("http://localhost:8000/dp/${getDpName(userFullDetails.dp)}")`, backgroundSize: 'cover', height: '20vh', width: '20vh' }}>
                         </div>
                         <div className="mx-4 d-flex justify-content-between flex-column">
                             <h2>{userFullDetails.name}</h2>
@@ -59,6 +69,7 @@ const Profile = () => {
                             developer<br />
                             Nitian<br /> */}
                             </pre>
+                            <p><strong>connections:</strong> {userFullDetails.connectionCount}</p>
                             <div className="d-flex">
                                 <button className="btn btn-outline-primary">connect</button>
                             </div>
@@ -78,6 +89,11 @@ const Profile = () => {
                     {/* {console.log(userFullDetails.skills)} */}
                     {/* {!isLoading && <EducationCard details={getEducation} isLoading={isLoading} />} */}
                     <EducationCard details={getEducation} />
+                </div>
+                <div className="col-12 ">
+                    {/* {console.log(userFullDetails.skills)} */}
+                    {/* {!isLoading && <EducationCard details={getEducation} isLoading={isLoading} />} */}
+                    <VacancyCard details={getEducation} />
                 </div>
             </>)
 
