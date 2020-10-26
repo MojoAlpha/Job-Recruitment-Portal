@@ -22,15 +22,18 @@ exports.updateExperience = (req, res) => {
         if(err)
             return res.status(500).json({err: err, success: false})
 
-        user.education[req.body.index].degree = req.body.degree
-        user.education[req.body.index].insti = req.body.insti
-        user.education[req.body.index].year = req.body.year
+        user.exp.splice(req.body.index, 1, {
+            desig: req.body.desig,
+            company: req.body.company,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate
+        })
         user.save()
         .catch((err) => {
             return res.status(500).json({err: err, success: false})
         })
 
-        return res.status(200).json({msg: "Educational Qualification Updated!!", success: true})
+        return res.status(200).json({msg: "Working Experience Updated!!", success: true})
     })
 }
 
@@ -40,18 +43,12 @@ exports.removeExperience = (req, res) => {
         if(err)
             return res.status(500).json({err: err, success: false})
 
-        for(let i = 0; i < user.education.length; ++i) {
-            if(user.education[i].degree === req.body.degree && user.education[i].insti === req.body.insti && user.education[i].year === req.body.year) {
-                user.education.splice(i, 1);
-                break;
-            }   
-        }
-
+        user.exp.splice(req.body.index, 1)
         user.save()
         .catch((err) => {
             return res.status(500).json({err: err, success: false})
         })
 
-        return res.status(200).json({msg: "Educational Qualification Removed!!", success: true})
+        return res.status(200).json({msg: "Working Experience Removed!!", success: true})
     })
 }

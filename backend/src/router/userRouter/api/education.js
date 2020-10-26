@@ -1,4 +1,4 @@
-// Base URL :- http://localhost:8000/user/edu
+// Base URL :- http://localhost:8000/user/me/edu
 
 var express = require('express');
 var { body } = require('express-validator')
@@ -26,7 +26,7 @@ router.put('/', [
 
 
 /*  DELETE Route :- Removing Educational Qualifications
-    Req Body :- {degree: "...", insti: "...", year: "..."}
+    Req Body :- {"index": 0,1...}
     Res Body :- {msg: "...", success: true} , if Sucessfully Removed
                 {err: "...", success: false} , if Any Error Occurs */
 router.delete('/', [

@@ -22,8 +22,7 @@ exports.updateLink = (req, res) => {
         if(err)
             return res.status(500).json({err: err, success: false})
         
-        user.links[req.body.index].title = req.body.title
-        user.links[req.body.index].url = req.body.url 
+        user.links.splice(req.body.index, 1, {title: req.body.title, url: req.body.url})
         user.save()
         .catch((err) => {
             return res.status(500).json({err: err, success: false})
@@ -39,12 +38,7 @@ exports.removeLink = (req, res) => {
         if(err)
             return res.status(500).json({err: err, success: false})
         
-        for(let i = 0; i < user.links.length; ++i) {
-            if(user.links[i].title === req.body.title && user.links[i].url === req.body.url) {
-                user.links.splice(i, 1);
-                break;
-            }
-        }
+        user.links.splice(req.body.index, 1)
         user.save()
         .catch((err) => {
             return res.status(500).json({err: err, success: false})

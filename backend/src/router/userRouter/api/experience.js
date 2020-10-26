@@ -17,7 +17,7 @@ router.post('/', [
 ], errHandler, addExperience)
 
 /*  PUT Route :- Updating Educational Qualifications
-    Req Body :- {desig: "...", company: "...", startDate: "...", "index": 0,1...} 
+    Req Body :- {desig: "...", company: "...", startDate: "...", endDate: "...", "index": 0,1...} 
     Res Body :- {msg: "...", success: true} , if Sucessfully Updated
                 {err: "...", success: false} , if Any Error Occurs */
 router.put('/', [
@@ -26,7 +26,7 @@ router.put('/', [
 
 
 /*  DELETE Route :- Removing Educational Qualifications
-    Req Body :- {desig: "...", company: "...", startDate: "...", endDate: "..."}
+    Req Body :- {index: 0,1...}
     Res Body :- {msg: "...", success: true} , if Sucessfully Removed
                 {err: "...", success: false} , if Any Error Occurs */
 router.delete('/', [

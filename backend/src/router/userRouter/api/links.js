@@ -25,7 +25,7 @@ router.put('/', [
 ], errHandler, updateLink)
 
 /*  DELETE Route :- Removing Unwanted Links
-    Req Body :- {title: "...", url: "..."}
+    Req Body :- {"index": 0,1...}
     Res Body :- {msg: "...", success: true} , if Sucessfully Removed
                 {err: "...", success: false} , if Any Error Occurs */
 router.delete('/', [

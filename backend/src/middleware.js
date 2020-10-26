@@ -3,6 +3,9 @@ var expressJwt = require('express-jwt')
 var User = require('./models/user')
 var Company = require('./models/company')
 
+var mongoose = require('mongoose')
+const db = mongoose.connection
+
 // To Check The Validity Of Jwt Token
 exports.isSignedIn = expressJwt({
     secret: process.env.AUTH_KEY,
@@ -14,9 +17,6 @@ exports.isSignedIn = expressJwt({
 exports.isVerified = (req, res, next) => {
     User.findById(req.auth._id, (err, user) => {
         Company.findById(req.auth._id, (err, company) => {
-            
-            if(!user && !company)
-                return res.status(401).json({err: "Not Registered!!", success: false})
             
             if(user) {
                 if(user.isVerified === false)
@@ -45,6 +45,20 @@ exports.isVerified = (req, res, next) => {
             }
         })
     })
+
+    db.collection("admin").findOne({_id: mongoose.mongo.ObjectID(req.auth._id)}, (err, admin) => {
+
+        if(err || !admin) 
+            return res.status(404).json({err: "User Not Registered!!", success: false})
+
+        req.root = new Object({
+            type: "A",
+            _id: admin._id,
+            usernmae: admin.username
+        })
+
+        next()
+    })
 }
 
 // Check For The Company To Be Admin Verified To Post Vacancies
@@ -61,4 +75,12 @@ exports.isCompanyVerified = (req, res, next) => {
     
         next()
     })
+}
+
+exports.isAdmin = (req, res, next) => {
+
+    if(req.root.type !== "A")
+        return res.status(401).json({err: "Not Authorised!", success: false})
+    
+    next()
 }

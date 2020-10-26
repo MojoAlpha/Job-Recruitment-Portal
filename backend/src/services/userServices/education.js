@@ -22,9 +22,11 @@ exports.updateEducationalQual = (req, res) => {
         if(err)
             return res.status(500).json({err: err, success: false})
 
-        user.education[req.body.index].degree = req.body.degree
-        user.education[req.body.index].insti = req.body.insti
-        user.education[req.body.index].year = req.body.year
+        user.education.splice(req.body.index, 1, {
+            degree: req.body.degree,
+            insti: req.body.insti,
+            year: req.body.year
+        })
         user.save()
         .catch((err) => {
             return res.status(500).json({err: err, success: false})
@@ -40,13 +42,7 @@ exports.removeEducationalQual = (req, res) => {
         if(err)
             return res.status(500).json({err: err, success: false})
 
-        for(let i = 0; i < user.education.length; ++i) {
-            if(user.education[i].degree === req.body.degree && user.education[i].insti === req.body.insti && user.education[i].year === req.body.year) {
-                user.education.splice(i, 1);
-                break;
-            }   
-        }
-
+        user.education.splice(req.body.index, 1)
         user.save()
         .catch((err) => {
             return res.status(500).json({err: err, success: false})
