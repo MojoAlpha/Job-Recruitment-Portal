@@ -49,6 +49,8 @@ const SkillCard = (props) => {
     }
 
     const deleteItem = (index) => {
+        alert("called 2")
+        console.log("delete item called")
         const newList = [...skills]
         const { token } = JSON.parse(localStorage.getItem("jwt"))
         var data = JSON.stringify({ "skillId": newList[index]._id });

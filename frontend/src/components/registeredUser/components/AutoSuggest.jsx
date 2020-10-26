@@ -40,11 +40,12 @@ const AutoSuggest = (props) => {
         //13 means enter
         if (e.keyCode === 13) {
             console.log("hitted enter")
-            props.handleSubmit(selectedItem)
             setShowSuggestion(false)
             setActiveOption(-1)
-            //todo:call this function when all set to submit -> props.handleSubmit(selectedItem)
+            setUserInput('')
+            props.handleSubmit(selectedItem)
         }//38 means up arrow key
+        // todo:up and down arrow key in autosuggest now workingproperly
         else if (e.keyCode === 38) {
             //if already on first selection
             if (activeOption === 0) {
