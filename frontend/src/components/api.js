@@ -1,17 +1,14 @@
 import axios from "axios";
-const {
-    token
-} = JSON.parse(localStorage.getItem("jwt"))
+const { token } = JSON.parse(localStorage.getItem("jwt"));
 //use this name if u need to call with authorisation header
 //then no need to pass anything
 export const tokenAxios = axios.create({
-    baseURL: `http://localhost:8000`,
-    headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-    },
-
-})
+  baseURL: `http://localhost:8000`,
+  headers: {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  },
+});
 export const basicAxios = axios.create({
-    baseURL: `http://localhost:8000`,
-})
+  baseURL: `http://localhost:8000`,
+});
