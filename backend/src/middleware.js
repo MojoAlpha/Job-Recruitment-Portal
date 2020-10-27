@@ -30,8 +30,7 @@ exports.isVerified = (req, res, next) => {
                 })
                 next()
             }
-
-            if(company) {
+            else if(company) {
                 if(company.isVerified === false)
                     return res.status(403).json({err: "Not Verified!!", success: false})
                 req.root = new Object({
@@ -43,21 +42,22 @@ exports.isVerified = (req, res, next) => {
                 })
                 next()
             }
+            else {
+                db.collection("admin").findOne({_id: mongoose.mongo.ObjectID(req.auth._id)}, (err, admin) => {
+
+                    if(err || !admin) 
+                        return res.status(404).json({err: "User Not Registered!!", success: false})
+            
+                    req.root = new Object({
+                        type: "A",
+                        _id: admin._id,
+                        usernmae: admin.username
+                    })
+            
+                    next()
+                })
+            }
         })
-    })
-
-    db.collection("admin").findOne({_id: mongoose.mongo.ObjectID(req.auth._id)}, (err, admin) => {
-
-        if(err || !admin) 
-            return res.status(404).json({err: "User Not Registered!!", success: false})
-
-        req.root = new Object({
-            type: "A",
-            _id: admin._id,
-            usernmae: admin.username
-        })
-
-        next()
     })
 }
 

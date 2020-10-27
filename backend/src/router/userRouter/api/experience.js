@@ -1,4 +1,4 @@
-// Base URL :- http://localhost:8000/user/exp
+// Base URL :- http://localhost:8000/user/me/exp
 
 var express = require('express');
 var { body } = require('express-validator')

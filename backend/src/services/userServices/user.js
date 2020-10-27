@@ -88,7 +88,14 @@ exports.getNotifications = (req, res) => {
     Notification.find({ reciever: req.root._id })
     .sort({updatedAt: -1})
     .then((notifications) => {
+
         res.status(200).json({notifications: notifications, success: true})
+        Notification.updateMany({ reciever: req.root._id, isRead: false }, { isRead: true }, { "multi": true })
+        .catch((err) => {
+            console.log(err)
+            res.status(500).json({err: "Cannot Update isRead Status Of Notifications!", success: true})
+        })
+
     }, (err) => res.status(500).json({
         err: err,
         success: false
