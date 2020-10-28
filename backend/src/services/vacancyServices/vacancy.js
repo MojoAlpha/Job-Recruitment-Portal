@@ -2,6 +2,17 @@ var User = require('../../models/user')
 var Vacancy = require('../../models/vacancy')
 var mongoose = require('mongoose')
 
+exports.getCompanyVacancy = (req, res) => {
+
+    Vacancy.find({owner: req.params.companyId}, {title: 1, isOpen: 1})
+    .sort({createdAt: -1})
+    .then((vacancyList) => {
+        return res.status(200).json({vacancies: vacancyList, success: true})
+    }, (err) => {
+        return res.status(500).json({err: err, success: false})
+    })
+}
+
 // get applicants of a vacancy (Only For Owner Company)
 exports.getVacApplicants = (req, res) => {
     Vacancy.findById(req.params.vacancyId, (err, vacancy) => {

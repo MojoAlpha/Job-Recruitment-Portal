@@ -4,10 +4,12 @@ var express = require('express')
 var { isCompanyVerified} = require('../../../middleware')
 
 const { selectedNotify, closeNotify } = require('../../../services/NotfiyServices/vacancyNotify')
-const { getVacApplicants, vacancyApply, vacancyClose, vacancySelect,  } = require('../../../services/vacancyServices/vacancy')
+const { getVacApplicants, vacancyApply, vacancyClose, vacancySelect, getCompanyVacancy,  } = require('../../../services/vacancyServices/vacancy')
 
 
 var router = express.Router()
+
+router.get('/company/:companyId', getCompanyVacancy)
 
 /*  GET Route :- To Get The List Of Applicants In A Vacancy, Only Company is Authorized
     Res Body :- {applicantsList, success: true} , if Sucessfully Created

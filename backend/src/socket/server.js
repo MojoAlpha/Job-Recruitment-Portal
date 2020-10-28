@@ -1,6 +1,5 @@
 var socketio = require('socket.io');
 const {addUser, removeUser, getUser} = require('./connection');
-const { sendMessage } = require('./message');
 var Chat = require('../models/chat');
 
 /*
