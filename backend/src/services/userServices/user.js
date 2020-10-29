@@ -45,28 +45,6 @@ exports.userDetails = (req, res) => {
             return mongoose.mongo.ObjectID(id)
         })
 
-        Skill.find({
-                _id: {
-                    $in: skill_ids
-                }
-            })
-            .then((skills) => {
-                return res.status(200).json({
-                    type: "U",
-                    name: user.name,
-                    email: user.email,
-                    bio: user.bio,
-                    addr: user.addr,
-                    phone: user.phone,
-                    education: user.education,
-                    links: user.links,
-                    dp: user.dp,
-                    skills: skills,
-                    connectionCount: user.connections.length,
-                    followedCount: user.followed.length,
-                    connectionStatus: connectionStatus
-                })
-            })
 
         Skill.find({
                 _id: {

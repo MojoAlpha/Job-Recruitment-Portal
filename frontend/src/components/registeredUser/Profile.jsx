@@ -127,10 +127,12 @@ const Profile = (props) => {
 
 
 
-    const posts = postData.posts
-    const owner = postData.user
+    // const posts = postData.posts
+    // // const owner = postData.user
 
-    const postList = posts && posts.map(post => <Post owner={owner} post={post} getImageName={getImageName} />)
+    const { posts, name, pic } = postData
+
+    const postList = posts && posts.map(post => <Post owner={{ name: name, dp: pic }} post={post} getImageName={getImageName} />)
     return (
         isLoading ?
             'loading...'
