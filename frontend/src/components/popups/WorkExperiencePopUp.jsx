@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 const WorkExperiencePopUp = (props) => {
-    // console.log(`popup item ${props.item}`)
+    console.log(props)
     const [isNew, setIsNew] = useState(false)
     const [item, setItem] = useState({})
 
@@ -30,20 +30,21 @@ const WorkExperiencePopUp = (props) => {
                     <h3 className="text-center my-4">{isNew ? 'create new entry' : 'update this entry'}</h3>
                     <form method="POST">
                         <div class="form-group">
-                            <label className="text-capitalize"> name of the companytute</label>
+                            <label className="text-capitalize"> name of the company</label>
                             <input type="text" class="form-control" placeholder="enter name of your company" name="company" onChange={handleChange} value={item.company} />
                         </div>
                         <div class="form-group">
-                            <label className="text-capitalize">Degree/Course</label>
+                            <label className="text-capitalize">Designation</label>
                             <input type="text" class="form-control" placeholder="enter your designation" name="desig" onChange={handleChange} value={item.desig} />
                         </div>
+                        {/* todo: regex validation is not working properly */}
                         <div class="form-group">
                             <label className="text-capitalize">start year</label>
-                            <input type="text" pattern="\d*" maxlength="4" class="form-control" placeholder="start year" name="startYear" onChange={handleChange} value={item.startYear} />
+                            <input type="text" pattern="^(((0)[0-9])|((1)[0-2]))(\/)\d{4}$" maxlength="7" class="form-control" placeholder="start year" name="startDate" onChange={handleChange} value={item.startDate} />
                         </div>
                         <div class="form-group">
                             <label className="text-capitalize">end year (expected)</label>
-                            <input type="text" pattern="\d*" maxlength="4" class="form-control" placeholder="end year" name="endYear" onChange={handleChange} value={item.startYear} />
+                            <input type="text" pattern="^(((0)[0-9])|((1)[0-2]))(\/)\d{4}$" maxlength="7" class="form-control" placeholder="end year" name="endDate" onChange={handleChange} value={item.endDate} />
 
                         </div>
                         {isNew ?
@@ -51,7 +52,7 @@ const WorkExperiencePopUp = (props) => {
                                 type="submit"
                                 class="btn mx-auto btn-lg  mt-4 btn-block  btn-primary"
                                 onClick={(e) => {
-                                    e.preventDefault()
+
                                     props.createItem(item)
                                 }}>Add</button>
                             :

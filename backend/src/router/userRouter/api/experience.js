@@ -1,10 +1,18 @@
-// Base URL :- http://localhost:8000/user/exp
+// Base URL :- http://localhost:8000/user/me/exp
 
 var express = require('express');
-var { body } = require('express-validator')
+var {
+    body
+} = require('express-validator')
 
-const { errHandler } = require('../../../services/errValidator');
-const { addExperience, updateExperience, removeExperience } = require('../../../services/userServices/experience');
+const {
+    errHandler
+} = require('../../../services/errValidator');
+const {
+    addExperience,
+    updateExperience,
+    removeExperience
+} = require('../../../services/userServices/experience');
 
 var router = express.Router();
 
@@ -29,8 +37,6 @@ router.put('/', [
     Req Body :- {index: 0,1...}
     Res Body :- {msg: "...", success: true} , if Sucessfully Removed
                 {err: "...", success: false} , if Any Error Occurs */
-router.delete('/', [
-    body('desig', 'company', 'startDate', 'endDate').notEmpty().withMessage('Fields Should Be Specified!!'),
-], errHandler, removeExperience)
+router.delete('/', removeExperience)
 
 module.exports = router;

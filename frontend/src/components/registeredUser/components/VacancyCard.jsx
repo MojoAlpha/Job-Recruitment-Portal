@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ListItemWithBtn from './ListItemWithBtn'
 
-const VacancyCard = () => {
+const VacancyCard = (props) => {
 
     const [vacancies, setVacancies] = useState({})
 
@@ -11,7 +11,7 @@ const VacancyCard = () => {
         <div className="px-4 border bg-white shadow mb-4">
             <div className="d-flex align-items-center">
                 <h3 className="text-capitalize my-3 flex-grow-1">job openings</h3>
-                <button type="submit" class="btn btn-primary mb-2 w-25 btn" >add</button>
+                {props.setShowEditControls && <button type="submit" class="btn btn-primary mb-2 w-25 btn" >add</button>}
             </div>
             <ListItemWithBtn text="job title" btnText="view" />
             <ListItemWithBtn text="job title" btnText="view" />

@@ -49,7 +49,6 @@ const SkillCard = (props) => {
     }
 
     const deleteItem = (index) => {
-        alert("called 2")
         console.log("delete item called")
         const newList = [...skills]
         const { token } = JSON.parse(localStorage.getItem("jwt"))
@@ -86,7 +85,7 @@ const SkillCard = (props) => {
 
 
 
-    const SkillList = skills.map((skill, index) => <SkillPill className="flex-fill" item={skill} index={index} deleteItem={deleteItem} />)
+    const SkillList = skills.map((skill, index) => <SkillPill className="flex-fill" item={skill} index={index} deleteItem={deleteItem} showEditControls={props.showEditControls} />)
     // < Skill text = { link.name } index = { link.id } handleDelete = { handleDelete } />
     return (
 
@@ -98,7 +97,7 @@ const SkillCard = (props) => {
                     <input type="text" class="form-control w-75 mr-2" onChange={handleChange} value={currentLink} placeholder="got a new skill?add here" />
                     <button type="submit" class="btn btn-primary mb-2 w-25 btn"  >add</button>
                 </form> */}
-                <AutoSuggest placeholder="search skill to add" handleSubmit={addItem} />
+                {props.showEditControls && <AutoSuggest placeholder="search skill to add" handleSubmit={addItem} />}
             </div>
             <div className="d-flex flex-wrap text-justify">
                 {SkillList.length ? SkillList :

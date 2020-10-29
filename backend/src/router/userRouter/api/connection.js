@@ -1,8 +1,15 @@
 // Base URL :- http://localhost:8000/user/connect
 
 var express = require('express')
-const { connectionReq } = require('../../../services/NotfiyServices/userNotify')
-const { sendConnectReq, acceptConnectReq, declineConnectReq, deleteConnection } = require('../../../services/userServices/connection')
+const {
+    connectionReq
+} = require('../../../services/NotfiyServices/userNotify')
+const {
+    sendConnectReq,
+    acceptConnectReq,
+    declineConnectReq,
+    deleteConnection
+} = require('../../../services/userServices/connection')
 
 var router = express.Router()
 

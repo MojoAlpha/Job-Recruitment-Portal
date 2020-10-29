@@ -1,5 +1,9 @@
 import axios from "axios";
-const { token } = JSON.parse(localStorage.getItem("jwt"));
+let token = null;
+if (localStorage.getItem("jwt")) {
+  token = JSON.parse(localStorage.getItem("jwt")).token;
+}
+
 //use this name if u need to call with authorisation header
 //then no need to pass anything
 export const tokenAxios = axios.create({

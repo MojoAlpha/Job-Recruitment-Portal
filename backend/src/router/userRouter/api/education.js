@@ -37,8 +37,6 @@ router.put('/', [
     Req Body :- {"index": 0,1...}
     Res Body :- {msg: "...", success: true} , if Sucessfully Removed
                 {err: "...", success: false} , if Any Error Occurs */
-router.delete('/', [
-    body('degree', 'insti', 'year').notEmpty().withMessage('Degree Should Be Specified!!'),
-], errHandler, removeEducationalQual)
+router.delete('/', removeEducationalQual)
 
 module.exports = router;

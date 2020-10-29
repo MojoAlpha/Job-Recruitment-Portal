@@ -94,7 +94,7 @@ const SocialLinkCard = (props) => {
         console.log(`clicked ${index}`)
         const newList = [...links]
         const { token } = JSON.parse(localStorage.getItem("jwt"))
-        var data = JSON.stringify(newList[index]);
+        var data = JSON.stringify({ index });
         var config = {
             method: 'delete',
             url: 'http://localhost:8000/user/me/link',
@@ -104,15 +104,15 @@ const SocialLinkCard = (props) => {
             },
             data: data
         };
+        console.log(`data to be deleted`)
+        console.log(data)
 
         axios(config)
             .then(function (response) {
 
                 if (response.status == 200) {
-                    console.log(`old list ${links.title}`)
                     newList.splice(index, 1)
                     setLinks(newList)
-                    console.log(`new list list ${links.title}`)
                     console.log(response.data.msg)
                 }
                 else
@@ -135,13 +135,13 @@ const SocialLinkCard = (props) => {
 
 
 
-    const SocialLinkList = links.map((link, index) => <SocialLink name={link.title} url={link.url} index={index} handleDelete={handleDelete} handleUpdate={handleUpdate} showPopUPWithItem={showPopUPWithItem} />)
+    const SocialLinkList = links.map((link, index) => <SocialLink name={link.title} url={link.url} index={index} handleDelete={handleDelete} handleUpdate={handleUpdate} showPopUPWithItem={showPopUPWithItem} showEditControls={props.showEditControls} />)
     return (
 
         <div className="px-4 mb-4 border bg-white shadow">
             <div className="d-flex align-items-center">
                 <h3 className="text-capitalize my-3 flex-grow-1">stay connected</h3>
-                <button type="submit" class="btn btn-primary mb-2 w-25 btn" onClick={() => showPopUPWithItem({ title: '', url: '' })}  >add</button>
+                {props.showEditControls && <button type="submit" class="btn btn-primary mb-2 w-25 btn" onClick={() => showPopUPWithItem({ title: '', url: '' })}  >add</button>}
             </div>
             {/* rendering out all the links of the user */}
             {SocialLinkList.length ? SocialLinkList :

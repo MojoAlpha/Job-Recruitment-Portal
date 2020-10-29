@@ -107,7 +107,7 @@ export default function RegisteredUser() {
         <div id="registered-user-container"
           className="col-12 col-md-9 row bg-gray px-4 pt-4"
         >
-          <Profile />
+          <Profile id="5f918463b09fd12f48e0dc38" type="U" />
           {/* <JobOpeningDetail /> */}
           {/* <BrowserRouter>
             <Switch> */}
