@@ -4,16 +4,9 @@ var jwt = require('jsonwebtoken')
 exports.adminLogin = (req, res) => {
     
     const dbo = mongoose.connection
-    dbo.collection("admin").findOne({username: req.body.username})
-    .then((admin) => {
-        console.log(admin)
-    }, (err) =>  console.log(err))
 
     dbo.collection("admin").findOne({username: req.body.username}, (err, admin) => {
 
-        console.log(req.body)
-        console.log(err)
-        console.log(admin)
         if(err || !admin)
             return res.status(404).json({err: "Admin User Does Not Exists!", success: false})
         

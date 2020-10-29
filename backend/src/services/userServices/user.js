@@ -24,9 +24,9 @@ exports.userDetails = (req, res) => {
         if(!user)
             return res.status(404).json({err: "User Not Found!", success: false})
         
-        var connectionStatus
-        let isConnection = user.connections.indexOf(req.params.userId)
-        let isPending = user.connRequests.indexOf(req.params.userId)
+        var connectionStatus = -1
+        let isConnection = user.connections.indexOf(req.root._id)
+        let isPending = user.connRequests.indexOf(req.root._id)
 
         if(isConnection >= 0)
             connectionStatus = 0
@@ -51,6 +51,7 @@ exports.userDetails = (req, res) => {
                 dp: user.dp,
                 skills: skills,
                 connectionCount: user.connections.length,
+                followedCount: user.followed.length,
                 connectionStatus: connectionStatus
             })
         })

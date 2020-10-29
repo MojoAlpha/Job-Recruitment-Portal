@@ -12,7 +12,6 @@ var router = express.Router()
 router.post('/:userId', sendConnectReq, connectionReq)
 
 /*  DELETE Route :- Delete A Connection
-    Req Body :- {userId}
     Res Body :- {msg: ..., success: true} , if Successfully Followed
              :- {err: ..., success: false} , if Any Error Occurs */
 router.delete('/:userId', deleteConnection)

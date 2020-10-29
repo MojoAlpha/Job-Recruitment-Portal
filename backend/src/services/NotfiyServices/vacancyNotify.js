@@ -13,7 +13,7 @@ exports.postVacancyNotify = (req, res) => {
                 reciever: userId,
                 sender: req.root._id,
                 msg: "A New Job Has Been Posted You Might Want To Have A Look!!",
-                link: `${process.env.HOST}/vacancy/`
+                link: `${process.env.HOST}/vacancy/${req.root.vacancyId}`
             }))
         })
 
@@ -54,7 +54,7 @@ exports.closeNotify = (req, res) => {
                 reciever: id,
                 from: req.root._id,
                 msg: "The Vacancy Has Been Closed. Visit To Know More!!",
-                link: `${process.env.HOST}/vacancy/`
+                link: `${process.env.HOST}/vacancy/${req.root.vacancyId}`
             }))
         })
 

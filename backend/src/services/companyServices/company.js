@@ -6,7 +6,7 @@ var User = require('../../models/user')
     1 - Company Not Followed */
 exports.companyDetails = (req, res) => {
     
-    Company.findById(req.root._id, (err, company) => {
+    Company.findById(req.params.companyId, (err, company) => {
         
         if(!company)
             return res.status(404).json({err: "Invalid Comapny!!", success: false})
