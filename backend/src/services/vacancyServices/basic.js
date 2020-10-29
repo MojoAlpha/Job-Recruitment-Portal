@@ -15,11 +15,14 @@ exports.postVacancy = (req, res, next) => {
     })
 
     newVacancy.save()
+    .then((vacancy) => {
+        req.root.vacancyId = vacancy._id
+        next()
+    })
     .catch((err) => {
         return res.status(500).json({err: err, success: false})
     })
-
-    next()      // passing the control to notification services
+         // passing the control to notification services
 }
 
 // getting a vacancy

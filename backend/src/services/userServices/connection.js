@@ -31,15 +31,13 @@ exports.sendConnectReq = (req, res, next) => {
 
 // disconnecting a user
 exports.deleteConnection = (req, res) => {
-    if(req.body.userId === undefined)
-        return res.status(400).status({err: "User Not Specified!", success: false})
 
     User.findById(req.root._id, (err, user1) => {
-        User.findById(req.body.userId, (err, user2) => {
+        User.findById(req.params.userId, (err, user2) => {
 
-            let userIndex1 = user1.connections.indexOf(req.body.userId)
+            let userIndex1 = user1.connections.indexOf(req.params.userId)
             let userIndex2 = user2.connections.indexOf(req.root._id)
-            if(userIndex1 < 0 && userIndex2)
+            if(userIndex1 < 0 && userIndex2 < 0)
                 return res.status(403).status({err: "Not A Connection!", success: false})
             
             user1.connections.splice(userIndex1, 1)

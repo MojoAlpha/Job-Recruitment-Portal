@@ -32,9 +32,7 @@ exports.isVerified = (req, res, next) => {
                     dp: user.dp
                 })
                 next()
-            }
-
-            if (company) {
+            } else if (company) {
                 if (company.isVerified === false)
                     return res.status(403).json({
                         err: "Not Verified!!",
@@ -48,23 +46,28 @@ exports.isVerified = (req, res, next) => {
                     logo: company.logo
                 })
                 next()
+            } else {
+                db.collection("admin").findOne({
+                    _id: mongoose.mongo.ObjectID(req.auth._id)
+                }, (err, admin) => {
+
+                    if (err || !admin)
+                        return res.status(404).json({
+                            err: "User Not Registered!!",
+                            success: false
+                        })
+
+                    req.root = new Object({
+                        type: "A",
+                        _id: admin._id,
+                        usernmae: admin.username
+                    })
+
+                    next()
+                })
             }
         })
     })
-
-    // db.collection("admin").findOne({_id: mongoose.mongo.ObjectID(req.auth._id)}, (err, admin) => {
-
-    //     if(err || !admin) 
-    //         return res.status(404).json({err: "User Not Registered!!", success: false})
-
-    //     req.root = new Object({
-    //         type: "A",
-    //         _id: admin._id,
-    //         usernmae: admin.username
-    //     })
-
-    // next()
-    // })
 }
 
 // Check For The Company To Be Admin Verified To Post Vacancies

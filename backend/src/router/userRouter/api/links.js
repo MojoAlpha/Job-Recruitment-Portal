@@ -1,4 +1,4 @@
-// Base URL :- http://localhost:8000/user/link
+// Base URL :- http://localhost:8000/user/me/link
 
 var express = require('express');
 var {

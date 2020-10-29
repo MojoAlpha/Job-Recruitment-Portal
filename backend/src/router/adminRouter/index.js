@@ -1,3 +1,4 @@
+// Base URL :- http://localhost:8000/admin
 var Skill = require('../../models/skill')
 var express = require('express');
 var bodyParser = require('body-parser')
@@ -5,7 +6,6 @@ var { body } = require('express-validator')
 var fs = require('fs');
 const { adminLogin } = require('../../services/adminServices/auth');
 const { errHandler } = require('../../services/errValidator');
-const { getUsers } = require('../../services/adminServices/users');
 const { isVerified, isAdmin, isSignedIn } = require('../../middleware');
 
 var adminRouter = express.Router();

@@ -63,6 +63,29 @@ exports.userDetails = (req, res) => {
                     dp: user.dp,
                     skills: skills,
                     connectionCount: user.connections.length,
+                    followedCount: user.followed.length,
+                    connectionStatus: connectionStatus
+                })
+            })
+
+        Skill.find({
+                _id: {
+                    $in: skill_ids
+                }
+            })
+            .then((skills) => {
+                return res.status(200).json({
+                    type: "U",
+                    name: user.name,
+                    email: user.email,
+                    bio: user.bio,
+                    addr: user.addr,
+                    phone: user.phone,
+                    education: user.education,
+                    links: user.links,
+                    dp: user.dp,
+                    skills: skills,
+                    connectionCount: user.connections.length,
                     connectionStatus: connectionStatus,
                     exp: user.exp
                 })
@@ -130,10 +153,27 @@ exports.getNotifications = (req, res) => {
             updatedAt: -1
         })
         .then((notifications) => {
+
             res.status(200).json({
                 notifications: notifications,
                 success: true
             })
+            Notification.updateMany({
+                    reciever: req.root._id,
+                    isRead: false
+                }, {
+                    isRead: true
+                }, {
+                    "multi": true
+                })
+                .catch((err) => {
+                    console.log(err)
+                    res.status(500).json({
+                        err: "Cannot Update isRead Status Of Notifications!",
+                        success: true
+                    })
+                })
+
         }, (err) => res.status(500).json({
             err: err,
             success: false

@@ -5,6 +5,7 @@ const MongoClient = require('mongoose').mongo.MongoClient;
 const usrname = prompt("Enter Username : ");
 const password = prompt.hide("Enter Password : ");
 
+// const url = "mongodb://localhost:27017/DB"
 const url = process.env.MONGO_URL
 
 MongoClient.connect(url, {

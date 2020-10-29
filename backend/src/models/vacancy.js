@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var Vacancy = new Schema({
     owner: {
-        type: Object,
+        type: String,
         required: true
     },
     title: {

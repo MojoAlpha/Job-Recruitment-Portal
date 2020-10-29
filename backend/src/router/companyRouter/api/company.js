@@ -18,11 +18,11 @@ router.get('/:companyId', isSignedIn, isVerified, companyDetails)
 /*  POST Route :- Follow A Company
     Res Body :- {msg: ..., success: true} , if Successfully Followed
              :- {err: ..., success: false} , if Any Error Occurs */
-router.post('/:companyId', isSignedIn, isVerified, companyFollow)
+router.post('/follow/:companyId', isSignedIn, isVerified, companyFollow)
 
 /*  DELETE Route :- Unfollow A Company
     Res Body :- {msg: ..., success: true} , if Successfully Followed
              :- {err: ..., success: false} , if Any Error Occurs */
-router.delete('/:companyId', isSignedIn, isVerified, companyUnfollow)
+router.delete('/follow/:companyId', isSignedIn, isVerified, companyUnfollow)
 
 module.exports = router;
