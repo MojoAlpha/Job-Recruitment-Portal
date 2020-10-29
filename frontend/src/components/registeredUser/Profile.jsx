@@ -84,7 +84,7 @@ const Profile = (props) => {
     const handleConnect = (type, connectionCode) => {
         let apiUrl = `user/connect/${props.id}`
         if (type == 'C')
-            apiUrl = `/company/${props.id}`
+            apiUrl = `/company/follow/${props.id}`
         tokenAxios.post(apiUrl)
             .then(response => {
                 console.log(response.data)
@@ -100,7 +100,7 @@ const Profile = (props) => {
     const handleDisconnect = (type, connectionCode) => {
         let apiUrl = `user/connect/${props.id}`
         if (type == 'C')
-            apiUrl = `/company/${props.id}`
+            apiUrl = `/company/follow/${props.id}`
         tokenAxios.delete(apiUrl)
             .then(response => {
                 console.log(response.data)
