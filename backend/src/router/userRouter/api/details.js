@@ -3,7 +3,9 @@
 var express = require('express');
 var { body } = require('express-validator')
 
-const { detailUpdate, passwdUpdate, dpUpdate } = require('../../../services/userServices/detail');
+const { detailUpdate, 
+        passwdUpdate, 
+        dpUpdate } = require('../../../services/userServices/detail');
 const { errHandler } = require('../../../services/errValidator');
 const { userDpStore } = require('../../../config/multerStore')
 
@@ -22,7 +24,7 @@ router.put('/details', detailUpdate)
 router.put('/password', [
     body('currPassword').notEmpty().withMessage('Current Password Should Be Preovided!'),
     body('newPassword').isLength({min: 8, max: 20}).withMessage('Size Of Password Should Be Between 8-20 Letters')
-                        .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d@$.!%*#?&]/).withMessage('Password must contain alphabets & numbers')
+                        .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d@$.!%*#?&_-]/).withMessage('Password must contain alphabets & numbers')
 ], errHandler, passwdUpdate)
 
 /*  PUT Route :- Updating Profile Picture Of User

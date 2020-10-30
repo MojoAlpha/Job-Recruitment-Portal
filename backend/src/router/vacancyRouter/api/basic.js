@@ -5,7 +5,10 @@ var { body } = require('express-validator')
 
 var { isCompanyVerified} = require('../../../middleware')
 var { errHandler } = require('../../../services/errValidator')
-const { postVacancy, getVacancy, updateVacancy, deleteVacancy } = require('../../../services/vacancyServices/basic')
+const { postVacancy, 
+        getVacancy, 
+        updateVacancy, 
+        deleteVacancy } = require('../../../services/vacancyServices/basic')
 const { postVacancyNotify } = require('../../../services/NotfiyServices/vacancyNotify')
 
 var router = express.Router()

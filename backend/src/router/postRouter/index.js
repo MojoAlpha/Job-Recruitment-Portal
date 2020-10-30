@@ -5,7 +5,8 @@ var bodyParser = require('body-parser')
 
 var basic = require('./api/basic');
 var posts = require('./api/posts')
-const { isSignedIn, isVerified } = require('../../middleware');
+const { isSignedIn, 
+        isVerified } = require('../../middleware');
 
 var postsRouter = express.Router();
 postsRouter.use(bodyParser.json())

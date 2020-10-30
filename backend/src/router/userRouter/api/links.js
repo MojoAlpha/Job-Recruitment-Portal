@@ -4,7 +4,9 @@ var express = require('express');
 var { body } = require('express-validator')
 
 const { errHandler } = require('../../../services/errValidator');
-const { addLink, removeLink, updateLink } = require('../../../services/userServices/link');
+const { addLink, 
+        removeLink, 
+        updateLink } = require('../../../services/userServices/link');
 
 var router = express.Router();
 
@@ -13,7 +15,7 @@ var router = express.Router();
     Res Body :- {msg: "...", success: true} , if Sucessfully Added
                 {err: "...", success: false} , if Any Error Occurs */
 router.post('/', [
-    body('title', 'url').notEmpty().withMessage('Title Should Be Specified!!'),
+    body('title', 'url').notEmpty().withMessage('Fields Should Be Specified!!'),
 ], errHandler, addLink)
 
 /*  PUT Route :- Updating Important Links, such as gitHub etc.
@@ -29,7 +31,7 @@ router.put('/', [
     Res Body :- {msg: "...", success: true} , if Sucessfully Removed
                 {err: "...", success: false} , if Any Error Occurs */
 router.delete('/', [
-    body('title', 'url').notEmpty().withMessage('Title Should Be Specified!!'),
+    body('index').notEmpty().withMessage('Index Should Be Specified!!'),
 ], errHandler, removeLink)
 
 module.exports = router;

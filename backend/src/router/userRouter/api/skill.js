@@ -4,7 +4,8 @@ var express = require('express');
 var { body } = require('express-validator')
 
 const { errHandler } = require('../../../services/errValidator');
-const { addSkill, removeSkill } = require('../../../services/userServices/skill');
+const { addSkill, 
+        removeSkill } = require('../../../services/userServices/skill');
 
 var router = express.Router();
 

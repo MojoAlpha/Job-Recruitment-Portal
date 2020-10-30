@@ -1,16 +1,10 @@
 // Base URL :- http://localhost:8000/verify
 
 var express = require('express');
-const {
-    param
-} = require('express-validator');
-const {
-    errHandler
-} = require('../../../services/errValidator');
-const {
-    userVerification,
-    companyVerification
-} = require('../../../services/authServices/verification');
+const { param } = require('express-validator');
+const { errHandler } = require('../../../services/errValidator');
+const { userVerification,
+        companyVerification } = require('../../../services/authServices/verification');
 
 var router = express.Router();
 

@@ -2,13 +2,15 @@
 
 var express = require('express');
 const { postStore } = require('../../../config/multerStore')
-const { createPost, updatePost, deletePost } = require('../../../services/postServices/basic');
+const { createPost, 
+        updatePost, 
+        deletePost } = require('../../../services/postServices/basic');
 
 var router = express.Router();
 
 /*  POST Route :- Creating A Post
     Req Body :- { desc, links[], postImg:{file object} }, OPTIONAL
-    Res Body :- {msg: "...", success: true} , if Sucessful Registered
+    Res Body :- {msg: "...", success: true} , if Sucessful Created
                 {err: "...", success: false} , if Any Error Occurs */
 router.post('/', postStore.single('postImg'), createPost)
 

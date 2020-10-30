@@ -12,7 +12,8 @@ var experience = require('./api/experience')
 var skill = require('./api/skill');
 var connect = require('./api/connection')
 
-const { isSignedIn, isVerified } = require('../../middleware');
+const { isSignedIn, 
+        isVerified } = require('../../middleware');
 
 var userRouter = express.Router();
 userRouter.use(bodyParser.json())

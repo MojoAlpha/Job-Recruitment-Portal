@@ -29,8 +29,6 @@ router.put('/', [
     Req Body :- {index: 0,1...}
     Res Body :- {msg: "...", success: true} , if Sucessfully Removed
                 {err: "...", success: false} , if Any Error Occurs */
-router.delete('/', [
-    body('desig', 'company', 'startDate', 'endDate').notEmpty().withMessage('Fields Should Be Specified!!'),
-], errHandler, removeExperience)
+router.delete('/', removeExperience)
 
 module.exports = router;
