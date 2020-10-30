@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Link } from "react-router-dom";
 /*how to use this component
 < ListItemWithBtn imgUrl={} text={} btnText={} handleClick={} id={}/>
 1.text: text to display on the item
@@ -29,7 +29,7 @@ const ListItemWithBtn = (props) => {
                         <span class="badge badge-danger align-self-center ml-2">closed</span>
                     }
                 </div>
-                <buttton className="btn btn-primary" onClick={() => props.handleClick(props.id)}>{props.btnText}</buttton>
+                <Link className="btn btn-primary" to={`/user/vacancy/${props.id}`} >{props.btnText}</Link>
             </div>
         </div>
     )

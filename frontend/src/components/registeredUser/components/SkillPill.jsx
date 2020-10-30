@@ -1,7 +1,9 @@
 import React from 'react'
 /*how to use this component
-< SkillPill name={} />
+< SkillPill name={} deleteItem={} index={}/>
 1.name: name of the skill you want to display
+2.deleteItem: function to handle deleteing of skill(param:index)
+3.index: index of the skill
  */
 const SkillPill = (props) => {
     console.log(props)

@@ -109,14 +109,15 @@ export default function RegisteredUser() {
         <div id="registered-user-container"
           className="col-12 col-md-9 row bg-gray px-4 pt-4"
         >
+          {/* todo:make these routes protected */}
           <Switch>
-            <Route exact path={`${path}/:type/:id`}>
-              <Profile />
-              {/* cg <Profile id="5f87eb4c9c3a241f781781e7" type="C" /> */}
-            </Route>
             <Route exact path={`${path}/vacancy/:id`}>
               <VacancyDetail />
             </Route>
+            <Route exact path={`${path}/:type/:id`}>
+              <Profile />
+            </Route>
+
           </Switch>
           {/* <JobOpeningDetail /> */}
           {/* <BrowserRouter>

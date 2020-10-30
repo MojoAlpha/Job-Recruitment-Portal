@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import ListItemWithBtn from './ListItemWithBtn'
 
 const VacancyCard = (props) => {
-    console.log(`logo url:${props.logo}`)
     const [vacancies, setVacancies] = useState([])
 
     useEffect(() => {
@@ -12,7 +11,8 @@ const VacancyCard = (props) => {
     const showDetails = (id) => {
         console.log(`showing details of ${id}`)
     }
-    const vacancyList = vacancies.map(vacancy => <ListItemWithBtn text={vacancy.title} imgUrl={`http://localhost:8000/logo/${props.logo}`} btnText="view" handleClick={showDetails} id={vacancy._id} isOpen={vacancy.isOpen} />)
+    console.log(vacancies)
+    const vacancyList = vacancies.map(vacancy => <ListItemWithBtn text={vacancy.title} imgUrl={`http://localhost:8000/logo/${props.logo}`} btnText="view" id={vacancy._id} isOpen={vacancy.isOpen} />)
     return (
         <div className="px-4 border bg-white shadow mb-4">
             <div className="d-flex align-items-center">
