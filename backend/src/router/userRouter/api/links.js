@@ -1,7 +1,9 @@
 // Base URL :- http://localhost:8000/user/me/link
 
 var express = require('express');
-var { body } = require('express-validator')
+var {
+    body
+} = require('express-validator')
 
 const { errHandler } = require('../../../services/errValidator');
 const { addLink, 

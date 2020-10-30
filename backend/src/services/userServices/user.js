@@ -5,9 +5,12 @@ var Notification = require('../../models/notification')
 var mongoose = require('mongoose')
 
 exports.basicDetails = (req, res) => {
-    
-    Notification.find({ owner: req.root._id, isRead: false}, (err, notifications) => {
-        
+
+    Notification.find({
+        owner: req.root._id,
+        isRead: false
+    }, (err, notifications) => {
+
         req.root.unreadNotification = notifications.length
         return res.status(200).json(req.root)
     })
@@ -19,7 +22,7 @@ exports.basicDetails = (req, res) => {
     2 - Connection Request Exists
     3 - Neither Of Above */
 exports.userDetails = (req, res) => {
-    
+
     User.findById(req.params.userId, (err, user) => {
         User.findById(req.root._id, (err, usr) => {
 
@@ -61,50 +64,116 @@ exports.userDetails = (req, res) => {
                 })
             })
         })
+
+
+        Skill.find({
+                _id: {
+                    $in: skill_ids
+                }
+            })
+            .then((skills) => {
+                return res.status(200).json({
+                    type: "U",
+                    name: user.name,
+                    email: user.email,
+                    bio: user.bio,
+                    addr: user.addr,
+                    phone: user.phone,
+                    education: user.education,
+                    links: user.links,
+                    dp: user.dp,
+                    skills: skills,
+                    connectionCount: user.connections.length,
+                    connectionStatus: connectionStatus,
+                    exp: user.exp
+                })
+            })
     })
 }
 
 // list of user connections & companies followed
 exports.extraUserDetails = (req, res) => {
-    
+
     User.findById(req.params.userId, (err, user) => {
-        if(err)
-            return res.status(500).json({err: err, success: false})
-        
-        var connect_ids = user.connections.map((id) => {return mongoose.mongo.ObjectID(id)})
-        var followd_ids = user.followed.map((id) => {return mongoose.mongo.ObjectID(id)})
-
-        User.find({ _id: { $in: connect_ids }}, {_id: 1, name: 1, dp: 1, bio: 1})
-        .then((userList) => {
-            Company.find({ _id: { $in: followd_ids }}, {_id: 1, name: 1, logo: 1, desc: 1})
-            .then((companyList) => {
-
-                return res.status(200).json({
-                    connections: userList,
-                    followed: companyList
-                })
+        if (err)
+            return res.status(500).json({
+                err: err,
+                success: false
             })
+
+        var connect_ids = user.connections.map((id) => {
+            return mongoose.mongo.ObjectID(id)
         })
-        
+        var followd_ids = user.followed.map((id) => {
+            return mongoose.mongo.ObjectID(id)
+        })
+
+        User.find({
+                _id: {
+                    $in: connect_ids
+                }
+            }, {
+                _id: 1,
+                name: 1,
+                dp: 1,
+                bio: 1
+            })
+            .then((userList) => {
+                Company.find({
+                        _id: {
+                            $in: followd_ids
+                        }
+                    }, {
+                        _id: 1,
+                        name: 1,
+                        logo: 1,
+                        desc: 1
+                    })
+                    .then((companyList) => {
+
+                        return res.status(200).json({
+                            connections: userList,
+                            followed: companyList
+                        })
+                    })
+            })
+
     })
 }
 
 // get the notifications of logged user
 exports.getNotifications = (req, res) => {
 
-    Notification.find({ reciever: req.root._id })
-    .sort({updatedAt: -1})
-    .then((notifications) => {
-
-        res.status(200).json({notifications: notifications, success: true})
-        Notification.updateMany({ reciever: req.root._id, isRead: false }, { isRead: true }, { "multi": true })
-        .catch((err) => {
-            console.log(err)
-            res.status(500).json({err: "Cannot Update isRead Status Of Notifications!", success: true})
+    Notification.find({
+            reciever: req.root._id
         })
+        .sort({
+            updatedAt: -1
+        })
+        .then((notifications) => {
 
-    }, (err) => res.status(500).json({
-        err: err,
-        success: false
-    }))
+            res.status(200).json({
+                notifications: notifications,
+                success: true
+            })
+            Notification.updateMany({
+                    reciever: req.root._id,
+                    isRead: false
+                }, {
+                    isRead: true
+                }, {
+                    "multi": true
+                })
+                .catch((err) => {
+                    console.log(err)
+                    res.status(500).json({
+                        err: "Cannot Update isRead Status Of Notifications!",
+                        success: true
+                    })
+                })
+
+        }, (err) => res.status(500).json({
+            err: err,
+            success: false
+        }))
 }

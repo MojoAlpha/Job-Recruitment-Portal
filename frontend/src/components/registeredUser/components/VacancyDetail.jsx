@@ -1,11 +1,16 @@
 import React from 'react'
 import ListItemWithBtn from './ListItemWithBtn'
 import SkillPill from './SkillPill'
-
+import { useParams } from 'react-router-dom'
 const VacancyDetail = (props) => {
+    let { id } = useParams();
     return (
         <>
-            <div className="container-fluid bg-white p-4  mb-4">
+            
+            <h1>
+                Vacancy ID: {id}
+            </h1>
+            {/* <div className="container-fluid bg-white p-4  mb-4">
                 <div className="mx-2 mx-xl-5">
                     <div className="d-flex flex-column flex-sm-row mb-4">
                         <div className="rounded-circle align-self-center " style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/testimonial.jpg)`, backgroundSize: 'cover', height: '20vh', width: '20vh' }}>
@@ -42,11 +47,8 @@ const VacancyDetail = (props) => {
 
                     </div>
 
-                </div>
-            </div>
-
-
-
+                </div> */}
+            {/* </div> */}
         </>
     )
 }

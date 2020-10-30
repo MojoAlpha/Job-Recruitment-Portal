@@ -30,10 +30,10 @@ const SocialLink = (props) => {
                     onFocus={handleFocus}
                     onFocusOut={handleFocusOut} />
             </div>
-            <div className="d-flex flex-row flex-md-col flex-xl-row">
-                <span onClick={() => props.showPopUPWithItem({ title: props.name, url: props.url })} className="mx-3" style={{ cursor: 'pointer' }}><i class="fas fa-pen"></i></span>
-                <span onClick={() => props.handleDelete(props.index)} style={{ cursor: 'pointer' }}><i class="fas fa-minus-circle text-danger"></i></span>
-            </div>
+            {props.showEditControls && (<div className="d-flex flex-row flex-md-col flex-xl-row">
+                <span onClick={() => props.showPopUPWithItem({ title: props.name, url: props.url })} className="mx-3" style={{ cursor: 'pointer' }}><i class="fas fa-pen"></i>edit</span>
+                <span onClick={() => props.handleDelete(props.index)} style={{ cursor: 'pointer' }}><i class="fas fa-minus-circle text-danger"></i>delete</span>
+            </div>)}
 
         </div>
     )
