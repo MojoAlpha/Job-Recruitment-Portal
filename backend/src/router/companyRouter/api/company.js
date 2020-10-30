@@ -2,27 +2,28 @@
 
 var express = require('express');
 
-const { isSignedIn, isVerified } = require('../../../middleware');
-const { companyDetails, companyFollow, companyUnfollow } = require('../../../services/companyServices/company');
+const { companyDetails, 
+        companyFollow, 
+        companyUnfollow } = require('../../../services/companyServices/company');
 
 var router = express.Router()
 
 /*  GET Route :- Basic Details Of Logged Company
     Res Body :- {CompanyDetails} */
-router.get('/me', isSignedIn, isVerified, (req, res) => res.json(req.root))
+router.get('/me',   (req, res) => res.json(req.root))
 
 /*  GET Route :- All The Main Details Of A Company
     Res Body :- {CompanyDetails} */
-router.get('/:companyId', isSignedIn, isVerified, companyDetails)
+router.get('/:companyId', companyDetails)
 
 /*  POST Route :- Follow A Company
     Res Body :- {msg: ..., success: true} , if Successfully Followed
              :- {err: ..., success: false} , if Any Error Occurs */
-router.post('/follow/:companyId', isSignedIn, isVerified, companyFollow)
+router.post('/follow/:companyId', companyFollow)
 
 /*  DELETE Route :- Unfollow A Company
-    Res Body :- {msg: ..., success: true} , if Successfully Followed
+    Res Body :- {msg: ..., success: true} , if Successfully UnFollowed
              :- {err: ..., success: false} , if Any Error Occurs */
-router.delete('/follow/:companyId', isSignedIn, isVerified, companyUnfollow)
+router.delete('/follow/:companyId', companyUnfollow)
 
 module.exports = router;

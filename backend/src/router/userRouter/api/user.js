@@ -8,7 +8,7 @@ const { extraUserDetails, userDetails, getNotifications, basicDetails } = requir
 var router = express.Router()
 
 /*  GET Route :- Basic Details Of Logged User
-    Res Body :- {UserDetails, unreadNotification} */
+    Res Body :- {UserDetails} */
 router.get('/me', isSignedIn, isVerified, basicDetails)
 
 /*  GET Route :- All The Main Details Of A User

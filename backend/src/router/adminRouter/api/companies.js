@@ -1,6 +1,9 @@
 // Base URL :- http://localhost:8000/admin/companies
 var express = require('express')
-const { getCompanies, deleteCompany, adminVerifyCompany, getCompany } = require('../../../services/adminServices/companies')
+const { getCompanies, 
+        deleteCompany, 
+        adminVerifyCompany, 
+        getCompany } = require('../../../services/adminServices/companies')
 var router = express.Router()
 
 /*  GET Route :- Get List Of All The Companies
