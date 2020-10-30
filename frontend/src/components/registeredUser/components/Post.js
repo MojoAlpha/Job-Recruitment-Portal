@@ -2,12 +2,13 @@ import React from "react";
 
 export default function Post(props) {
   console.log(props)
+  let folder = props.post.type == 'C' ? 'logo' : 'dp'
   const postImgName = props.getImageName(props.post.postImg)
   const userDpName = props.getImageName(props.owner.dp)
   return (
     <div className="bg-white p-4  mb-5 rounded shadow " >
       <div className="d-flex" >
-        <img src={`http://localhost:8000/${userDpName}`} alt=""
+        <img src={`http://localhost:8000/${folder}/${userDpName}`} alt=""
           className="profile rounded-circle"
           style={
             {

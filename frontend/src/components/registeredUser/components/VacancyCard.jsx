@@ -12,7 +12,7 @@ const VacancyCard = (props) => {
     const showDetails = (id) => {
         console.log(`showing details of ${id}`)
     }
-    const vacancyList = vacancies.map(vacancy => <ListItemWithBtn text={vacancy.title} imgUrl={`http://localhost:8000/${props.logo}`} btnText="view" handleClick={showDetails} id={vacancy._id} isOpen={vacancy.isOpen} />)
+    const vacancyList = vacancies.map(vacancy => <ListItemWithBtn text={vacancy.title} imgUrl={`http://localhost:8000/logo/${props.logo}`} btnText="view" handleClick={showDetails} id={vacancy._id} isOpen={vacancy.isOpen} />)
     return (
         <div className="px-4 border bg-white shadow mb-4">
             <div className="d-flex align-items-center">

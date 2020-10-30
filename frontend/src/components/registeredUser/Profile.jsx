@@ -7,8 +7,10 @@ import VacancyCard from './components/VacancyCard';
 import WorkExperienceCard from './components/WorkExperienceCard'
 import Post from './components/Post'
 import { Tabs, TabLink, TabContent } from 'react-tabs-redux'
-const Profile = (props) => {
+import { useParams } from 'react-router-dom'
+const Profile = () => {
 
+    const { type, id } = useParams()
     //stores the info of the profile which we are looking at
     const [userFullDetails, setUserFullDetails] = useState({})
     const [isLoading, setIsLoading] = useState(true)
@@ -22,24 +24,26 @@ const Profile = (props) => {
     const [connectionCount, setConnectionCount] = useState()
     const [vacancies, setVacancies] = useState([])
     useEffect(() => {
-        let type = 'company'
-        if (props.type == 'U') {
+        let userType = 'company'
+        if (type == 'U') {
             setIsUser(true)
-            type = 'user'
+            userType = 'user'
         }
         //check that the searched user and logged in users are same or not
-        tokenAxios.get(`/${type}/me`)
+        tokenAxios.get(`/${userType}/me`)
             .then(response => {
-                if (response.data._id == props.id)
+                if (response.data._id == id)
                     setShowEditControls(true)
+                // todo:if response is 404 it means the type U and C is not 
+                //compatible with the id provided
             })
             .catch((error) => console.log(error))
         //get all the details of searched user
-        tokenAxios.get(`/${type}/${props.id}`)
+        tokenAxios.get(`/${userType}/${id}`)
             .then(response => {
                 console.log(response.data)
                 setUserFullDetails(response.data)
-                if (props.type == 'U') {
+                if (type == 'U') {
                     setConnectionStatus(response.data.connectionStatus)
                     setConnectionCount(response.data.connectionCount)
                 }
@@ -52,16 +56,18 @@ const Profile = (props) => {
             })
             .catch((error) => console.log(error))
         //get posts of searched user
-        tokenAxios.get(`/posts/${props.id}`)
+        tokenAxios.get(`/posts/${id}`)
             .then((response) => {
                 console.log(response.data)
                 setPostData(response.data)
+                if (type == 'U')
+                    setIsLoading(false)
             })
             .catch((error) => console.log(error))
 
         //get all the job vacancies (in case of a company)
-        if (props.type == 'C')
-            tokenAxios.get(`/vacancy/company/${props.id}`)
+        if (type == 'C')
+            tokenAxios.get(`/vacancy/company/${id}`)
                 .then(response => {
                     console.log(response.data)
                     setVacancies(response.data)
@@ -92,14 +98,16 @@ const Profile = (props) => {
 
 
     const getImageName = (url = '') => {
-        console.log(url.split("\\"))
-        return url.split('\\').pop()
+        if (url.split('\\').length > 1)
+            return url.split('\\').pop()
+        return url.split('/').pop()
+
     }
 
     const handleConnect = (type, connectionCode) => {
-        let apiUrl = `user/connect/${props.id}`
+        let apiUrl = `user/connect/${id}`
         if (type == 'C')
-            apiUrl = `/company/follow/${props.id}`
+            apiUrl = `/company/follow/${id}`
         tokenAxios.post(apiUrl)
             .then(response => {
                 console.log(response.data)
@@ -113,9 +121,9 @@ const Profile = (props) => {
     }
 
     const handleDisconnect = (type, connectionCode) => {
-        let apiUrl = `user/connect/${props.id}`
+        let apiUrl = `user/connect/${id}`
         if (type == 'C')
-            apiUrl = `/company/follow/${props.id}`
+            apiUrl = `/company/follow/${id}`
         tokenAxios.delete(apiUrl)
             .then(response => {
                 console.log(response.data)
@@ -159,7 +167,7 @@ const Profile = (props) => {
                         {isUser ?
                             <div className="rounded-circle align-self-center mx-2 mx-xl-5" style={{ backgroundImage: `url("http://localhost:8000/dp/${getImageName(userFullDetails.dp)}")`, backgroundSize: 'cover', height: '20vh', width: '20vh' }}></div>
                             :
-                            <div className="rounded-circle align-self-center mx-2 mx-xl-5" style={{ backgroundImage: `url("http://localhost:8000/${getImageName(userFullDetails.logo)}")`, backgroundSize: 'cover', height: '20vh', width: '20vh' }}></div>
+                            <div className="rounded-circle align-self-center mx-2 mx-xl-5" style={{ backgroundImage: `url("http://localhost:8000/logo/${getImageName(userFullDetails.logo)}")`, backgroundSize: 'cover', height: '20vh', width: '20vh' }}></div>
                         }
 
                         <div className="mx-4 d-flex justify-content-between flex-column">

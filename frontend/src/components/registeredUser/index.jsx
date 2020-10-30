@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import NewsFeed from "./NewsFeed";
 import MyNetwork from "./MyNetwork";
 import Profile from "./Profile";
-import Message from "./components/MessageCard"
-import VacancyDetail from './components/VacancyDetail'
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, useRouteMatch, Link } from "react-router-dom";
+import VacancyDetail from "./components/VacancyDetail";
 
 const navLinkActive =
   "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3 border border-primary rounded bg-primary text-white";
 const navLink =
   "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3";
 export default function RegisteredUser() {
+  let { path, url } = useRouteMatch();
   const [activeTab, setActiveTab] = useState(0);
   return (
     <React.Fragment>
@@ -109,22 +109,22 @@ export default function RegisteredUser() {
         <div id="registered-user-container"
           className="col-12 col-md-9 row bg-gray px-4 pt-4"
         >
-          <BrowserRouter>
-            <Switch>
-              <Route path="/user" exact >
-                <Profile id="5f9995d277973c0b39071485" type="C" />
-              </Route>
-              <Route path="/vacancy/details" component={VacancyDetail} />
-              <Route path="/message" exact component={Message} />
-            </Switch>
-          </BrowserRouter>
-          {/* <Profile id="5f9995d277973c0b39071485" type="C" /> */}
+          <Switch>
+            <Route exact path={`${path}/:type/:id`}>
+              <Profile />
+              {/* cg <Profile id="5f87eb4c9c3a241f781781e7" type="C" /> */}
+            </Route>
+            <Route exact path={`${path}/vacancy/:id`}>
+              <VacancyDetail />
+            </Route>
+          </Switch>
           {/* <JobOpeningDetail /> */}
           {/* <BrowserRouter>
             <Switch> */}
-          <Route path="/feed" component={NewsFeed} />
+          {/* <Route path="/feed" component={NewsFeed} /> */}
           {/* <Route path="/search" component={Home} /> */}
-          <Route path="/mynetwork" component={MyNetwork} />
+          {/* <Route path="/mynetwork" component={MyNetwork} /> */}
+          {/* <Route path="/message" exact component={Message} /> */}
           {/* <Route path="/user/:username" exact component={RegisteredUser} /> */}
           {/* </Switch>
           </BrowserRouter> */}
