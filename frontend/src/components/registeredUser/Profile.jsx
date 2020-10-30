@@ -20,6 +20,7 @@ const Profile = (props) => {
     const [isUser, setIsUser] = useState(false)
     const [connectionStatus, setConnectionStatus] = useState()
     const [connectionCount, setConnectionCount] = useState()
+    const [vacancies, setVacancies] = useState([])
     useEffect(() => {
         let type = 'company'
         if (props.type == 'U') {
@@ -47,7 +48,7 @@ const Profile = (props) => {
                     setConnectionCount(response.data.followerCount)
 
                 }
-                setIsLoading(false)
+                // setIsLoading(false)
             })
             .catch((error) => console.log(error))
         //get posts of searched user
@@ -57,6 +58,16 @@ const Profile = (props) => {
                 setPostData(response.data)
             })
             .catch((error) => console.log(error))
+
+        //get all the job vacancies (in case of a company)
+        if (props.type == 'C')
+            tokenAxios.get(`/vacancy/company/${props.id}`)
+                .then(response => {
+                    console.log(response.data)
+                    setVacancies(response.data)
+                    setIsLoading(false)
+                })
+                .catch((error) => console.log(error))
 
     }, [])
 
@@ -72,6 +83,10 @@ const Profile = (props) => {
     const getWorkExperience = () => {
         console.log(userFullDetails)
         return userFullDetails.exp
+    }
+    const getVacancy = () => {
+        console.log(vacancies)
+        return vacancies.vacancies
     }
 
 
@@ -201,7 +216,14 @@ const Profile = (props) => {
                     </div>
                     <TabContent for="tab1">
                         <div className="col-sm-12 col-xl-8 ">
-                            {postList}
+                            {console.log(postList)}
+                            {Array.isArray(postList) && postList.length ? postList :
+                                <div>
+                                    <h6 className=" mt-4 text-center text-capitalize">no posts available</h6>
+                                    <div >
+                                        {/* <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />*/}
+                                    </div>
+                                </div>}
                         </div>
                     </TabContent>
                     <TabContent for="tab2" >
@@ -229,7 +251,7 @@ const Profile = (props) => {
                                 :
                                 //else show this
                                 <div className="col-12 ">
-                                    <VacancyCard details={getEducation} showEditControls={showEditControls} />
+                                    <VacancyCard details={getVacancy} showEditControls={showEditControls} logo={getImageName(userFullDetails.logo)} />
                                 </div>
 
                             }

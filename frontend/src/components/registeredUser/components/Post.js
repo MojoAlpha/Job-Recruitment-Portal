@@ -7,7 +7,7 @@ export default function Post(props) {
   return (
     <div className="bg-white p-4  mb-5 rounded shadow " >
       <div className="d-flex" >
-        <img src={`http://localhost:8000/dp/${userDpName}`} alt=""
+        <img src={`http://localhost:8000/${userDpName}`} alt=""
           className="profile rounded-circle"
           style={
             {
@@ -23,7 +23,8 @@ export default function Post(props) {
         {/* todo:can add three dot menu to post */}
       </div>
       <p className="" > {props.post.desc} </p>
-      <img src={`http://localhost:8000/post/${postImgName}`} alt="post img" className="w-100 mx-auto d-block" />
+      {/* checking post image exist or not because some post may only contain text */}
+      {postImgName && <img src={`http://localhost:8000/post/${postImgName}`} alt="post img" className="w-100 mx-auto d-block" />}
     </div>
   );
 }

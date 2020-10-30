@@ -7,6 +7,7 @@ import Signin from './components/user/Signin';
 import RegisteredUser from './components/registeredUser/index'
 import PrivateRouteComp from './auth/PrivateRouteComp';
 import PrivateRouteDev from './auth/PrivateRouteDev';
+import VacancyDetail from './components/registeredUser/components/VacancyDetail'
 
 function App() {
   return (
@@ -18,6 +19,11 @@ function App() {
         <Route path="/signin" exact component={Signin} />
         {/* <PrivateRouteComp /> For refrence*/}
         <PrivateRouteDev path="/user" exact component={RegisteredUser} />
+        < Route path="/vacancy/details"
+          component={
+            VacancyDetail
+          }
+        />
       </Switch>
     </BrowserRouter>
   );

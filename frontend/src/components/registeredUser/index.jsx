@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import NewsFeed from "./NewsFeed";
 import MyNetwork from "./MyNetwork";
 import Profile from "./Profile";
+import Message from "./components/MessageCard"
+import VacancyDetail from './components/VacancyDetail'
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 const navLinkActive =
@@ -107,14 +109,22 @@ export default function RegisteredUser() {
         <div id="registered-user-container"
           className="col-12 col-md-9 row bg-gray px-4 pt-4"
         >
-          <Profile id="5f87eb4c9c3a241f781781e7" type="U" />
+          <BrowserRouter>
+            <Switch>
+              <Route path="/user" exact >
+                <Profile id="5f9995d277973c0b39071485" type="C" />
+              </Route>
+              <Route path="/vacancy/details" component={VacancyDetail} />
+              <Route path="/message" exact component={Message} />
+            </Switch>
+          </BrowserRouter>
+          {/* <Profile id="5f9995d277973c0b39071485" type="C" /> */}
           {/* <JobOpeningDetail /> */}
           {/* <BrowserRouter>
             <Switch> */}
           <Route path="/feed" component={NewsFeed} />
           {/* <Route path="/search" component={Home} /> */}
           <Route path="/mynetwork" component={MyNetwork} />
-          {/* <Route path="/message" exact component={Message} /> */}
           {/* <Route path="/user/:username" exact component={RegisteredUser} /> */}
           {/* </Switch>
           </BrowserRouter> */}

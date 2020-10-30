@@ -85,7 +85,7 @@ const SkillCard = (props) => {
 
 
 
-    const SkillList = skills.map((skill, index) => <SkillPill className="flex-fill" item={skill} index={index} deleteItem={deleteItem} showEditControls={props.showEditControls} />)
+    const SkillList = skills.map((skill, index) => <SkillPill className="flex-fill" name={skill.name} index={index} deleteItem={deleteItem} showEditControls={props.showEditControls} />)
     // < Skill text = { link.name } index = { link.id } handleDelete = { handleDelete } />
     return (
 
