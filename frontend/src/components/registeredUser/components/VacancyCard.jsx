@@ -19,13 +19,26 @@ const VacancyCard = (props) => {
                 <h3 className="text-capitalize my-3 flex-grow-1">job openings</h3>
                 {props.setShowEditControls && <button type="submit" class="btn btn-primary mb-2 w-25 btn" >add</button>}
             </div>
-            {vacancyList.length ? vacancyList :
-                <div>
-                    <h6 className=" mt-4 text-center text-capitalize">add job vacany to hire talents.</h6>
-                    <div >
-                        <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />
-                    </div>
-                </div>}
+            {
+                //if vacancy exist
+                vacancyList.length ?
+                    //then show list
+                    vacancyList
+                    :
+                    //elseif (owner is viewing this component)
+                    props.showEditControls ?
+                        //then show full msg
+                        <div>
+                            <h6 className=" mt-4 text-center text-capitalize">add job vacany to hire talents.</h6>
+                            <div >
+                                <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />
+                            </div>
+                        </div>
+                        :
+                        //else (anyone else is viewing) show simple msg
+                        <h6 className=" mt-4 text-center text-capitalize">No vacancy available.</h6>
+
+            }
 
             {/* {console.log(`showPopUP : ${showPopUP}`)}
             {showPopUP && <EducationItemPopUp item={item} createItem={createItem} updateItem={updateItem} showPopUPWithItem={showPopUPWithItem} closePopUP={closePopUP} />} */}

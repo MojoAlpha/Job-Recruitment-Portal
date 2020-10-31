@@ -100,13 +100,25 @@ const SkillCard = (props) => {
                 {props.showEditControls && <AutoSuggest placeholder="search skill to add" handleSubmit={addItem} />}
             </div>
             <div className="d-flex flex-wrap text-justify">
-                {SkillList.length ? SkillList :
-                    <div>
-                        <h6 className=" mt-4 text-center text-capitalize">adding skills help recruiter to find you easily.</h6>
-                        <div >
-                            <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />
-                        </div>
-                    </div>
+                {
+                    //if skill exist
+                    SkillList.length ?
+                        //then show list
+                        SkillList
+                        :
+                        //elseif (owner is viewing this component)
+                        props.showEditControls ?
+                            //then show full msg
+                            <div>
+                                <h6 className=" mt-4 text-center text-capitalize">adding skills help recruiter to find you easily.</h6>
+                                <div >
+                                    <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />
+                                </div>
+                            </div>
+                            :
+                            //else (anyone else is viewing) show simple msg
+                            <h6 className=" mt-4 text-center text-capitalize">No skills available.</h6>
+
                 }
             </div>
         </div >

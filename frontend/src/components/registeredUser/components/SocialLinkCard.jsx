@@ -144,13 +144,25 @@ const SocialLinkCard = (props) => {
                 {props.showEditControls && <button type="submit" class="btn btn-primary mb-2 w-25 btn" onClick={() => showPopUPWithItem({ title: '', url: '' })}  >add</button>}
             </div>
             {/* rendering out all the links of the user */}
-            {SocialLinkList.length ? SocialLinkList :
-                <div>
-                    <h6 className=" mt-4 text-center text-capitalize">adding skills help recruiter to find you easily.</h6>
-                    <div >
-                        <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />
-                    </div>
-                </div>
+            {
+                //if socialLink exist
+                SocialLinkList.length ?
+                    //then show list
+                    SocialLinkList
+                    :
+                    //elseif (owner is viewing this component)
+                    props.showEditControls ?
+                        //then show full msg
+                        <div>
+                            <h6 className=" mt-4 text-center text-capitalize">adding social links help other people to connect with you better</h6>
+                            <div >
+                                <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />
+                            </div>
+                        </div>
+                        :
+                        //else (anyone else is viewing) show simple msg
+                        <h6 className=" mt-4 text-center text-capitalize">No Social links available.</h6>
+
             }
             {/* pop up modal */}
             {showPopUP && <SocialLinksPopUp item={item} createItem={handleSubmit} updateItem={handleUpdate} showPopUPWithItem={showPopUPWithItem} closePopUP={closePopUP} />}

@@ -129,13 +129,26 @@ const WorkExperienceCard = (props) => {
                 <h3 className="text-capitalize my-3 flex-grow-1">Work Experience</h3>
                 {props.showEditControls && <button type="submit" class="btn btn-primary mb-2 w-25 btn" onClick={() => showPopUPWithItem({ company: '', desig: '', startDate: '', endDate: '' })}  >add</button>}
             </div>
-            {WorkExperienceList.length ? WorkExperienceList :
-                <div>
-                    <h6 className=" mt-4 text-center text-capitalize">adding work Experiences to get an edge over others</h6>
-                    <div >
-                        <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />
-                    </div>
-                </div>}
+            {
+                //if work experience exist
+                WorkExperienceList.length ?
+                    //then show list
+                    WorkExperienceList
+                    :
+                    //elseif (owner is viewing this component)
+                    props.showEditControls ?
+                        //then show full msg
+                        <div>
+                            <h6 className=" mt-4 text-center text-capitalize">adding work Experiences to get an edge over others</h6>
+                            <div >
+                                <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />
+                            </div>
+                        </div>
+                        :
+                        //else (anyone else is viewing) show simple msg
+                        <h6 className=" mt-4 text-center text-capitalize">No work experience available.</h6>
+
+            }
 
             {console.log(`showPopUP : ${showPopUP}`)}
             {showPopUP && <WorkExperiencePopUp item={item} index={itemIndex} createItem={createItem} updateItem={updateItem} showPopUPWithItem={showPopUPWithItem} closePopUP={closePopUP} />}

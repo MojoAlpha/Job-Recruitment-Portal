@@ -128,15 +128,27 @@ const EducationCard = props => {
                 <h3 className="text-capitalize my-3 flex-grow-1">Education</h3>
                 {props.showEditControls && <button type="submit" class="btn btn-primary mb-2 w-25 btn" onClick={() => showPopUPWithItem({ college: '', insti: '', year: '' })}  >add</button>}
             </div>
-            {EducationList.length ? EducationList :
-                <div>
-                    <h6 className=" mt-4 text-center text-capitalize">adding your Education qulification to find better jobs.</h6>
-                    <div >
-                        <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />
-                    </div>
-                </div>}
+            {
+                //if eduacation exist
+                EducationList.length ?
+                    //then show list
+                    EducationList
+                    :
+                    //elseif (owner is viewing this component)
+                    props.showEditControls ?
+                        //then show full msg
+                        <div>
+                            <h6 className=" mt-4 text-center text-capitalize">adding your Education qulification to find better jobs.</h6>
+                            <div >
+                                <img src={`${process.env.PUBLIC_URL}/images/no_skills.jpg`} alt="" />
+                            </div>
+                        </div>
+                        :
+                        //else (anyone else is viewing) show simple msg
+                        <h6 className=" mt-4 text-center text-capitalize">No qualification available.</h6>
 
-            {console.log(`showPopUP : ${showPopUP}`)}
+            }
+
             {showPopUP && <EducationItemPopUp item={item} index={itemIndex} createItem={createItem} updateItem={updateItem} showPopUPWithItem={showPopUPWithItem} closePopUP={closePopUP} />}
         </div >
     )
