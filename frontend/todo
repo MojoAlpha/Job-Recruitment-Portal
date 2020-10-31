@@ -5,7 +5,7 @@
 []make dates in user readable format
 
 #job vacancy
-[]waiting for appiedStatus in response
+[x]waiting for appiedStatus in response
 []apply api is not working properly
 
 #suggessted jobs
@@ -27,3 +27,6 @@ for other it should be link "no vacancy open currenlt" etc
 
 #mynewtworks
 []make those card of same height irrespective of content
+
+#newfeed
+[]ask mohit why suggesstedjobs and applied are same

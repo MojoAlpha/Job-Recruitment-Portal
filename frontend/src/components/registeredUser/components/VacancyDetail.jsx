@@ -7,6 +7,7 @@ import axios from 'axios'
 const VacancyDetail = (props) => {
     let { id } = useParams();
     const [vacancyDetail, setVacancyDetail] = useState({})
+    const [applicationStatus, setApplicationStatus] = useState()
     const [requiredSkills, setRequiredSkills] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [modifiedVacancy, setModifiedVacancy] = useState({})
@@ -19,6 +20,7 @@ const VacancyDetail = (props) => {
                     console.log(response.data)
                     setVacancyDetail(response.data)
                     setRequiredSkills(response.data.requiredSkill)
+                    setApplicationStatus(response.data.applicationStatus)
                     setIsLoading(false)
                 }
 
@@ -36,8 +38,11 @@ const VacancyDetail = (props) => {
     const handleApply = () => {
         tokenAxios.post(`/vacancy/apply/${id}`)
             .then((response) => {
-                if (response.data == 200)
+                if (response.data == 200) {
                     console.log("applied succesfully")
+                    //1 means successfully applied
+                    setApplicationStatus(1)
+                }
                 console.log(response.data)
             })
             .catch(error => {
@@ -110,7 +115,15 @@ const VacancyDetail = (props) => {
                                 <div className="d-flex">
                                     {/* todo:important! handle buttons with status code */}
                                     {vacancyDetail.isOpen ?
-                                        <button className="btn btn-outline-primary" onClick={handleApply}>Apply</button>
+                                        // if
+                                        applicationStatus == 0 ? //0 means selected
+                                            <button className="btn btn-success" disabled>Selected</button>
+                                            :
+                                            // else if
+                                            applicationStatus == 1 ? // 1 means applied
+                                                <button className="btn btn-primary" disabled>Applied</button>
+                                                :
+                                                <button className="btn btn-outline-primary" onClick={handleApply}>Apply</button>
                                         :
                                         <button className="btn btn-danger" disabled>closed</button>
                                     }
