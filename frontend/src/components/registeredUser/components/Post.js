@@ -18,7 +18,7 @@ export default function Post(props) {
           }
         />
         <div className="mx-2" >
-          <Link to={`/user/${props.post.type}/${props.owner.id}`}> <h6 className="m-0 font-weight-bold" > {props.owner.name} </h6></Link>
+          <Link to={`/user/${props.post.type}/${props.owner.id}`} className="m-0 font-weight-bold" > {props.owner.name}</Link>
           <p> {props.post.createdAt} </p>
         </div>
         {/* todo:can add three dot menu to post */}

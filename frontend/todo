@@ -13,3 +13,15 @@
 
 #applied jobs
 []name of job and company logo missing and company  name also
+
+#profile
+[]make sure a company doesnot get follow /any action btn
+[]also fix :when user is visiting profile of someone else if any thing is empty then 
+the msg says"add bla bla bla" but that should be shown only to owner not to other
+for other it should be link "no vacancy open currenlt" etc
+
+#navigation
+[]setup navigation differently for company
+
+#mynewtworks
+[]make those card of same height irrespective of content

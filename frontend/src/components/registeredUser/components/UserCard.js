@@ -1,6 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { getImageName } from "../../utility";
 
-function UserCard() {
+function UserCard(props) {
+  const imgName = getImageName(props.img)
+  const folderName = props.type == 'U' ? 'dp' : 'logo'
   return (
     <div>
       <div
@@ -9,28 +13,30 @@ function UserCard() {
       >
         <div className="d-flex p-2 mb-4">
           <img
-            src={`${process.env.PUBLIC_URL}/images/testimonial.jpg`}
+            src={`http://localhost:8000/${folderName}/${imgName}`}
             alt=""
             className="profile rounded-circle"
             style={{ height: "50px", width: "50px" }}
           />
-          <p className="m-0 pl-2 font-weight-bold align-self-center text-body">
-            Name of the person
-          </p>
+          <Link to={`/user/${props.type}/${props.id}`} className="m-0 pl-2 font-weight-bold align-self-center text-body">
+            {props.name}
+          </Link>
         </div>
         <p className="text-capitalize font-weight-bold">about</p>
         <p className="mb-3">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ea in,
-          accusantium tempore reprehenderit dolorum quia ullam pariatur incidunt
-          modi. Incidunt?
+          {props.desc}
         </p>
-        <a
-          href="#"
-          className="mt-3 btn btn-outline-primary btn-block text-capitalize"
-        >
-          {" "}
-          message
-        </a>
+
+        {props.type == 'C' ?
+          <Link to={`/user/${props.type}/${props.id}`} className="mt-3 btn btn-outline-primary btn-block text-capitalize">
+            view
+        </Link>
+          :
+          // todo:change this to link to message box
+          <Link to={`/user/${props.type}/${props.id}`} className="mt-3 btn btn-outline-primary btn-block text-capitalize">
+            message
+        </Link>}
+
       </div>
     </div>
   );

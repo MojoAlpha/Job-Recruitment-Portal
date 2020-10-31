@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Feed from "./NewsFeed";
 import MyNetwork from "./MyNetwork";
+import Jobs from './Jobs'
 import Profile from "./Profile";
+import { tokenAxios } from 'axios'
 import { BrowserRouter, Switch, Route, useRouteMatch, Link } from "react-router-dom";
 import VacancyDetail from "./components/VacancyDetail";
 
@@ -11,6 +13,8 @@ const navLink =
 export default function RegisteredUser() {
   let { path, url } = useRouteMatch();
   const [activeTab, setActiveTab] = useState(0);
+
+
   return (
     <React.Fragment>
       <div className="container-fluid sticky-top align-items-center p-3 px-md-4  border-bottom shadow-sm bg-primary">
@@ -52,20 +56,16 @@ export default function RegisteredUser() {
               create new post
             </a>
             <div className="d-flex flex-column text-left  justify-content-around flex-grow-1">
-              <Link to={`${path}/feed`}>
-                <a
-                  className={activeTab == 0 ? navLinkActive : navLink}
-                  onClick={() => setActiveTab(0)}
-                >
+              <Link to={`${path}/feed`} className={activeTab == 0 ? navLinkActive : navLink}
+                onClick={() => setActiveTab(0)}
+              >
 
-                  <span className="mr-4">
-                    <i class="fas fa-home"></i>
-                  </span>
+                <span className="mr-4">
+                  <i class="fas fa-home"></i>
+                </span>
                 home
-              </a>
               </Link>
-              <a
-                href="#"
+              <Link to={`${path}/network`}
                 className={activeTab == 1 ? navLinkActive : navLink}
                 onClick={() => setActiveTab(1)}
               >
@@ -73,9 +73,8 @@ export default function RegisteredUser() {
                   <i class="fas fa-user-friends"></i>
                 </span>
                 my network
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link to={`${path}/messages`}
                 className={activeTab == 2 ? navLinkActive : navLink}
                 onClick={() => setActiveTab(2)}
               >
@@ -83,9 +82,8 @@ export default function RegisteredUser() {
                   <i class="far fa-comment-dots"></i>
                 </span>
                 messages
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link to={`${path}/jobs`}
                 className={activeTab == 3 ? navLinkActive : navLink}
                 onClick={() => setActiveTab(3)}
               >
@@ -93,7 +91,7 @@ export default function RegisteredUser() {
                   <i class="fas fa-briefcase"></i>
                 </span>
                 jobs
-              </a>
+              </Link>
               <a
                 href="#"
                 className={activeTab == 4 ? navLinkActive : navLink}
@@ -107,7 +105,7 @@ export default function RegisteredUser() {
             </div>
           </div>
         </div>
-        <div id="registered-user-container" className="col-12 col-md-9 row bg-gray px-4 pt-4">
+        <div id="registered-user-container" className="col-12 col-md-9 bg-gray px-4 pt-4">
           {/* todo:make these routes protected */}
           <Switch>
             <Route exact path={`${path}/vacancy/:id`}>
@@ -118,6 +116,12 @@ export default function RegisteredUser() {
             </Route>
             <Route path={`${path}/feed`} exact >
               <Feed />
+            </Route>
+            <Route path={`${path}/jobs`} exact >
+              <Jobs />
+            </Route>
+            <Route path={`${path}/network`} exact >
+              <MyNetwork />
             </Route>
 
           </Switch>

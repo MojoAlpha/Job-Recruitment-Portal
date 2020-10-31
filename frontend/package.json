@@ -9,6 +9,7 @@
     "axios": "^0.20.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-horizontal-scrolling-menu": "^0.7.8",
     "react-inline-editing": "^1.0.10",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
