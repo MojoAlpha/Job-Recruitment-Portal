@@ -4,7 +4,7 @@ import MyNetwork from "./MyNetwork";
 import Jobs from './Jobs'
 import Profile from "./Profile";
 import { tokenAxios } from 'axios'
-import { BrowserRouter, Switch, Route, useRouteMatch, Link } from "react-router-dom";
+import { BrowserRouter, Switch, Route, useRouteMatch, Link, useLocation } from "react-router-dom";
 import VacancyDetail from "./components/VacancyDetail";
 
 const navLinkActive = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3 border border-primary rounded bg-primary text-white";
@@ -12,7 +12,9 @@ const navLink =
   "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3";
 export default function RegisteredUser() {
   let { path, url } = useRouteMatch();
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState('');
+
+  console.log(`active path:${activeTab}`)
 
 
   return (
@@ -56,8 +58,7 @@ export default function RegisteredUser() {
               create new post
             </a>
             <div className="d-flex flex-column text-left  justify-content-around flex-grow-1">
-              <Link to={`${path}/feed`} className={activeTab == 0 ? navLinkActive : navLink}
-                onClick={() => setActiveTab(0)}
+              <Link to={`${path}/feed`} className={activeTab == 'feed' ? navLinkActive : navLink}
               >
 
                 <span className="mr-4">
@@ -66,8 +67,7 @@ export default function RegisteredUser() {
                 home
               </Link>
               <Link to={`${path}/network`}
-                className={activeTab == 1 ? navLinkActive : navLink}
-                onClick={() => setActiveTab(1)}
+                className={activeTab == 'network' ? navLinkActive : navLink}
               >
                 <span className="mr-4">
                   <i class="fas fa-user-friends"></i>
@@ -75,8 +75,7 @@ export default function RegisteredUser() {
                 my network
               </Link>
               <Link to={`${path}/messages`}
-                className={activeTab == 2 ? navLinkActive : navLink}
-                onClick={() => setActiveTab(2)}
+                className={activeTab == 'messages' ? navLinkActive : navLink}
               >
                 <span className="mr-4">
                   <i class="far fa-comment-dots"></i>
@@ -84,8 +83,7 @@ export default function RegisteredUser() {
                 messages
               </Link>
               <Link to={`${path}/jobs`}
-                className={activeTab == 3 ? navLinkActive : navLink}
-                onClick={() => setActiveTab(3)}
+                className={activeTab == 'jobs' ? navLinkActive : navLink}
               >
                 <span className="mr-4">
                   <i class="fas fa-briefcase"></i>
@@ -95,7 +93,6 @@ export default function RegisteredUser() {
               <a
                 href="#"
                 className={activeTab == 4 ? navLinkActive : navLink}
-                onClick={() => setActiveTab(4)}
               >
                 <span className="mr-4">
                   <i class="fas fa-bookmark"></i>
@@ -109,19 +106,19 @@ export default function RegisteredUser() {
           {/* todo:make these routes protected */}
           <Switch>
             <Route exact path={`${path}/vacancy/:id`}>
-              <VacancyDetail />
+              <VacancyDetail setActiveTab={setActiveTab} />
             </Route>
             <Route exact path={`${path}/:type/:id`}>
-              <Profile />
+              <Profile setActiveTab={setActiveTab} />
             </Route>
             <Route path={`${path}/feed`} exact >
-              <Feed />
+              <Feed setActiveTab={setActiveTab} />
             </Route>
             <Route path={`${path}/jobs`} exact >
-              <Jobs />
+              <Jobs setActiveTab={setActiveTab} />
             </Route>
             <Route path={`${path}/network`} exact >
-              <MyNetwork />
+              <MyNetwork setActiveTab={setActiveTab} />
             </Route>
 
           </Switch>

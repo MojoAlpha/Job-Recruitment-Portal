@@ -4,13 +4,20 @@ import InfoItem from "./components/InfoItem";
 import ListItemWithBtn from './components/ListItemWithBtn'
 import { getImageName } from "../utility"
 import { tokenAxios } from '../api'
-function NewsFeed() {
+import { useRouteMatch } from "react-router-dom";
+function NewsFeed(props) {
+  const { path } = useRouteMatch()
   const [postData, setPostData] = useState([])
   const [suggestedJobs, setSuggestedJobs] = useState([])
   const [appliedJobs, setAppliedJobs] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    //setting active tab
+    //getImageName function can generally be used to break string at '/' or '\'
+    //and return rightmost string after breaking
+    //eg: /user/networks = > networks
+    props.setActiveTab(getImageName(path))
     //getting posts for the newsfeed
     tokenAxios.get(`user/me/f`)
       .then(response => {

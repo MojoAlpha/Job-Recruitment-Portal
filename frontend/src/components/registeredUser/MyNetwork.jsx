@@ -2,14 +2,22 @@ import React, { useState, useEffect } from "react";
 import UserCard from "./components/UserCard";
 import ScrollMenu from 'react-horizontal-scrolling-menu';
 import { tokenAxios } from "../api";
+import { useRouteMatch } from "react-router-dom";
+import { getImageName } from "../utility";
 
-function MyNetwork() {
-
+function MyNetwork(props) {
+  console.log(props)
+  const { path } = useRouteMatch()
   const [userBasicDetails, setUserBasicDetails] = useState({})
   const [userNetwork, setUserNetwork] = useState({})
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    //setting active tab
+    //getImageName function can generally be used to break string at '/' or '\'
+    //and return rightmost string after breaking
+    //eg: /user/networks = > networks
+    props.setActiveTab(getImageName(path))
     //basic detail of user
     tokenAxios.get(`/user/me`)
       .then(response => {
@@ -53,19 +61,25 @@ function MyNetwork() {
     <>
       <h2 className="text-capitalize mb-5">My connections</h2>
 
-      <h4 className="text-capitalize mb-3">companies you follow</h4>
-      <ScrollMenu
-        data={companyFollowedList}
-      // arrowLeft={ArrowLeft}
-      // arrowRight={ArrowRight}
-      // selected={selected}
-      // onSelect={this.onSelect}
-      />
+      {isLoading ?
+        <p>loading....</p>
+        :
+        <>
+          <h4 className="text-capitalize mb-3">companies you follow</h4>
+          <ScrollMenu
+            data={companyFollowedList}
+          // arrowLeft={ArrowLeft}
+          // arrowRight={ArrowRight}
+          // selected={selected}
+          // onSelect={this.onSelect}
+          />
 
-      <h4 className="text-capitalize mb-3">your network</h4>
-      <div className="d-flex flex-wrap">
-        {connectedPersonList}
-      </div>
+          <h4 className="text-capitalize mb-3">your network</h4>
+          <div className="d-flex flex-wrap">
+            {connectedPersonList}
+          </div>
+        </>
+      }
     </>
   );
 }
