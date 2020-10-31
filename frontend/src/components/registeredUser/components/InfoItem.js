@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import { getImageName } from '../../utility'
 function InfoItem(props) {
   const logo = getImageName(props.logo)
+  const normalJobItemClass = "text-decoration-none text-capitalize px-2 d-block mb-2 rounded"
+  const selectedForJobClass = "text-decoration-none text-capitalize px-2 d-block mb-2 rounded border border-success"
   return (
+
     <Link to={`/user/vacancy/${props.vacancyId}`}
-      className="text-decoration-none text-capitalize px-2 d-block mb-2 rounded"
+      className={props.isSelected ? selectedForJobClass : normalJobItemClass}
     >
       <div className="d-flex  shadow-sm p-2">
         <img
@@ -20,6 +23,16 @@ function InfoItem(props) {
           </p>
           <small>{props.companyName}</small>
         </div>
+        {
+          props.isOpen != undefined ?
+            props.isOpen ?
+              <span class="badge badge-success align-self-center ml-2">open</span>
+              :
+              <span class="badge badge-danger align-self-center ml-2">close</span>
+            :
+            <></>
+
+        }
       </div>
     </Link>
   );
