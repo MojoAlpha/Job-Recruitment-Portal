@@ -1,12 +1,11 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 /*how to use this component
-< ListItemWithBtn imgUrl={} text={} btnText={} handleClick={} id={}/>
+< ListItemWithBtn imgUrl={} text={} btnText={}  id={}/>
 1.text: text to display on the item
 2.btnText:text to display on the btn
-3.handleClick: function to tell what to do on btn click
-4.imgUrl: url of the displayed in the list
-5.id: anything which can uniquely identify each object
+3.imgUrl: url of the displayed in the list
+4.id: anything which can uniquely identify each object
  */
 const ListItemWithBtn = (props) => {
     return (

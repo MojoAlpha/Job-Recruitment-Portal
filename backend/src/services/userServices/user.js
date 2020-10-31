@@ -26,68 +26,54 @@ exports.userDetails = (req, res) => {
     User.findById(req.params.userId, (err, user) => {
         User.findById(req.root._id, (err, usr) => {
 
-            if(!user)
-                return res.status(404).json({err: "User Not Found!", success: false})
-        
+            if (!user)
+                return res.status(404).json({
+                    err: "User Not Found!",
+                    success: false
+                })
+
             var connectionStatus = -1
             let isConnection = user.connections.indexOf(req.root._id)
             let isPending = user.connRequests.indexOf(req.root._id)
             let doesReqExist = usr.connRequests.indexOf(req.params.userId)
 
-            if(isConnection >= 0)
+            if (isConnection >= 0)
                 connectionStatus = 0
-            else if(isPending >= 0)
+            else if (isPending >= 0)
                 connectionStatus = 1
-            else if(doesReqExist >= 0)
+            else if (doesReqExist >= 0)
                 connectionStatus = 2
             else
                 connectionStatus = 3
-            
-            var skill_ids = user.skills.map((id) => {return mongoose.mongo.ObjectID(id)})
 
-            Skill.find({ _id: { $in: skill_ids }})
-            .then((skills) => {
-                return res.status(200).json({
-                    type: "U",
-                    name: user.name,
-                    email: user.email,
-                    bio: user.bio,
-                    addr: user.addr,
-                    phone: user.phone,
-                    education: user.education,
-                    links: user.links,
-                    dp: user.dp,
-                    skills: skills,
-                    connectionCount: user.connections.length,
-                    followedCount: user.followed.length,
-                    connectionStatus: connectionStatus
-                })
+            var skill_ids = user.skills.map((id) => {
+                return mongoose.mongo.ObjectID(id)
             })
+
+
+            Skill.find({
+                    _id: {
+                        $in: skill_ids
+                    }
+                })
+                .then((skills) => {
+                    return res.status(200).json({
+                        type: "U",
+                        name: user.name,
+                        email: user.email,
+                        bio: user.bio,
+                        addr: user.addr,
+                        phone: user.phone,
+                        education: user.education,
+                        links: user.links,
+                        dp: user.dp,
+                        skills: skills,
+                        connectionCount: user.connections.length,
+                        connectionStatus: connectionStatus,
+                        exp: user.exp
+                    })
+                })
         })
-
-
-        Skill.find({
-                _id: {
-                    $in: skill_ids
-                }
-            })
-            .then((skills) => {
-                return res.status(200).json({
-                    type: "U",
-                    name: user.name,
-                    email: user.email,
-                    bio: user.bio,
-                    addr: user.addr,
-                    phone: user.phone,
-                    education: user.education,
-                    links: user.links,
-                    dp: user.dp,
-                    skills: skills,
-                    connectionCount: user.connections.length,
-                    connectionStatus: connectionStatus,
-                    exp: user.exp
-                })
-            })
     })
 }
 

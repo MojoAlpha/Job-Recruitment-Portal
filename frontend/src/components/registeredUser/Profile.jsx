@@ -155,7 +155,7 @@ const Profile = () => {
 
     const { posts, name, pic } = postData
 
-    const postList = posts && posts.map(post => <Post owner={{ name: name, dp: pic }} post={post} getImageName={getImageName} />)
+    const postList = posts && posts.map(post => <Post owner={{ name: name, dp: pic, id: posts[0].owner }} post={post} getImageName={getImageName} />)
     return (
         isLoading ?
             'loading...'

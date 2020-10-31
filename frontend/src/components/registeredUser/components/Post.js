@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from 'react-router-dom'
 export default function Post(props) {
   console.log(props)
   let folder = props.post.type == 'C' ? 'logo' : 'dp'
@@ -18,7 +18,7 @@ export default function Post(props) {
           }
         />
         <div className="mx-2" >
-          <h6 className="m-0 font-weight-bold" > {props.owner.name} </h6>
+          <Link to={`/user/${props.post.type}/${props.owner.id}`}> <h6 className="m-0 font-weight-bold" > {props.owner.name} </h6></Link>
           <p> {props.post.createdAt} </p>
         </div>
         {/* todo:can add three dot menu to post */}
