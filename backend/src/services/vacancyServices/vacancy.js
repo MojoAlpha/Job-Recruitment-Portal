@@ -75,7 +75,7 @@ exports.vacancyApply = (req, res) => {
             return res.status(500).json({err: err, success: false})
         })
 
-        return res.status(200).json({err: "Applied!!", success: true})
+        return res.status(200).json({msg: "Applied!!", success: true})
     })
 }
 
