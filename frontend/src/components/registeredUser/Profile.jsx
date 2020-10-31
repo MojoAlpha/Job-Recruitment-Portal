@@ -18,8 +18,10 @@ const Profile = () => {
     const [postData, setPostData] = useState({})
     //boolean to check if we are viewing own profile then show edit controls
     const [showEditControls, setShowEditControls] = useState(false)
-    //for conditional rendering when need to know type is company or user
+    //for conditional rendering ,when need to know that the profile to be displayed is of company or user
     const [isUser, setIsUser] = useState(false)
+    //loggedin user is company or user
+    const [loggedInUserType, setLoggedInUserType] = useState()
     const [connectionStatus, setConnectionStatus] = useState()
     const [connectionCount, setConnectionCount] = useState()
     const [vacancies, setVacancies] = useState([])
@@ -32,29 +34,46 @@ const Profile = () => {
         //check that the searched user and logged in users are same or not
         tokenAxios.get(`/${userType}/me`)
             .then(response => {
-                if (response.data._id == id)
-                    setShowEditControls(true)
-                // todo:if response is 404 it means the type U and C is not 
-                //compatible with the id provided
+                console.log(response.status)
+                if (response.status == 200) {
+                    setLoggedInUserType(response.data.type)
+                    if (response.data._id == id)
+                        setShowEditControls(true)
+                }
+                else if (response.status == 401) {
+                    //todo:it means token is expired run logout function 
+                }
+                else
+                    console.log(response.err)
             })
             .catch((error) => console.log(error))
         //get all the details of searched user
         tokenAxios.get(`/${userType}/${id}`)
             .then(response => {
-                console.log(response.data)
-                setUserFullDetails(response.data)
-                if (type == 'U') {
-                    setConnectionStatus(response.data.connectionStatus)
-                    setConnectionCount(response.data.connectionCount)
-                }
-                else {
-                    setConnectionStatus(response.data.followStatus)
-                    setConnectionCount(response.data.followerCount)
+                console.log(response)
+                if (response.status == 200) {
 
+                    setUserFullDetails(response.data)
+                    if (type == 'U') {
+                        setConnectionStatus(response.data.connectionStatus)
+                        setConnectionCount(response.data.connectionCount)
+                    }
+                    else {
+                        setConnectionStatus(response.data.followStatus)
+                        setConnectionCount(response.data.followerCount)
+
+                    }
                 }
+                else
+                    console.log(response.err)
                 // setIsLoading(false)
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+                if (error.response.status == 404) {
+                    alert('invalid profile url')
+                    // todo:redirect to something
+                }
+            })
         //get posts of searched user
         tokenAxios.get(`/posts/${id}`)
             .then((response) => {
@@ -187,30 +206,36 @@ const Profile = () => {
                                         // show controls if viewing own profile
                                         <button className="btn btn-outline-primary">edit profile</button>
                                         :
-                                        // viewing someone else profile(company or user)
-                                        //viewing user profile
-                                        isUser ?
-                                            //if
-                                            connectionStatus == 0 ?
-                                                <div className="d-flex">
-                                                    <button className="btn btn-outline-primary">message</button>
-                                                    <button className="btn btn-outline-primary" onClick={() => handleDisconnect('U', 2)}>disconnect</button>
-                                                </div>
+                                        //if the loggedin user is of type user
+                                        //then show connection btns
+                                        //but if loggedinuser id of type company do not show connection btns
+                                        loggedInUserType == 'U' ?
+                                            // viewing someone else profile(company or user)
+                                            //viewing user profile
+                                            isUser ?
+                                                //if
+                                                connectionStatus == 0 ?
+                                                    <div className="d-flex">
+                                                        <button className="btn btn-outline-primary">message</button>
+                                                        <button className="btn btn-outline-primary" onClick={() => handleDisconnect('U', 2)}>disconnect</button>
+                                                    </div>
+                                                    :
+                                                    //elseif
+                                                    connectionStatus == 1 ?
+                                                        <button className="btn btn-outline-primary" onClick={() => handleDisconnect('U', 3)}>pending</button>
+                                                        :
+                                                        //else
+                                                        <button className="btn btn-outline-primary" onClick={() => handleConnect('U', 1)}>connect</button>
                                                 :
-                                                //elseif
-                                                connectionStatus == 1 ?
-                                                    <button className="btn btn-outline-primary" onClick={() => handleDisconnect('U', 3)}>pending</button>
+                                                //viewing company profile
+                                                //if
+                                                connectionStatus == 0 ?
+                                                    <button className="btn btn-outline-primary" onClick={() => handleDisconnect('C', 1)}>unfollow</button>
                                                     :
                                                     //else
-                                                    <button className="btn btn-outline-primary" onClick={() => handleConnect('U', 1)}>connect</button>
+                                                    <button className="btn btn-outline-primary" onClick={() => handleConnect('C', 0)}>follow</button>
                                             :
-                                            //viewing company profile
-                                            //if
-                                            connectionStatus == 0 ?
-                                                <button className="btn btn-outline-primary" onClick={() => handleDisconnect('C', 1)}>unfollow</button>
-                                                :
-                                                //else
-                                                <button className="btn btn-outline-primary" onClick={() => handleConnect('C', 0)}>follow</button>
+                                            <></>
                                 }
                             </div>
                         </div>

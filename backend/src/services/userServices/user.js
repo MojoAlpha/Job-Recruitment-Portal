@@ -35,7 +35,9 @@ exports.userDetails = (req, res) => {
             var connectionStatus = -1
             let isConnection = user.connections.indexOf(req.root._id)
             let isPending = user.connRequests.indexOf(req.root._id)
-            let doesReqExist = usr.connRequests.indexOf(req.params.userId)
+            let doesReqExist = -1
+            if (usr != null)
+                doesReqExist = usr.connRequests.indexOf(req.params.userId)
 
             if (isConnection >= 0)
                 connectionStatus = 0
