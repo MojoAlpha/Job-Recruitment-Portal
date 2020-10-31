@@ -38,7 +38,7 @@ const VacancyDetail = (props) => {
     const handleApply = () => {
         tokenAxios.post(`/vacancy/apply/${id}`)
             .then((response) => {
-                if (response.data == 200) {
+                if (response.status == 200) {
                     console.log("applied succesfully")
                     //1 means successfully applied
                     setApplicationStatus(1)
