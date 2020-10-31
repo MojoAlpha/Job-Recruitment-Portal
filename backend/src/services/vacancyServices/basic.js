@@ -25,18 +25,35 @@ exports.postVacancy = (req, res, next) => {
          // passing the control to notification services
 }
 
-// getting a vacancy
+/*
+getting a vacancy
+0 - Selected
+1 - Pending Request
+2 - Not Applied
+*/
 exports.getVacancy = (req, res) => {
 
     Vacancy.findById(req.params.vacancyId, (err, vacancy) => {
         if(!vacancy)
             return res.status(404).json({err: "Vacancy Not Found!", success: false})
         
+        let applicationStatus = -1
+        let isApplicant = vacancy.applicants.indexOf(req.root._id)
+        let isAccepted = vacancy.accepted.indexOf(req.root._id)
+
+        if(isAccepted >= 0)
+            applicationStatus = 0
+        else if(isApplicant >= 0)
+            applicationStatus = 1
+        else
+            applicationStatus = 2
+        
         var skill_ids = vacancy.requiredSkill.map((id) => { return mongoose.mongo.ObjectID(id) })
 
         Company.findById(vacancy.owner, (err, company) => {
             Skill.find({ _id: { $in: skill_ids }}, (err, skills) => {       // finding the skills with skillID
                 res.status(200).json({
+                    applicationStatus: applicationStatus,
                     title: vacancy.title,
                     desig: vacancy.desig,
                     desc: vacancy.desc,
@@ -45,7 +62,8 @@ exports.getVacancy = (req, res) => {
                     applicantCount: vacancy.applicants.length + vacancy.accepted.length,
                     Oname: company.name,
                     Oemail: company.email,
-                    Ologo: company.logo
+                    Ologo: company.logo,
+                    O_id: company._id
                 })
             })
         })

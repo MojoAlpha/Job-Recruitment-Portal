@@ -40,7 +40,40 @@ exports.getUserFeed = (req, res) => {
 
 exports.appliedVacancy = (req, res) => {
 
-    Vacancy.find({ "$or": [{ "applicants": { "$elemMatch": {"$eq": req.root._id} }}, { "accepted": { "$elemMatch": {"$eq": req.root._id} } }] }, { name: 1, isOpen: 1})
+    console.log(req.root._id)
+    // Vacancy.find({ "$or": [{ "applicants": { "$elemMatch": {"$eq": req.root._id} }}, { "accepted": { "$elemMatch": {"$eq": req.root._id} } }] }, { title: 1, isOpen: 1, owner: 1, desig: 1})
+    Vacancy.aggregate([
+        {"$project": {
+            isApplicant: {"$in": [req.root._id.toString(), "$applicants"]},
+            isSelected: {"$in": [req.root._id.toString(), "$accepted"]}, isOpen: 1, desig: 1, owner: 1, title: 1, createdAt: 1
+        }
+        },
+        {$set: {owner: {$toObjectId: "$owner"} }},
+        {
+            "$match": {
+                "$or": [
+                    {isApplicant: true},
+                    {isSelected: true}
+                ]
+            }
+        },
+        {
+            "$lookup": {
+                from: "companies",
+                localField: "owner",
+                foreignField: "_id",
+                as: "company"
+            }
+        },
+        {
+            "$project": {
+                "company.followers": 0, "company.adminVerified": 0, "company.isVerfied": 0, "company.encry_password": 0, "company.salt": 0, "company.verifyToken": 0, "company.createdAt": 0, "company.updatedAt": 0, "company.webLink": 0, "company.size": 0
+            }
+        },
+        {
+            "$sort": { "createdAt": -1 }
+        }
+    ])
     .then((vacList) => {
         
         return res.status(200).json({appliedVac: vacList, success: true})
