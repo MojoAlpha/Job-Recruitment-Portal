@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Post from "./components/Post";
 import InfoItem from "./components/InfoItem";
+import getImageName from "./Profile"
 function NewsFeed() {
+  const [postData, setPostData] = useState([])
+  const { posts, name, pic } = postData
+
+  const postList = posts && posts.map(post => <Post owner={{ name: name, dp: pic }} post={post} getImageName={getImageName} />)
   return (
     <>
       <div className="col-sm-12 col-lg-8 pt-4">
-        <Post />
-        <Post />
+        {postList}
       </div>
       <div
         className="col-3 pt-4 d-none d-lg-block"

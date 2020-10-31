@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import NewsFeed from "./NewsFeed";
+import Feed from "./NewsFeed";
 import MyNetwork from "./MyNetwork";
 import Profile from "./Profile";
 import { BrowserRouter, Switch, Route, useRouteMatch, Link } from "react-router-dom";
 import VacancyDetail from "./components/VacancyDetail";
 
-const navLinkActive =
-  "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3 border border-primary rounded bg-primary text-white";
+const navLinkActive = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3 border border-primary rounded bg-primary text-white";
 const navLink =
   "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3";
 export default function RegisteredUser() {
@@ -53,16 +52,18 @@ export default function RegisteredUser() {
               create new post
             </a>
             <div className="d-flex flex-column text-left  justify-content-around flex-grow-1">
-              <a
-                href="#"
-                className={activeTab == 0 ? navLinkActive : navLink}
-                onClick={() => setActiveTab(0)}
-              >
-                <span className="mr-4">
-                  <i class="fas fa-home"></i>
-                </span>
+              <Link to={`${path}/feed`}>
+                <a
+                  className={activeTab == 0 ? navLinkActive : navLink}
+                  onClick={() => setActiveTab(0)}
+                >
+
+                  <span className="mr-4">
+                    <i class="fas fa-home"></i>
+                  </span>
                 home
               </a>
+              </Link>
               <a
                 href="#"
                 className={activeTab == 1 ? navLinkActive : navLink}
@@ -106,9 +107,7 @@ export default function RegisteredUser() {
             </div>
           </div>
         </div>
-        <div id="registered-user-container"
-          className="col-12 col-md-9 row bg-gray px-4 pt-4"
-        >
+        <div id="registered-user-container" className="col-12 col-md-9 row bg-gray px-4 pt-4">
           {/* todo:make these routes protected */}
           <Switch>
             <Route exact path={`${path}/vacancy/:id`}>
@@ -116,6 +115,9 @@ export default function RegisteredUser() {
             </Route>
             <Route exact path={`${path}/:type/:id`}>
               <Profile />
+            </Route>
+            <Route path={`${path}/feed`} exact >
+              <Feed />
             </Route>
 
           </Switch>
