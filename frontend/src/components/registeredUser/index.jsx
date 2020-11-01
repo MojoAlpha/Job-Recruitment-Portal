@@ -4,7 +4,7 @@ import MyNetwork from "./MyNetwork";
 import Jobs from './Jobs'
 import Profile from "./Profile";
 import { tokenAxios } from '../api'
-import { BrowserRouter, Switch, Route, useRouteMatch, Link, useLocation } from "react-router-dom";
+import { BrowserRouter, Switch, Route, useRouteMatch, Link, useLocation, useHistory } from "react-router-dom";
 import VacancyDetail from "./components/VacancyDetail";
 import { getImageName } from "../utility";
 import NotificationItem from "./components/NotificationItem";
@@ -16,6 +16,7 @@ const navLink = "d-flex text-decoration-none justify-content-center align-items-
 
 export default function RegisteredUser() {
   let { path, url } = useRouteMatch();
+  let history = useHistory();
   const [activeTab, setActiveTab] = useState('');
   //basic details of logged in user
   const [loggedInUserDetails, setLoggedInUserDetails] = useState({})
@@ -35,6 +36,10 @@ export default function RegisteredUser() {
         console.log(error)
         if (error.message === 'Network Error')
           alert("internet lgwa le garib aadmi")
+        if (error.response.code == 401) {
+          history.push('/')
+
+        }
       })
   }, [])
 

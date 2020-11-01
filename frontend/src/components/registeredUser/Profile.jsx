@@ -7,11 +7,12 @@ import VacancyCard from './components/VacancyCard';
 import WorkExperienceCard from './components/WorkExperienceCard'
 import Post from './components/Post'
 import { Tabs, TabLink, TabContent } from 'react-tabs-redux'
-import { useParams, Link, useRouteMatch } from 'react-router-dom'
+import { useParams, Link, useRouteMatch, useHistory } from 'react-router-dom'
 const Profile = () => {
 
     const { type, id } = useParams()
     let { url } = useRouteMatch();
+    let history = useHistory();
     //stores the info of the profile which we are looking at
     const [userFullDetails, setUserFullDetails] = useState({})
     const [isLoading, setIsLoading] = useState(true)
@@ -72,7 +73,7 @@ const Profile = () => {
             .catch((error) => {
                 if (error.response.status == 404) {
                     alert('invalid profile url')
-                    // todo:redirect to something
+                    history.push('/user/feed')
                 }
             })
         //get posts of searched user
