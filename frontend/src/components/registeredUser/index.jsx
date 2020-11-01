@@ -68,29 +68,27 @@ export default function RegisteredUser() {
     <React.Fragment>
       <div className="container-fluid sticky-top align-items-center p-3 px-md-4  border-bottom shadow-sm bg-primary">
         <div className="row align-items-center">
+          {/* devhub logo */}
           <h5 className=" col-md-3 text-white text-center font-weight-bold text-uppercase align-middle">
             devhub
           </h5>
 
+          {/* global search box */}
           <div className="col-md-6">
-            <form class="form mt-2 mt-md-0">
-              {/* <input
-                class="form-control mr-sm-2"
-                type="text"
-                placeholder="Search for jobs, company, skills, person"
-                aria-label="Search"
-              /> */}
-              <GloabalSearch placeholder="Search for jobs, company, skills, person" />
-            </form>
+            <GloabalSearch placeholder="Search for jobs, company, skills, person" />
           </div>
+
           <div className="col-md-3">
+            {/* profile btn */}
             <Link to={`/user/${loggedInUserDetails.type}/${loggedInUserDetails._id}`} class="text-white text-decoration-none font-weight-bold text-capitalize" >
               <img src={`http://localhost:8000/${imgFolder}/${profileImg}`} alt="" width="30px" height="30px" className="rounded-circle" /> profile
             </Link>
+
+            {/* notifications */}
             <span className="ml-5" onClick={fetchNofications} style={{ position: 'relative', cursor: 'pointer' }}>
               <i class="fas fa-bell text-white"></i>
               <span class="badge badge-warning align-self-center ml-2">{loggedInUserDetails.unreadNotification == 0 ? null : loggedInUserDetails.unreadNotification}</span>
-              {showNotification && <div className="bg-light shadown rounded" style={{ position: 'absolute' }}>
+              {showNotification && <div className="bg-light shadow rounded" style={{ position: 'absolute', left: '-6em', right: '-6em' }}>
                 {console.log(`notification list`)}
                 {console.log(notificationList)}
                 {notificationList}
