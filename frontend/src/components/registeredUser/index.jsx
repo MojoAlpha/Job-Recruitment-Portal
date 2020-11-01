@@ -9,11 +9,13 @@ import VacancyDetail from "./components/VacancyDetail";
 import { getImageName } from "../utility";
 import NotificationItem from "./components/NotificationItem";
 import Window from "../chat/Window";
+import io from "socket.io-client";
+import { signout } from '../../auth/index'
 
 const navLinkActive = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3 border border-primary rounded bg-primary text-white";
 const navLink = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3";
 
-export default function RegisteredUser() {
+export default function RegisteredUser({ history }) {
   let { path, url } = useRouteMatch();
   const [activeTab, setActiveTab] = useState('');
   //basic details of logged in user
@@ -21,12 +23,24 @@ export default function RegisteredUser() {
   const [notifications, setNotifications] = useState([])
   const [showNotification, setShowNotification] = useState(false)
 
+  const ENDPOINT = "http://localhost:8000";
+  const socket = io(ENDPOINT);;
+
   useEffect(() => {
     //fetching basic details of loggedin user
     tokenAxios.get(`/user/me`)
       .then(response => {
-        if (response.status == 200)
+        if (response.status == 200){
           setLoggedInUserDetails(response.data)
+          const newUser = { _id: response.data._id, name: response.data.name };
+
+          console.log(newUser);
+          socket.emit("addConnection", newUser, (error) => {
+            if (error) {
+              alert(error);
+            }
+          });
+        }
         else
           console.log(response.err)
       })
@@ -95,6 +109,11 @@ export default function RegisteredUser() {
                 {notificationList}
               </div>}
             </span>
+            <button className="btn px-2 mx-2 bg-white" onClick={() => {
+              signout(() => history.push("/"))
+            }}> 
+            <span style={{ fontWeight: "bold", color:"#11b0bb"}}>Logout</span>
+            </button>
           </div>
         </div>
       </div>
@@ -168,7 +187,7 @@ export default function RegisteredUser() {
               <Profile setActiveTab={setActiveTab} />
             </Route>
             <Route exact path={`${path}/message/:type/:id`}>
-              <Window setActiveTab={setActiveTab} />
+              <Window setActiveTab={setActiveTab} SOCKET={socket}/>
             </Route>
             <Route path={`${path}/feed`} exact >
               <Feed setActiveTab={setActiveTab} />
