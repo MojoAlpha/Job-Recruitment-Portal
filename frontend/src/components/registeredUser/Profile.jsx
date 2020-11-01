@@ -7,10 +7,11 @@ import VacancyCard from './components/VacancyCard';
 import WorkExperienceCard from './components/WorkExperienceCard'
 import Post from './components/Post'
 import { Tabs, TabLink, TabContent } from 'react-tabs-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, Link, useRouteMatch } from 'react-router-dom'
 const Profile = () => {
 
     const { type, id } = useParams()
+    let { url } = useRouteMatch();
     //stores the info of the profile which we are looking at
     const [userFullDetails, setUserFullDetails] = useState({})
     const [isLoading, setIsLoading] = useState(true)
@@ -146,16 +147,18 @@ const Profile = () => {
         tokenAxios.delete(apiUrl)
             .then(response => {
                 console.log(response.data)
-                //cancelling a pending (not accepted yet) request
-                if (connectionCode == 3)
-                    setConnectionStatus(2)
-                else
-                    setConnectionStatus(connectionCode)
+
+                // if (connectionCode == 3 && connectionStatus==1)
+                //     setConnectionStatus(2)
+                // else
+                setConnectionStatus(connectionCode)
                 //this is case when cancelling a connection request
                 //since the request was not accepted yet(pending case)
                 //then do not decrease count
-                if (connectionCode != 3)
+                //note:connectionStatus is what is was before and connectinoCode is what you want to make
+                if (connectionStatus != 1 && type == 'U')
                     setConnectionCount(connectionCount - 1)
+                //but in case of company instanly decrease count
                 if (type == 'C') {
                     console.log("decreased count")
                     setConnectionCount(connectionCount - 1)
@@ -166,7 +169,37 @@ const Profile = () => {
             .catch((error) => console.log(error))
     }
 
+    const acceptRequest = () => {
+        tokenAxios.post(`/user/connect/accept/${id}`)
+            .then(response => {
+                if (response.status == 200) {
+                    setConnectionStatus(0)
+                    setConnectionCount(connectionCount + 1)
+                }
+                else
+                    console.log(response.err)
+            })
+            .catch(error => {
+                console.log(error)
+                if (error.message === 'Network Error')
+                    alert("unable to reach to server try again later")
+            })
+    }
 
+    const rejectRequest = () => {
+        tokenAxios.delete(`/user/decline/accept/${id}`)
+            .then(response => {
+                if (response.status == 200)
+                    setConnectionStatus(3)
+                else
+                    console.log(response.err)
+            })
+            .catch(error => {
+                console.log(error)
+                if (error.message === 'Network Error')
+                    alert("unable to reach to server try again later")
+            })
+    }
 
 
     // const posts = postData.posts
@@ -204,7 +237,7 @@ const Profile = () => {
                                 {
                                     showEditControls ?
                                         // show controls if viewing own profile
-                                        <button className="btn btn-outline-primary">edit profile</button>
+                                        <Link to={`${url}/edit`} className="btn btn-outline-primary">edit profile</Link>
                                         :
                                         //if the loggedin user is of type user
                                         //then show connection btns
@@ -217,15 +250,24 @@ const Profile = () => {
                                                 connectionStatus == 0 ?
                                                     <div className="d-flex">
                                                         <button className="btn btn-outline-primary">message</button>
-                                                        <button className="btn btn-outline-primary" onClick={() => handleDisconnect('U', 2)}>disconnect</button>
+                                                        <button className="btn btn-outline-danger" onClick={() => handleDisconnect('U', 3)}>disconnect</button>
                                                     </div>
                                                     :
                                                     //elseif
                                                     connectionStatus == 1 ?
-                                                        <button className="btn btn-outline-primary" onClick={() => handleDisconnect('U', 3)}>pending</button>
+                                                        <div className="d-flex">
+                                                            <button className="btn btn-outline-primary" disabled>pending</button>
+                                                            <button className="btn btn-outline-danger" onClick={() => handleDisconnect('U', 3)}>cancel request</button>
+                                                        </div>
                                                         :
-                                                        //else
-                                                        <button className="btn btn-outline-primary" onClick={() => handleConnect('U', 1)}>connect</button>
+                                                        connectionStatus == 2 ?
+                                                            <div className="d-flex">
+                                                                <button className="btn btn-outline-primary" onClick={acceptRequest}>accept</button>
+                                                                <button className="btn btn-outline-danger" onClick={rejectRequest}>decline</button>
+                                                            </div>
+                                                            :
+                                                            //else
+                                                            <button className="btn btn-outline-primary" onClick={() => handleConnect('U', 1)}>connect</button>
                                                 :
                                                 //viewing company profile
                                                 //if

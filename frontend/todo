@@ -15,7 +15,7 @@
 
 #crud
 []post
-[]profile
+[x]profile
 []job vacancy
 
 #job vacancy
@@ -43,8 +43,8 @@ for other it should be link "no vacancy open currenlt" etc
 [x]global search api is giving imporoper results(ask mohit)
 
 #notification
-[]talk with mohit to change notification msg
-[]also ask how i am gona send him "isread" to false of notifications(i mean how would you exactly identify)
+[x]talk with mohit to change notification msg
+[x]also ask how i am gona send him "isread" to false of notifications(i mean how would you exactly identify)
 []get connection code 4 setted up by mohit
-[]img of the sender
+[x]img of the sender
 

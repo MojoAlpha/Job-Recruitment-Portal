@@ -9,6 +9,7 @@ import VacancyDetail from "./components/VacancyDetail";
 import { getImageName } from "../utility";
 import NotificationItem from "./components/NotificationItem";
 import GloabalSearch from "./components/GloabalSearch";
+import UserProfile from "../CRUD/UserProfile";
 
 const navLinkActive = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3 border border-primary rounded bg-primary text-white";
 const navLink = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3";
@@ -97,6 +98,8 @@ export default function RegisteredUser() {
           </div>
         </div>
       </div>
+
+
       <div className="container-fluid d-flex no-gutters p-0">
         <div
           className="d-none d-md-block col-3 px-2 py-4 px-lg-4 px-xl-5 text-center bg-white shadow border-right"
@@ -174,6 +177,9 @@ export default function RegisteredUser() {
             </Route>
             <Route path={`${path}/network`} exact >
               <MyNetwork setActiveTab={setActiveTab} />
+            </Route>
+            <Route path={`${path}/:type/:id/edit`} exact >
+              <UserProfile />
             </Route>
 
           </Switch>
