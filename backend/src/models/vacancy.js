@@ -6,12 +6,15 @@ var Vacancy = new Schema({
         type: String,
         required: true
     },
-    title: {
-        type: String,
-        required: true
+    location: {
+        type: String
+    },
+    salary: {
+        type: String
     },
     desig: {
-        type: String
+        type: String,
+        required: true
     },
     desc: {
         type: String

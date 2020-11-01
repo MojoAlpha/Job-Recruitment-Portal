@@ -8,7 +8,8 @@ exports.postVacancy = (req, res, next) => {
 
     var newVacancy = new Vacancy({
         owner: req.root._id,
-        title: req.body.title,
+        location: req.body.location,
+        salary: req.body.salary,
         desig: req.body.desig,
         desc: req.body.desc,
         requiredSkill: req.body.requiredSkill
@@ -66,7 +67,8 @@ exports.getVacancy = (req, res) => {
             }, (err, skills) => { // finding the skills with skillID
                 res.status(200).json({
                     applicationStatus: applicationStatus,
-                    title: vacancy.title,
+                    location: vacancy.location,
+                    salary: vacancy.salary,
                     desig: vacancy.desig,
                     desc: vacancy.desc,
                     isOpen: vacancy.isOpen,
@@ -99,8 +101,10 @@ exports.updateVacancy = (req, res) => {
             })
 
         // if any of the field is not provided, it is not updated
-        if (req.body.title !== undefined)
-            vacancy.title = req.body.title
+        if (req.body.location !== undefined)
+            vacancy.location = req.body.location
+        if (req.body.salary !== undefined)
+            vacancy.salary = req.body.salary
         if (req.body.desig !== undefined)
             vacancy.desig = req.body.desig
         if (req.body.desc !== undefined)

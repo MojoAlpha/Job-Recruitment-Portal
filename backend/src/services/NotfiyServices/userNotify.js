@@ -1,14 +1,20 @@
 var User = require('../../models/user')
 var Notification = require('../../models/notification')
 
+/*
+CONNECTION CODE
+0 - Any One User Has Sent You Connection Request
+1 - Many Users Have Sent You Connection Request
+*/
+
 // Notification To The User After Recieving Connection Request
 exports.connectionReq = (req, res) => {
 
     // Checking If An Unread Such Notification Already Exists
     Notification.findOne({reciever: req.params.userId, 
                           isRead: false, 
-                          "$or":[{msg: "Sent You A Connection Request!"}, 
-                                 {msg: "You May Have Pending Connection Requests!"
+                          "$or":[{code: 0}, 
+                                 {code: 1
                                 }]
                         }, (err, notification) => {
         
@@ -17,7 +23,7 @@ exports.connectionReq = (req, res) => {
             var newNotify = new Notification({
                 reciever: req.params.userId,
                 sender: req.root._id,
-                msg: "Sent You A Connection Request!",
+                code: 0,
                 link: `${process.env.HOST}/user/`
             })
         
@@ -28,7 +34,7 @@ exports.connectionReq = (req, res) => {
         } 
         // If Exists, Just Stack It Into One With Previous One
         else {
-            notification.msg = "You May Have Pending Connection Requests!"
+            notification.code = 1
             notification.save()
             .catch((err) => {
                 return res.status(500).json({err: err, success: false})
