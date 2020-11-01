@@ -18,7 +18,7 @@ var router = express.Router()
     Res Body :- {msg: "...", success: true} , if Sucessfully Created
                 {err: "...", success: false} , if Any Error Occurs */
 router.post('/', [
-    body('title', 'desig', 'desc').notEmpty().withMessage("Vacany Details Should Be Provided!")
+    body('location', 'salary', 'desig', 'desc', 'requiredSkill').notEmpty().withMessage("Vacany Details Should Be Provided!")
 ] , isCompanyVerified, errHandler, postVacancy, postVacancyNotify)
 
 /*  GET Route :- Vacancy details For User OR Company

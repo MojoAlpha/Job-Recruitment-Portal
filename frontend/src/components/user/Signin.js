@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { signin, isAutheticated, authenticate } from '../../auth'
 import { Link, Redirect } from 'react-router-dom';
+import { tokenAxios } from '../api';
 
 export default function Signin() {
 
@@ -42,7 +43,7 @@ export default function Signin() {
     if (user && user.type === "U") {
       return <Redirect to="/user/feed" />
     } else if (user && user.type === "C") {
-      return <Redirect to="/user/feed" />
+      return <Redirect to="/user/C" />
     }
   };
 

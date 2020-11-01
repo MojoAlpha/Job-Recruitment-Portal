@@ -10,8 +10,8 @@ var Notification = new Schema({
         type: String,
         required: true
     },
-    msg: {
-        type: String
+    code: {
+        type: Number
     },
     link: {
         type: String

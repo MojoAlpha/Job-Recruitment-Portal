@@ -14,19 +14,29 @@ searchRouter.use(bodyParser.json())
 searchRouter.get('/', async(req, res) => {
     var userResult = await searchString.searchUser(req.query.search)
     var companyResult = await searchString.searchCompany(req.query.search)
-    var skillResult = await searchString.searchCompany(req.query.search)
+    var skillResult = await searchString.searchSkill(req.query.search)
+    var vacancyResult = await searchString.searchVacancy(req.query.search)
 
-    res.status(200).json({users: userResult, companies: companyResult, skills: skillResult, success: true})
+    res.status(200).json({users: userResult, companies: companyResult, skills: skillResult, vacancies: vacancyResult, success: true})
 })
 
 /*  GET Route :- Returning The Results Of Searching In Skills Collection
     Res Body :- {skills: [{}], success: true}
                 {err: "...", success: false} , if Any Error Occurs */
 searchRouter.get('/skill', async(req, res) => {
-    console.log(req.query.search.toString())
-    var skillResult = await searchString.searchSkill(req.query.search)
+    var skillResult = await searchString.searchSkill(req.query.search.toString())
 
     res.status(200).json({skills: skillResult, success: true})
+})
+
+/*  GET Route :- Returning Vacancies & Users According To The skillId
+    Res Body :- {users: [{}], vacancies: [{}], success: true}
+                {err: "...", success: false} , if Any Error Occurs */
+searchRouter.get('/skill/:skillId', async(req, res) => {
+    var skillVacancy = await searchString.skillVacancy(req.params.skillId)
+    var skillUser = await searchString.skillUser(req.params.skillId)
+
+    res.status(200).json({vacancies: skillVacancy, users: skillUser, success: true})
 })
 
 module.exports = searchRouter;
