@@ -11,6 +11,7 @@ var education = require('./api/education')
 var experience = require('./api/experience')
 var skill = require('./api/skill');
 var connect = require('./api/connection')
+var chat = require('./api/chat')
 
 const { isSignedIn, 
         isVerified } = require('../../middleware');
@@ -20,6 +21,7 @@ userRouter.use(bodyParser.json())
 
 userRouter.use('/', users)
 userRouter.use('/connect', isSignedIn, isVerified, connect)
+userRouter.use('/chat', isSignedIn, isVerified, chat)
 userRouter.use('/me', isSignedIn, isVerified, userDetails)
 userRouter.use('/me/f', isSignedIn, isVerified, userFeed)
 userRouter.use('/me/link', isSignedIn, isVerified, links)
