@@ -4,10 +4,10 @@ import io from "socket.io-client";
 import { tokenAxios } from "../../api";
 
 const ENDPOINT = "http://localhost:8000";
-let socket;
 
 export default function ChatBox(props) {
-  console.log(ENDPOINT);
+  console.log(props.SOCKET);
+  const socket = props.SOCKET;
   const [messageList, setMessageList] = useState([]);
 
   const [inputMessage, setInputMessage] = useState("");
@@ -19,32 +19,26 @@ export default function ChatBox(props) {
 
   useEffect(() => {
     //details of the logged in user
-    socket = io(ENDPOINT);
-
-    tokenAxios
-      .get(`/${"user"}/me`)
-      .then((response) => {
-        if (response.status == 200) {
-          setMyDetails(response.data);
-
-          const newUser = { _id: response.data._id, name: response.data.name };
-
-          console.log(newUser);
-          socket.emit("addConnection", newUser, (error) => {
-            if (error) {
-              alert(error);
-            }
-          });
-        } else if (response.status == 401) {
-          //todo:it means token is expired run logout function
-        } else console.log(response.err);
+    tokenAxios.get(`/user/me`)
+      .then(response => {
+        if (response.status == 200){
+          setMyDetails(response.data)
+        }
+        else
+          console.log(response.err)
       })
-      .catch((error) => console.log(error));
+      .catch(error => {
+        console.log(error)
+        if (error.message === 'Network Error')
+          alert("internet lgwa le garib aadmi")
+      })
+  }, []);
 
+  useEffect(() => {
     socket.on("Message", (message) => {
       setMessageList((messageList) => [...messageList, message]);
     });
-  }, []);
+  },[messageList])
 
   const messages = messageList.map((message) => (
     <Message

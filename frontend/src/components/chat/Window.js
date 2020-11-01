@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 import UserInfo from './subComponents/UserInfo';
 import ChatBox from './subComponents/ChatBox';
-const Window = () => {
+const Window = (props) => {
 
     //type and id of user you want to chat with
     const { type, id } = useParams()
@@ -59,7 +59,7 @@ const Window = () => {
             :
             (<>
                 <UserInfo img={userFullDetails.dp} id={userFullDetails._id} name={userFullDetails.name} desc={userFullDetails.bio} type='U' />
-                <ChatBox receiver = {id}/>
+                <ChatBox receiver = {id} SOCKET={props.SOCKET}/>
             </>)
     )
 }
