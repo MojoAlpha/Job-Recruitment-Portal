@@ -35,7 +35,7 @@ const VacancyDetail = (props) => {
             });
     }, [])
 
-    // todo:this api is having some problem at backend
+
     const handleApply = () => {
         tokenAxios.post(`/vacancy/apply/${id}`)
             .then((response) => {
@@ -109,10 +109,12 @@ const VacancyDetail = (props) => {
                             <div className="rounded-circle align-self-center " style={{ backgroundImage: `url(http://localhost:8000/logo/${getImageName(vacancyDetail.Ologo)})`, backgroundSize: 'cover', height: '20vh', width: '20vh' }}>
                             </div>
                             <div className="mx-4 d-flex justify-content-between flex-column">
-                                <h2 className="text-capitalize">{vacancyDetail.title}</h2>
+                                <h2 className="text-capitalize">{vacancyDetail.desig}</h2>
                                 {/* todo:make this a link to the company profile */}
                                 <small className="mb-1">{vacancyDetail.Oname}</small>
                                 <p className="text-capitalize mt-1"><strong>posted on:</strong>{vacancyDetail.createdAt}</p>
+                                <p className="text-capitalize mt-1"><strong>location:</strong>{vacancyDetail.location}</p>
+                                <p className="text-capitalize mt-1"><strong>salary:</strong>{vacancyDetail.salary}</p>
                                 <div className="d-flex">
                                     {/* todo:important! handle buttons with status code */}
                                     {vacancyDetail.isOpen ?

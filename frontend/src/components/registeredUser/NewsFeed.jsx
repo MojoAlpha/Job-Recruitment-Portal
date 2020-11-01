@@ -86,9 +86,9 @@ function NewsFeed(props) {
 
     return <Post owner={{ name: name, dp: logo, id: id }} post={{ createdAt, desc, postImg, type }} getImageName={getImageName} />
   })
-  const suggestedJobList = suggestedJobs.map(job => <InfoItem logo={job.company[0].logo} companyName={job.company[0].name} title={job.title} vacancyId={job._id} getImageName={getImageName} isOpen={job.isOpen} isSelected={job.isSelected} />)
+  const suggestedJobList = suggestedJobs.map(job => <InfoItem logo={job.company[0].logo} companyName={job.company[0].name} title={job.desig} vacancyId={job._id} getImageName={getImageName} isOpen={job.isOpen} isSelected={job.isSelected} />)
   // todo:important change suggestedJob to appliedJob when response is corrected
-  const appliedJobList = appliedJobs.map(job => <InfoItem logo={job.company[0].logo} companyName={job.company[0].name} title={job.title} vacancyId={job._id} getImageName={getImageName} isOpen={job.isOpen} isSelected={job.isSelected} />)
+  const appliedJobList = appliedJobs.map(job => <InfoItem logo={job.company[0].logo} companyName={job.company[0].name} title={job.desig} vacancyId={job._id} getImageName={getImageName} isOpen={job.isOpen} isSelected={job.isSelected} />)
   return (
 
     isLoading ?
