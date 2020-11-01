@@ -21,7 +21,7 @@
 #job vacancy
 [x]waiting for appiedStatus in response
 [x]apply api is not working properly
-[]date missing in vacany detail (not in api response)(ask mohit)
+[x]date missing in vacany detail (not in api response)(ask mohit)
 
 #suggessted jobs
 []similar to percentage
