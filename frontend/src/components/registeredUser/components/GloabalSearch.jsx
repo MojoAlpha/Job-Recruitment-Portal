@@ -6,10 +6,13 @@ const GloabalSearch = (props) => {
 
 
     // const [activeOption, setActiveOption] = useState('-1')
-    const [suggestions, setSuggestions] = useState([])
+
+    //setting individual componenets of global search to states
     const [suggestedUsers, setSuggestedUsers] = useState([])
     const [suggestedCompanies, setSuggestedCompanies] = useState([])
     const [suggestedSkills, setSuggestedSkills] = useState([])
+    const [suggestedVacancies, setSuggestedVacancies] = useState([])
+
     const [showSuggestions, setShowSuggestion] = useState(false)
     const [userInput, setUserInput] = useState('')
     // const [isSelected, setIsSelected] = useState(false)
@@ -29,6 +32,7 @@ const GloabalSearch = (props) => {
                     setSuggestedUsers(response.data.users)
                     setSuggestedCompanies(response.data.companies)
                     setSuggestedSkills(response.data.skills)
+                    setSuggestedVacancies(response.data.vacancies)
                 }
                 else
                     console.log(response.err)
@@ -58,10 +62,9 @@ const GloabalSearch = (props) => {
             props.handleSubmit(selectedItem)
         }
     }
-    console.log(suggestions.users)
-    console.log(suggestions.companies)
-    console.log(suggestions.skills)
 
+
+    //suggested user list
     const suggestedUsersList = suggestedUsers.map(user => {
         return (<Link to={`/user/U/${user._id}`}
             class="list-group-item text-decoration-none"
@@ -72,6 +75,7 @@ const GloabalSearch = (props) => {
         </Link>)
     })
 
+    //suggsted companies list
     const suggestedCompaniesList = suggestedCompanies.map(company => {
         return <Link to={`/user/C/${company._id}`}
             class="list-group-item text-decoration-none"
@@ -81,13 +85,24 @@ const GloabalSearch = (props) => {
         </Link>
     })
 
+    //suggested skills list
     const suggestedSkillsList = suggestedSkills.map(skill => {
         return <span
-            className="p-2 border m-2 text-decoration none"
+            className="p-2 border m-2 text-decoration-none"
             onClick={handleClick}
             style={{ borderRadius: '10em', cursor: 'pointer' }} >
             {skill.name}
         </span>
+    })
+
+    //suggeted vacancies
+    const suggestedVacanciesList = suggestedVacancies.map(vacancy => {
+        return <Link to={`/user/vacancy/${vacancy._id}`}
+            className="p-2 border m-2 text-decoration-none"
+            onClick={handleClick}
+            style={{ borderRadius: '10em', cursor: 'pointer' }} >
+            {vacancy.desig}
+        </Link>
     })
     return (
         <div style={{ position: 'relative' }}>
@@ -123,6 +138,21 @@ const GloabalSearch = (props) => {
                                         {suggestedSkillsList}
                                     </div>
                                 </li>
+                            }
+                            {
+                                suggestedVacanciesList.length > 0 &&
+                                <li class="list-group-item">
+                                    <small className="badge badge-warning">vacancies</small>
+                                    <div className="d-flex flex-wrap text-justify">
+                                        {suggestedVacanciesList}
+                                    </div>
+                                </li>
+                            }
+                            {suggestedVacanciesList.length == 0 &&
+                                suggestedCompaniesList == 0 &&
+                                suggestedSkillsList == 0 &&
+                                suggestedUsersList == 0 &&
+                                <li class="list-group-item">no match found</li>
                             }
                         </ul>
                     )}
