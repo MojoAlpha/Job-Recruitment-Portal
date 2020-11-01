@@ -4,6 +4,7 @@ import SkillPill from './SkillPill'
 import { useParams } from 'react-router-dom'
 import { tokenAxios } from '../../api'
 import axios from 'axios'
+import { getImageName } from '../../utility'
 const VacancyDetail = (props) => {
     let { id } = useParams();
     const [vacancyDetail, setVacancyDetail] = useState({})
@@ -105,7 +106,7 @@ const VacancyDetail = (props) => {
                 (<div className="container-fluid bg-white p-4  mb-4">
                     <div className="mx-2 mx-xl-5">
                         <div className="d-flex flex-column flex-sm-row mb-4">
-                            <div className="rounded-circle align-self-center " style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/testimonial.jpg)`, backgroundSize: 'cover', height: '20vh', width: '20vh' }}>
+                            <div className="rounded-circle align-self-center " style={{ backgroundImage: `url(http://localhost:8000/logo/${getImageName(vacancyDetail.Ologo)})`, backgroundSize: 'cover', height: '20vh', width: '20vh' }}>
                             </div>
                             <div className="mx-4 d-flex justify-content-between flex-column">
                                 <h2 className="text-capitalize">{vacancyDetail.title}</h2>

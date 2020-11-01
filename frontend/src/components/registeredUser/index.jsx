@@ -3,20 +3,66 @@ import Feed from "./NewsFeed";
 import MyNetwork from "./MyNetwork";
 import Jobs from './Jobs'
 import Profile from "./Profile";
-import { tokenAxios } from 'axios'
+import { tokenAxios } from '../api'
 import { BrowserRouter, Switch, Route, useRouteMatch, Link, useLocation } from "react-router-dom";
 import VacancyDetail from "./components/VacancyDetail";
+import { getImageName } from "../utility";
+import NotificationItem from "./components/NotificationItem";
 
 const navLinkActive = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3 border border-primary rounded bg-primary text-white";
-const navLink =
-  "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3";
+const navLink = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3";
+
 export default function RegisteredUser() {
   let { path, url } = useRouteMatch();
   const [activeTab, setActiveTab] = useState('');
+  //basic details of logged in user
+  const [loggedInUserDetails, setLoggedInUserDetails] = useState({})
+  const [notifications, setNotifications] = useState([])
+  const [showNotification, setShowNotification] = useState(false)
+
+  useEffect(() => {
+    //fetching basic details of loggedin user
+    tokenAxios.get(`/user/me`)
+      .then(response => {
+        if (response.status == 200)
+          setLoggedInUserDetails(response.data)
+        else
+          console.log(response.err)
+      })
+      .catch(error => {
+        console.log(error)
+        if (error.message === 'Network Error')
+          alert("internet lgwa le garib aadmi")
+      })
+  }, [])
+
+  const toggleNotification = () => {
+    setShowNotification(!showNotification)
+  }
+
+  const fetchNofications = () => {
+    toggleNotification()
+    tokenAxios.get(`/user/me/notifications`)
+      .then(response => {
+        if (response.status == 200)
+          setNotifications(response.data.notifications)
+        else
+          console.log(response.err)
+      })
+      .catch(error => {
+        console.log(error)
+        if (error.message === 'Network Error')
+          alert("internet lgwa le garib aadmi")
+      })
+  }
 
   console.log(`active path:${activeTab}`)
+  //name of the image file
+  const profileImg = loggedInUserDetails.dp ? getImageName(loggedInUserDetails.dp) : getImageName(loggedInUserDetails.logo)
+  //folder in which the image file is depending upon the user type
+  const imgFolder = loggedInUserDetails.type == 'U' ? 'dp' : 'logo'
 
-
+  const notificationList = notifications.map(notification => <NotificationItem item={notification} toggleNotification={toggleNotification} />)
   return (
     <React.Fragment>
       <div className="container-fluid sticky-top align-items-center p-3 px-md-4  border-bottom shadow-sm bg-primary">
@@ -36,9 +82,18 @@ export default function RegisteredUser() {
             </form>
           </div>
           <div className="col-md-3">
-            <a class="btn btn-outline-light" href="#">
-              Sign up
-            </a>
+            <Link to={`/user/${loggedInUserDetails.type}/${loggedInUserDetails._id}`} class="text-white text-decoration-none font-weight-bold text-capitalize" >
+              <img src={`http://localhost:8000/${imgFolder}/${profileImg}`} alt="" width="30px" height="30px" className="rounded-circle" /> profile
+            </Link>
+            <span className="ml-5" onClick={fetchNofications} style={{ position: 'relative', cursor: 'pointer' }}>
+              <i class="fas fa-bell text-white"></i>
+              <span class="badge badge-warning align-self-center ml-2">{loggedInUserDetails.unreadNotification == 0 ? null : loggedInUserDetails.unreadNotification}</span>
+              {showNotification && <div className="bg-light shadown rounded" style={{ position: 'absolute' }}>
+                {console.log(`notification list`)}
+                {console.log(notificationList)}
+                {notificationList}
+              </div>}
+            </span>
           </div>
         </div>
       </div>

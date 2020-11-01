@@ -1,12 +1,27 @@
+#final finish
 []after every api call see for 401 to check token expiry
-[]user edit profile facility
 []make skill and social links card equal length
     and also look into their responsievness
 []make dates in user readable format
+[]restructure folders
+[]make those card of mynewtworks section same height irrespective of content
+
+#quick fixes
+[x]image is constant in job vacancy detail page change to dynamic
+
+#superimportant
+[]globalsearch
+[]setup navigation differently for company
+
+#crud
+[]post
+[]profile
+[]job vacancy
 
 #job vacancy
 [x]waiting for appiedStatus in response
-[]apply api is not working properly
+[x]apply api is not working properly
+[]date missing in vacany detail (not in api response)(ask mohit)
 
 #suggessted jobs
 []similar to percentage
@@ -22,11 +37,14 @@ for other it should be link "no vacancy open currenlt" etc
 
 []ask ishan where to redirect after caughting an incompatible usertype and userid
 
-#navigation
-[]setup navigation differently for company
-
-#mynewtworks
-[]make those card of same height irrespective of content
 
 #newfeed
 []ask mohit why suggesstedjobs and applied are same
+[]global search api is giving imporoper results(ask mohit)
+
+#notification
+[]talk with mohit to change notification msg
+[]also ask how i am gona send him "isread" to false of notifications(i mean how would you exactly identify)
+[]get connection code 4 setted up by mohit
+[]img of the sender
+
