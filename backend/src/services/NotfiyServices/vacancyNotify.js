@@ -2,6 +2,12 @@ var Company = require('../../models/company')
 var Notification = require('../../models/notification')
 const Vacancy = require('../../models/vacancy')
 
+/*
+2 - Vacancy Has Been Posted
+3 - Vacancy Has Selected You
+4 - Vacancy Has Been Closed
+*/
+
 // Generating A Notification For All The Users Following A Company After A Post
 exports.postVacancyNotify = (req, res) => {
     
@@ -12,7 +18,7 @@ exports.postVacancyNotify = (req, res) => {
             notifications.push(new Notification({
                 reciever: userId,
                 sender: req.root._id,
-                msg: "A New Job Has Been Posted You Might Want To Have A Look!!",
+                code: 2,
                 link: `${process.env.HOST}/vacancy/${req.root.vacancyId}`
             }))
         })
@@ -32,8 +38,8 @@ exports.selectedNotify = (req, res) => {
     var newNotify = new Notification({
         reciever: req.body.userId,
         sender: req.root._id,
-        msg: "Congratulations You Have Been Selected For The Job!!",
-        link: `${process.env.HOST}/company/`
+        code: 3,
+        link: `${process.env.HOST}/vacancy/${req.root.vacancyId}`
     })
 
     newNotify.save()
@@ -53,7 +59,7 @@ exports.closeNotify = (req, res) => {
             applicList.push(new Notification({
                 reciever: id,
                 from: req.root._id,
-                msg: "The Vacancy Has Been Closed. Visit To Know More!!",
+                code: 4,
                 link: `${process.env.HOST}/vacancy/${req.root.vacancyId}`
             }))
         })

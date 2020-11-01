@@ -51,8 +51,7 @@ exports.userDetails = (req, res) => {
             var skill_ids = user.skills.map((id) => {
                 return mongoose.mongo.ObjectID(id)
             })
-
-
+            
             Skill.find({
                     _id: {
                         $in: skill_ids
@@ -132,12 +131,24 @@ exports.extraUserDetails = (req, res) => {
 // get the notifications of logged user
 exports.getNotifications = (req, res) => {
 
-    Notification.find({
-            reciever: req.root._id
-        })
-        .sort({
-            updatedAt: -1
-        })
+    Notification.aggregate([
+        {"$match": { reciever: req.root._id.toString() }},
+        {$set: {sender: {$toObjectId: "$sender"} }},
+        {"$lookup": {
+            from: "users",
+            localField: "sender",
+            foreignField: "_id",
+            as: "user"
+        }},
+        {"$lookup": {
+            from: "companies",
+            localField: "sender",
+            foreignField: "_id",
+            as: "company"
+        }},
+        {"$project": {"link": 1, "sender": 1, "code": 1, "isRead": 1, "user.name": 1, "user.dp": 1, "company.name": 1, "company.logo": 1, "createdAt": 1}},
+        {"$sort": {"createdAt": -1}}
+    ])
         .then((notifications) => {
 
             res.status(200).json({

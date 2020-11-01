@@ -38,7 +38,7 @@ exports.vacancySelect = (req, res, next) => {
         return res.status(400).json({err: "Please Provide User ID", success: false})
 
     Vacancy.findById(req.params.vacancyId, (err, vacancy) => {
-        if(err)
+        if(err || !vacancy)
             return res.status(500).json({err: err, success: false})
         
         let applicInd = vacancy.applicants.indexOf(req.body.userId)
@@ -52,6 +52,7 @@ exports.vacancySelect = (req, res, next) => {
             return res.status(500).json({err: err, success: false})
         })
 
+        req.root.vacancyId = vacancy._id
         next()  // passing the control to notification services
     })
 }

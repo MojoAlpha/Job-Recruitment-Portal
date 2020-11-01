@@ -41,7 +41,6 @@ exports.getUserFeed = (req, res) => {
 exports.appliedVacancy = (req, res) => {
 
     console.log(req.root._id)
-    // Vacancy.find({ "$or": [{ "applicants": { "$elemMatch": {"$eq": req.root._id} }}, { "accepted": { "$elemMatch": {"$eq": req.root._id} } }] }, { title: 1, isOpen: 1, owner: 1, desig: 1})
     Vacancy.aggregate([
         {"$project": {
             isApplicant: {"$in": [req.root._id.toString(), "$applicants"]},
