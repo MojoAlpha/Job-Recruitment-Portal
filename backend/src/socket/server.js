@@ -15,20 +15,22 @@ exports.socketServer = (server) => {
     io.on('connection', (socket) => {
 
         socket.on('addConnection', (newUser, cb) => {
+            console.log(JSON.stringify(newUser));
             newUser.id = socket.id
             const {err, user} = addUser(newUser)
             if(err) return cb(err)
 
-            console.log(`${newUser.name} is online!`)
+            console.log(`${JSON.stringify(newUser)} is online!`)
         })
 
         socket.on('sendMessage', (message, cb) => {
+            console.log(JSON.stringify(message))
             const sender = getUser(message.sender);
-            const reciever = getUser(message.reciever)
+            const reciever = getUser(message.receiver)
 
             let newMessage = new Chat({
                 sender: message.sender,
-                reciever: message.reciever,
+                reciever: message.receiver,
                 msg: message.msg
             })
 
@@ -44,8 +46,8 @@ exports.socketServer = (server) => {
         })
 
         socket.on('disconnect', () => {
+            console.log("removing the user.")
             const removedUser = removeUser(socket.id)
-            console.log(removedUser)
         })
     })
 

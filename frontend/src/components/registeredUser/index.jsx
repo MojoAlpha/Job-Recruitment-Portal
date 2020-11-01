@@ -8,6 +8,7 @@ import { BrowserRouter, Switch, Route, useRouteMatch, Link, useLocation } from "
 import VacancyDetail from "./components/VacancyDetail";
 import { getImageName } from "../utility";
 import NotificationItem from "./components/NotificationItem";
+import Window from "../chat/Window";
 
 const navLinkActive = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3 border border-primary rounded bg-primary text-white";
 const navLink = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3";
@@ -165,6 +166,9 @@ export default function RegisteredUser() {
             </Route>
             <Route exact path={`${path}/:type/:id`}>
               <Profile setActiveTab={setActiveTab} />
+            </Route>
+            <Route exact path={`${path}/message/:type/:id`}>
+              <Window setActiveTab={setActiveTab} />
             </Route>
             <Route path={`${path}/feed`} exact >
               <Feed setActiveTab={setActiveTab} />

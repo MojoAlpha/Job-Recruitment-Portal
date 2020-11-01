@@ -7,7 +7,7 @@ import VacancyCard from './components/VacancyCard';
 import WorkExperienceCard from './components/WorkExperienceCard'
 import Post from './components/Post'
 import { Tabs, TabLink, TabContent } from 'react-tabs-redux'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 const Profile = () => {
 
     const { type, id } = useParams()
@@ -216,7 +216,7 @@ const Profile = () => {
                                                 //if
                                                 connectionStatus == 0 ?
                                                     <div className="d-flex">
-                                                        <button className="btn btn-outline-primary">message</button>
+                                                        <Link to={`/user/message/${type}/${id}`} className="btn btn-outline-primary">message</Link>
                                                         <button className="btn btn-outline-primary" onClick={() => handleDisconnect('U', 2)}>disconnect</button>
                                                     </div>
                                                     :
