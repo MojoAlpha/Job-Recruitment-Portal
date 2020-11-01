@@ -2,14 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { getImageName } from "../../utility";
 
-function UserCard(props) {
+function UserInfo(props) {
   const imgName = getImageName(props.img)
   const folderName = props.type == 'U' ? 'dp' : 'logo'
   return (
     <div>
       <div
         className=" rounded bg-white p-3 m-2"
-        style={{ maxWidth: "350px", width: "100%" }}
+        style={{width: "100%" }}
       >
         <div className="d-flex p-2 mb-4">
           <img
@@ -22,23 +22,9 @@ function UserCard(props) {
             {props.name}
           </Link>
         </div>
-        <p className="text-capitalize font-weight-bold">about</p>
-        <p className="mb-3">
-          {props.desc}
-        </p>
-
-        {props.type == 'C' ?
-          <Link to={`/user/${props.type}/${props.id}`} className="mt-3 btn btn-outline-primary btn-block text-capitalize">
-            view
-        </Link>
-          :
-          <Link to={`/user/message/${props.type}/${props.id}`} className="mt-3 btn btn-outline-primary btn-block text-capitalize">
-            message
-        </Link>}
-
       </div>
     </div>
   );
 }
 
-export default UserCard;
+export default UserInfo;

@@ -37,12 +37,12 @@ const Profile = () => {
         tokenAxios.get(`/${userType}/me`)
             .then(response => {
                 console.log(response.status)
-                if (response.status == 200) {
+                if (response.status === 200) {
                     setLoggedInUserType(response.data.type)
-                    if (response.data._id == id)
+                    if (response.data._id === id)
                         setShowEditControls(true)
                 }
-                else if (response.status == 401) {
+                else if (response.status === 401) {
                     //todo:it means token is expired run logout function 
                 }
                 else
@@ -250,7 +250,8 @@ const Profile = () => {
                                                 //if
                                                 connectionStatus == 0 ?
                                                     <div className="d-flex">
-                                                        <button className="btn btn-outline-primary">message</button>
+
+                                                        <Link to={`/user/message/${type}/${id}`} className="btn btn-outline-primary">message</Link>
                                                         <button className="btn btn-outline-danger" onClick={() => handleDisconnect('U', 3)}>disconnect</button>
                                                     </div>
                                                     :

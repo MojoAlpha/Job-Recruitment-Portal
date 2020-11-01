@@ -46,10 +46,11 @@ async function searchUser(search) {
     if (search.length > 6)
         pattern = pattern + search.charAt(search.length - 2) + ".*"
 
+    // Options to ignore case & spaces in the regex pattern
     const result = await User.find({
         name: {
             $regex: pattern,
-            $options: 'si'
+            $options: 'six'
         }
     }, {
         _id: 1,
@@ -78,7 +79,7 @@ async function searchCompany(search) {
     const result = await Company.find({
         name: {
             $regex: pattern,
-            $options: 'si'
+            $options: 'six'
         }
     }, {
         _id: 1,
@@ -106,7 +107,7 @@ async function searchVacancy(search) {
         isOpen: true,
         desig: {
             $regex: pattern,
-            $options: 'si'
+            $options: 'six'
         }
     }, {
         accepted: 0,
@@ -117,6 +118,7 @@ async function searchVacancy(search) {
     return result
 }
 
+// finding vacancies with skill with _id skillId
 async function skillVacancy(search) {
 
     var result = await Vacancy.aggregate([{
@@ -136,7 +138,7 @@ async function skillVacancy(search) {
                     $toObjectId: "$owner"
                 }
             }
-        },
+        }, // setting string type 'owner' to Object type
         {
             "$match": {
                 isPresent: true,
@@ -144,7 +146,7 @@ async function skillVacancy(search) {
             }
         },
         {
-            "$lookup": {
+            "$lookup": { // looking for owner in another collection
                 from: "companies",
                 localField: "owner",
                 foreignField: "_id",
@@ -179,10 +181,39 @@ async function skillVacancy(search) {
     return result
 }
 
+async function skillUser(search) {
+
+    var result = await User.aggregate([{
+            $set: {
+                isPresent: {
+                    "$in": [search.toString(), "$skills"]
+                }
+            }
+        },
+        {
+            "$match": {
+                isPresent: {
+                    "$eq": true
+                }
+            }
+        },
+        {
+            "$project": {
+                "name": 1,
+                "dp": 1,
+                "email": 1
+            }
+        }
+    ])
+
+    return result
+}
+
 module.exports = {
     searchSkill,
     searchUser,
     searchCompany,
     searchVacancy,
-    skillVacancy
+    skillVacancy,
+    skillUser
 }
