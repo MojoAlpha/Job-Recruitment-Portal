@@ -8,6 +8,7 @@ import { BrowserRouter, Switch, Route, useRouteMatch, Link, useLocation } from "
 import VacancyDetail from "./components/VacancyDetail";
 import { getImageName } from "../utility";
 import NotificationItem from "./components/NotificationItem";
+import GloabalSearch from "./components/GloabalSearch";
 
 const navLinkActive = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3 border border-primary rounded bg-primary text-white";
 const navLink = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3";
@@ -73,12 +74,13 @@ export default function RegisteredUser() {
 
           <div className="col-md-6">
             <form class="form mt-2 mt-md-0">
-              <input
+              {/* <input
                 class="form-control mr-sm-2"
                 type="text"
                 placeholder="Search for jobs, company, skills, person"
                 aria-label="Search"
-              />
+              /> */}
+              <GloabalSearch placeholder="Search for jobs, company, skills, person" />
             </form>
           </div>
           <div className="col-md-3">
