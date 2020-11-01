@@ -31,7 +31,16 @@ exports.getUserFeed = (req, res) => {
             {"$limit": 10}
             ])
         .then((feedPosts) => {
-            res.send(feedPosts)
+            if(feedPosts.length > 0)
+                res.send(feedPosts)
+            else {
+            Posts.aggregate([
+                {"$sample": {size: 5}}
+            ])
+            .then((xtraPosts) => {
+                res.send(xtraPosts)
+            })}
+            
         }, (err) => {
             return res.status(500).json({err: "Something Might Be Wrong, Please Try After Sometime!", success: false})
         })
@@ -86,9 +95,9 @@ exports.suggestedVacancy = (req, res) => {
     User.findById(req.root._id, (err, user) => {
 
         Vacancy.aggregate([
-            { "$project": {similar: {"$size": { "$setIntersection": ["$requiredSkill", user.skills] } }, title: 1, owner: 1, desig: 1, isOpen: 1} },
+            { "$project": {similar: {"$size": { "$setIntersection": ["$requiredSkill", user.skills] } }, isApplicant: {"$in": [req.root._id.toString(), "$applicants"]} , isSelected: {"$in": [req.root._id.toString(), "$accepted"]} , title: 1, owner: 1, desig: 1, isOpen: 1} },
             {$set: {owner: {$toObjectId: "$owner"} }},
-            { "$match": {"$and": [{"similar": { "$gt": 0} }, { "isOpen": { "$eq": true } }] } },
+            { "$match": {"$and": [{"similar": { "$gt": 0} }, { "isOpen": { "$eq": true } }, {"isApplicant": {"$eq": false}}, {"isSelected": {"$eq": false}}] } },
             { "$lookup": {
                 from: "companies",
                 localField: "owner",

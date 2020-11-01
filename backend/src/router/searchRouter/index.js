@@ -29,10 +29,14 @@ searchRouter.get('/skill', async(req, res) => {
     res.status(200).json({skills: skillResult, success: true})
 })
 
+/*  GET Route :- Returning Vacancies & Users According To The skillId
+    Res Body :- {users: [{}], vacancies: [{}], success: true}
+                {err: "...", success: false} , if Any Error Occurs */
 searchRouter.get('/skill/:skillId', async(req, res) => {
     var skillVacancy = await searchString.skillVacancy(req.params.skillId)
+    var skillUser = await searchString.skillUser(req.params.skillId)
 
-    res.status(200).json({vacancies: skillVacancy, success: true})
+    res.status(200).json({vacancies: skillVacancy, users: skillUser, success: true})
 })
 
 module.exports = searchRouter;
