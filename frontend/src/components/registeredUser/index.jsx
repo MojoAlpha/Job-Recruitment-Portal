@@ -122,6 +122,7 @@ export default function RegisteredUser({ history }) {
           className="d-none d-md-block col-3 px-2 py-4 px-lg-4 px-xl-5 text-center bg-white shadow border-right"
           style={{ position: "fixed", top: "88px", left: 0, height: "100%" }}
         >
+          
           <div className="d-flex flex-column " style={{ height: "90vh" }}>
             <a
               href=""
@@ -132,6 +133,7 @@ export default function RegisteredUser({ history }) {
               </span>
               create new post
             </a>
+            {loggedInUserDetails.type !== 'U' ? "": 
             <div className="d-flex flex-column text-left  justify-content-around flex-grow-1">
               <Link to={`${path}/feed`} className={activeTab == 'feed' ? navLinkActive : navLink}
               >
@@ -175,6 +177,7 @@ export default function RegisteredUser({ history }) {
                 bla bla
               </a>
             </div>
+            }
           </div>
         </div>
         <div id="registered-user-container" className="col-12 col-md-9 bg-gray px-4 pt-4">
