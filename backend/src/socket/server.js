@@ -47,7 +47,8 @@ exports.socketServer = (server) => {
 
         socket.on('disconnect', () => {
             const removedUser = removeUser(socket.id)
-            console.log("removing the user."+removedUser);
+            if(removedUser!==undefined)
+                console.log("removed  user."+removedUser.name);
         })
     })
 
