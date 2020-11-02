@@ -3,7 +3,7 @@ import { useParams, Redirect, useHistory } from 'react-router-dom'
 import { tokenAxios } from '../api'
 import axios from 'axios'
 
-const UserProfile = (props) => {
+const ProfileCRUD = (props) => {
     let history = useHistory()
     const [userFullDetails, setUserFullDetails] = useState({})
     const [isOwner, setIsOwner] = useState(false)
@@ -152,4 +152,4 @@ const UserProfile = (props) => {
     )
 }
 
-export default UserProfile
+export default ProfileCRUD

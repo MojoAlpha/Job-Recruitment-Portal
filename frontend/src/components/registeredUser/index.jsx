@@ -8,21 +8,19 @@ import { BrowserRouter, Switch, Route, useRouteMatch, Link, useLocation, useHist
 import VacancyDetail from "./components/VacancyDetail";
 import { getImageName } from "../utility";
 import NotificationItem from "./components/NotificationItem";
-<<<<<<< HEAD
 import GloabalSearch from "./components/GloabalSearch";
-import UserProfile from "../CRUD/UserProfile";
-=======
+import ProfileCRUD from "../CRUD/ProfileCRUD";
 import Window from "../chat/Window";
 import io from "socket.io-client";
 import { signout } from '../../auth/index'
->>>>>>> 7478648925e8217da695d1b7cd186ead440f951e
+import PostCRUD from "../CRUD/PostCRUD";
 
 const navLinkActive = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3 border border-primary rounded bg-primary text-white";
 const navLink = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3";
 
 export default function RegisteredUser({ history }) {
   let { path, url } = useRouteMatch();
-  let history = useHistory();
+  // history = useHistory();
   const [activeTab, setActiveTab] = useState('');
   //basic details of logged in user
   const [loggedInUserDetails, setLoggedInUserDetails] = useState({})
@@ -36,7 +34,7 @@ export default function RegisteredUser({ history }) {
     //fetching basic details of loggedin user
     tokenAxios.get(`/user/me`)
       .then(response => {
-        if (response.status == 200){
+        if (response.status == 200) {
           setLoggedInUserDetails(response.data)
           const newUser = { _id: response.data._id, name: response.data.name };
 
@@ -120,21 +118,21 @@ export default function RegisteredUser({ history }) {
             </span>
             <button className="btn px-2 mx-2 bg-white" onClick={() => {
               signout(() => history.push("/"))
-            }}> 
-            <span style={{ fontWeight: "bold", color:"#11b0bb"}}>Logout</span>
+            }}>
+              <span style={{ fontWeight: "bold", color: "#11b0bb" }}>Logout</span>
             </button>
           </div>
         </div>
       </div>
 
-
+      {/* side nav */}
       <div className="container-fluid d-flex no-gutters p-0">
         <div
           className="d-none d-md-block col-3 px-2 py-4 px-lg-4 px-xl-5 text-center bg-white shadow border-right"
           style={{ position: "fixed", top: "88px", left: 0, height: "100%" }}
         >
           <div className="d-flex flex-column " style={{ height: "90vh" }}>
-            <a
+            <Link to={`${url}/post/create`}
               href=""
               className="d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3 py-xl-4 border border-primary rounded-pill bg-primary text-white font-weight-bold h6"
             >
@@ -142,7 +140,7 @@ export default function RegisteredUser({ history }) {
                 <i class="fas fa-plus"></i>
               </span>
               create new post
-            </a>
+            </Link>
             <div className="d-flex flex-column text-left  justify-content-around flex-grow-1">
               <Link to={`${path}/feed`} className={activeTab == 'feed' ? navLinkActive : navLink}
               >
@@ -194,11 +192,15 @@ export default function RegisteredUser({ history }) {
             <Route exact path={`${path}/vacancy/:id`}>
               <VacancyDetail setActiveTab={setActiveTab} />
             </Route>
-            <Route exact path={`${path}/:type/:id`}>
-              <Profile setActiveTab={setActiveTab} />
+            <Route path={`${path}/post/create`} exact >
+              <PostCRUD />
             </Route>
+            <Route path={`${path}/post/:postId/edit`} exact >
+              <PostCRUD />
+            </Route>
+
             <Route exact path={`${path}/message/:type/:id`}>
-              <Window setActiveTab={setActiveTab} SOCKET={socket}/>
+              <Window setActiveTab={setActiveTab} SOCKET={socket} />
             </Route>
             <Route path={`${path}/feed`} exact >
               <Feed setActiveTab={setActiveTab} />
@@ -209,9 +211,14 @@ export default function RegisteredUser({ history }) {
             <Route path={`${path}/network`} exact >
               <MyNetwork setActiveTab={setActiveTab} />
             </Route>
-            <Route path={`${path}/:type/:id/edit`} exact >
-              <UserProfile />
+            <Route exact path={`${path}/:type/:id`}>
+              <Profile setActiveTab={setActiveTab} />
             </Route>
+            <Route path={`${path}/:type/:id/edit`} exact >
+              <ProfileCRUD />
+            </Route>
+
+
 
           </Switch>
           {/* <JobOpeningDetail /> */}
