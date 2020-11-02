@@ -53,7 +53,7 @@ const VacancyDetail = (props) => {
                     console.log(response.err)
             })
             .catch((error) => console.log(error))
-
+        setIsLoading(false)
         //for getting list of applicants
         tokenAxios.get(`/vacancy/applicant/${id}`)
             .then(response => {
@@ -77,7 +77,7 @@ const VacancyDetail = (props) => {
             .then(response => {
                 if (response.status == 200) {
                     setSelectedApplicants(response.data.selected)
-                    setIsLoading(false)
+
                 }
 
                 else
@@ -259,23 +259,23 @@ const VacancyDetail = (props) => {
                             <p className="text-justify">{vacancyDetail.desc}</p>
                         </div>
                         {/* selected applicant list*/}
-                        <div id="applicants" style={{ marginBottom: '4em' }}>
+                        {loggedInCompanyDetails._id == vacancyDetail.O_id && <div id="applicants" style={{ marginBottom: '4em' }}>
                             <h5 className="text-capitalize mb-3 font-weight-bold">selectedApplicants:</h5>
                             <div id="applicants-list">
                                 {selectedApplicantsList}
                             </div>
 
-                        </div>
+                        </div>}
 
                         {/* todo:application received for job */}
-                        <div id="applicants" style={{ marginBottom: '4em' }}>
+                        {loggedInCompanyDetails._id == vacancyDetail.O_id && <div id="applicants" style={{ marginBottom: '4em' }}>
                             <h5 className="text-capitalize mb-3 font-weight-bold">Received application:{vacancyDetail.applicantCount}</h5>
                             <div id="applicants-list">
                                 {/* <ListItemWithBtn imgUrl={`${process.env.PUBLIC_URL}/images/testimonial.jpg`} text="Lovedeep singh kamal" btnText="select" handleClick={() => console.log("approved")} /> */}
                                 {applicantsList}
                             </div>
 
-                        </div>
+                        </div>}
 
                     </div>
                 </div>)}
