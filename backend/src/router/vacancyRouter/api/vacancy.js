@@ -9,7 +9,8 @@ const { getVacApplicants,
         vacancyApply, 
         vacancyClose, 
         vacancySelect, 
-        getCompanyVacancy,  } = require('../../../services/vacancyServices/vacancy')
+        getCompanyVacancy,
+        getSelectedApplicants,  } = require('../../../services/vacancyServices/vacancy')
 
 
 var router = express.Router()
@@ -23,6 +24,8 @@ router.get('/company/:companyId', getCompanyVacancy)
     Res Body :- {applicantsList, success: true} , if Sucessfully Listed
                 {err: "...", success: false} , if Any Error Occurs */
 router.get('/applicant/:vacancyId', isCompanyVerified, getVacApplicants)
+
+router.get('/applicants/:vacancyId/selected', isCompanyVerified, getSelectedApplicants)
 
 /*  POST Route :- To Select An Applicant, Only Company is Authorized
     Req Body :- { userId }

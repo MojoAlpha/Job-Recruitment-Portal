@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import ListItemWithBtn from './ListItemWithBtn'
 import SkillPill from './SkillPill'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { tokenAxios } from '../../api'
 import axios from 'axios'
 import { getImageName } from '../../utility'
+import Applicant from './Applicant'
 const VacancyDetail = (props) => {
     let { id } = useParams();
+    let history = useHistory()
     const [vacancyDetail, setVacancyDetail] = useState({})
+    const [applicants, setApplicants] = useState([])
+    const [selectedApplicants, setSelectedApplicants] = useState([])
+
     const [applicationStatus, setApplicationStatus] = useState()
+    const [loggedInCompanyDetails, setLoggedInCompanyDetails] = useState({})
     const [requiredSkills, setRequiredSkills] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [modifiedVacancy, setModifiedVacancy] = useState({})
 
 
     useEffect(() => {
+        //for getting vacany details
         tokenAxios.get(`/vacancy/${id}`)
             .then(response => {
                 if (response.status == 200) {
@@ -22,7 +29,6 @@ const VacancyDetail = (props) => {
                     setVacancyDetail(response.data)
                     setRequiredSkills(response.data.requiredSkill)
                     setApplicationStatus(response.data.applicationStatus)
-                    setIsLoading(false)
                 }
 
                 else
@@ -33,9 +39,68 @@ const VacancyDetail = (props) => {
                     alert("internet lgwa le garib aadmi")
 
             });
+
+        //getting details of logged in company
+        tokenAxios.get(`/company/me`)
+            .then(response => {
+                if (response.status == 200) {
+                    setLoggedInCompanyDetails(response.data)
+                }
+                else if (response.status == 401) {
+                    //todo:it means token is expired run logout function 
+                }
+                else
+                    console.log(response.err)
+            })
+            .catch((error) => console.log(error))
+
+        //for getting list of applicants
+        tokenAxios.get(`/vacancy/applicant/${id}`)
+            .then(response => {
+                if (response.status == 200) {
+                    console.log(response.data.applicants)
+                    setApplicants(response.data.applicants)
+
+                }
+
+                else
+                    console.log(response)
+            })
+            .catch(function (error) {
+                if (error.message === 'Network Error')
+                    alert("internet lgwa le garib aadmi")
+
+            });
+
+        //for getting list of selected applicants
+        tokenAxios.get(`/vacancy/applicants/${id}/selected`)
+            .then(response => {
+                if (response.status == 200) {
+                    setSelectedApplicants(response.data.selected)
+                    setIsLoading(false)
+                }
+
+                else
+                    console.log(response.err)
+            })
+            .catch(function (error) {
+                if (error.message === 'Network Error')
+                    alert("internet lgwa le garib aadmi")
+                console.log(error)
+
+            });
     }, [])
 
-
+    const closeVacancy = () => {
+        tokenAxios.post(`/vacancy/close/${id}`)
+            .then(response => {
+                if (response.status == 200) {
+                    setVacancyDetail({ ...vacancyDetail, isOpen: false })
+                    console.log("vacancy closed")
+                }
+            })
+            .catch(error => console.log(error))
+    }
     const handleApply = () => {
         tokenAxios.post(`/vacancy/apply/${id}`)
             .then((response) => {
@@ -52,6 +117,38 @@ const VacancyDetail = (props) => {
                     alert("internet lgwa le garib aadmi")
 
             })
+    }
+
+    const handleSelect = (userId) => {
+        console.log(`seleecting user ${userId}`)
+        const { token } = JSON.parse(localStorage.getItem("jwt"))
+        let data = JSON.stringify({ userId });
+        var config = {
+            method: 'post',
+            url: `http://localhost:8000/vacancy/select/${id}/`,
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            data: data
+        };
+
+        axios(config)
+            .then(function (response) {
+
+                if (response.status == 200) {
+                    console.log("candidate selected")
+                    history.push(`/user/vacancy/${id}`)
+
+                }
+                else
+                    console.log("selection failed")
+                console.log(response.data.msg)
+            })
+            .catch(function (error) {
+                if (error.message === 'Network Error')
+                    alert("cannot reach server check internet connectivity or try again later")
+            });
     }
     // this delete function is actaully updating the whole object
     //with new set of skills
@@ -98,6 +195,8 @@ const VacancyDetail = (props) => {
     }
 
     const skillList = !isLoading && requiredSkills.map((skill, index) => <SkillPill name={skill.name} index={index} deleteItem={deleteSkill} />)
+    const applicantsList = applicants.map(applicant => <Applicant profileImg={applicant.dp} name={applicant.name} userId={applicant._id} handleSelect={handleSelect} showBtn={true} />)
+    const selectedApplicantsList = selectedApplicants.map(applicant => <Applicant profileImg={applicant.dp} name={applicant.name} userId={applicant._id} handleSelect={handleSelect} showBtn={false} />)
     return (
         <>
             {isLoading ?
@@ -117,18 +216,27 @@ const VacancyDetail = (props) => {
                                 <p className="text-capitalize mt-1"><strong>salary:</strong>{vacancyDetail.salary}</p>
                                 <div className="d-flex">
                                     {/* todo:important! handle buttons with status code */}
-                                    {vacancyDetail.isOpen ?
-                                        // if
-                                        applicationStatus == 0 ? //0 means selected
-                                            <button className="btn btn-success" disabled>Selected</button>
-                                            :
-                                            // else if
-                                            applicationStatus == 1 ? // 1 means applied
-                                                <button className="btn btn-primary" disabled>Applied</button>
+                                    {
+
+                                        vacancyDetail.isOpen ?
+                                            // if
+                                            applicationStatus == 0 ? //0 means selected
+                                                <button className="btn btn-success" disabled>Selected</button>
                                                 :
-                                                <button className="btn btn-outline-primary" onClick={handleApply}>Apply</button>
-                                        :
-                                        <button className="btn btn-danger" disabled>closed</button>
+                                                // else if
+                                                applicationStatus == 1 ? // 1 means applied
+                                                    <button className="btn btn-primary" disabled>Applied</button>
+                                                    :
+                                                    loggedInCompanyDetails._id == vacancyDetail.O_id ?
+                                                        <div className="d-flex">
+                                                            <button className="btn btn-outline-primary" >edit Vacancy</button>
+                                                            <button className="btn btn-outline-danger" onClick={closeVacancy}>close Vacancy</button>
+                                                        </div>
+
+                                                        :
+                                                        <button className="btn btn-outline-primary" onClick={handleApply}>Apply</button>
+                                            :
+                                            <button className="btn btn-danger" disabled>closed</button>
                                     }
 
                                 </div>
@@ -137,9 +245,11 @@ const VacancyDetail = (props) => {
                         <div id="skills" className="" style={{ marginBottom: '4em' }}>
                             <h5 className="text-capitalize font-weight-bold mb-3">skills</h5>
                             <div id="skill-list" class="d-flex flex-wrap">
-                                {skillList.length ? skillList :
-                                    <p>no skills required</p>
-
+                                {
+                                    skillList.length ?
+                                        skillList
+                                        :
+                                        <p>no skills required</p>
                                 }
 
                             </div>
@@ -148,13 +258,21 @@ const VacancyDetail = (props) => {
                             <h5 className="text-capitalize mb-3 font-weight-bold">description</h5>
                             <p className="text-justify">{vacancyDetail.desc}</p>
                         </div>
-
+                        {/* selected applicant list*/}
                         <div id="applicants" style={{ marginBottom: '4em' }}>
-                            <h5 className="text-capitalize mb-3 font-weight-bold">Received application</h5>
-                            {/* todo:whole work is left */}
+                            <h5 className="text-capitalize mb-3 font-weight-bold">selectedApplicants:</h5>
                             <div id="applicants-list">
-                                <ListItemWithBtn imgUrl={`${process.env.PUBLIC_URL}/images/testimonial.jpg`} text="Lovedeep singh kamal" btnText="select" handleClick={() => console.log("approved")} />
+                                {selectedApplicantsList}
+                            </div>
 
+                        </div>
+
+                        {/* todo:application received for job */}
+                        <div id="applicants" style={{ marginBottom: '4em' }}>
+                            <h5 className="text-capitalize mb-3 font-weight-bold">Received application:{vacancyDetail.applicantCount}</h5>
+                            <div id="applicants-list">
+                                {/* <ListItemWithBtn imgUrl={`${process.env.PUBLIC_URL}/images/testimonial.jpg`} text="Lovedeep singh kamal" btnText="select" handleClick={() => console.log("approved")} /> */}
+                                {applicantsList}
                             </div>
 
                         </div>

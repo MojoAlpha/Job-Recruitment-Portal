@@ -21,11 +21,10 @@ const PostCRUD = (props) => {
             [name]: value
         })
     }
-    // const userType = type == 'U' ? 'user' : 'company'
 
     useEffect(() => {
         //check that the logged in user is owner of post or not
-        tokenAxios.get(`/U/me`)
+        tokenAxios.get(`/user/me`)
             .then(response => {
                 if (response.status == 200) {
                     setUserBasicDetails(response.data)
@@ -75,6 +74,7 @@ const PostCRUD = (props) => {
             .catch(function (error) {
                 if (error.message === 'Network Error')
                     alert("cannot reach server check internet connectivity or try again later")
+                console.log(error)
             });
     }
 
@@ -87,7 +87,7 @@ const PostCRUD = (props) => {
             url: `http://localhost:8000/posts/${postId}/`,
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data'
             },
             data: data
         };

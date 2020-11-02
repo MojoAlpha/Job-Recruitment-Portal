@@ -78,7 +78,7 @@ const EducationCard = props => {
     const deleteItem = (index) => {
         const newList = [...educationItems]
         const { token } = JSON.parse(localStorage.getItem("jwt"))
-        var data = JSON.stringify({ index });
+        let data = JSON.stringify({ index });
         var config = {
             method: 'delete',
             url: 'http://localhost:8000/user/me/edu',

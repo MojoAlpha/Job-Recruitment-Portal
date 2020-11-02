@@ -14,6 +14,7 @@ import Window from "../chat/Window";
 import io from "socket.io-client";
 import { signout } from '../../auth/index'
 import PostCRUD from "../CRUD/PostCRUD";
+import VacancyCRUD from "../CRUD/VacancyCRUD";
 
 const navLinkActive = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3 border border-primary rounded bg-primary text-white";
 const navLink = "d-flex text-decoration-none justify-content-center align-items-center p-2 px-lg-2 py-lg-3";
@@ -199,6 +200,13 @@ export default function RegisteredUser({ history }) {
               <PostCRUD />
             </Route>
 
+            <Route path={`${path}/vacancy/create`} exact >
+              <VacancyCRUD />
+            </Route>
+            <Route path={`${path}/vacancy/:vacancyId/edit`} exact >
+              <VacancyCRUD />
+            </Route>
+
             <Route exact path={`${path}/message/:type/:id`}>
               <Window setActiveTab={setActiveTab} SOCKET={socket} />
             </Route>
@@ -218,22 +226,8 @@ export default function RegisteredUser({ history }) {
               <ProfileCRUD />
             </Route>
 
-
-
           </Switch>
-          {/* <JobOpeningDetail /> */}
-          {/* <BrowserRouter>
-            <Switch> */}
-          {/* <Route path="/feed" component={NewsFeed} /> */}
-          {/* <Route path="/search" component={Home} /> */}
-          {/* <Route path="/mynetwork" component={MyNetwork} /> */}
-          {/* <Route path="/message" exact component={Message} /> */}
-          {/* <Route path="/user/:username" exact component={RegisteredUser} /> */}
-          {/* </Switch>
-          </BrowserRouter> */}
-          {/* <NewsFeed /> */}
-          {/* <GridLayout/> */}
-          {/* imported content here */}
+
         </div>
       </div>
     </React.Fragment>
