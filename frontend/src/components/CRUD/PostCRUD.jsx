@@ -7,6 +7,7 @@ import axios from 'axios'
 
 const PostCRUD = (props) => {
     let history = useHistory()
+    const [userBasicDetails, setUserBasicDetails] = useState({})
     const [post, setPost] = useState({ desc: '', links: [], postImg: null })
     const [isOwner, setIsOwner] = useState(false)
     const [newImg, setNewImg] = useState(null)
@@ -22,45 +23,27 @@ const PostCRUD = (props) => {
     }
     // const userType = type == 'U' ? 'user' : 'company'
 
-    // useEffect(() => {
-    //     //check that the logged in user is owner of post or not
-    //     tokenAxios.get(`/${userType}/me`)
-    //         .then(response => {
-    //             if (response.status == 200) {
-    //                 if (response.data._id == )
-    //                     setIsOwner(true)
-    //                 else
-    //                     history.push(`/user/${type}/${id}`)
+    useEffect(() => {
+        //check that the logged in user is owner of post or not
+        tokenAxios.get(`/U/me`)
+            .then(response => {
+                if (response.status == 200) {
+                    setUserBasicDetails(response.data)
+                    // if (response.data._id == )
+                    //     setIsOwner(true)
+                    // else
+                    //     history.push(`/user/${response.data.type}/${response.data._id}`)
 
 
-    //             }
-    //             else if (response.status == 401) {
-    //                 //todo:it means token is expired run logout function 
-    //             }
-    //             else
-    //                 console.log(response.err)
-    //         })
-    //         .catch((error) => console.log(error))
-
-    //     tokenAxios.get(`/${userType}/${id}`)
-    //         .then(response => {
-    //             console.log(response)
-    //             if (response.status == 200) {
-
-    //                 setUserFullDetails(response.data)
-    //             }
-    //             else
-    //                 console.log(response.err)
-    //             // setIsLoading(false)
-    //         })
-    //         .catch((error) => {
-    //             if (error.response.status == 404) {
-    //                 alert('invalid profile url');
-    //                 history.push('`/user/feed`')
-
-    //             }
-    //         })
-    // }, [])
+                }
+                else if (response.status == 401) {
+                    //todo:it means token is expired run logout function 
+                }
+                else
+                    console.log(response.err)
+            })
+            .catch((error) => console.log(error))
+    }, [])
 
 
     const createPost = (e) => {
@@ -82,7 +65,7 @@ const PostCRUD = (props) => {
 
                 if (response.status == 200) {
                     console.log("post created succesffull")
-                    history.push("/")
+                    history.push(`/user/${userBasicDetails.type}/${userBasicDetails._id}`)
 
                 }
                 else
@@ -114,7 +97,7 @@ const PostCRUD = (props) => {
 
                 if (response.status == 200) {
                     console.log("updating succesffull")
-                    history.push("/")
+                    history.push(`/user/${userBasicDetails.type}/${userBasicDetails._id}`)
 
                 }
                 else
