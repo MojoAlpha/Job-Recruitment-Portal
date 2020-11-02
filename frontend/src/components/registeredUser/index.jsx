@@ -4,7 +4,8 @@ import MyNetwork from "./MyNetwork";
 import Jobs from './Jobs'
 import Profile from "./Profile";
 import { tokenAxios } from '../api'
-import { BrowserRouter, Switch, Route, useRouteMatch, Link, useLocation, useHistory } from "react-router-dom";
+import { BrowserRouter, Switch, Route, useRouteMatch, Link, useLocation, Redirect } from "react-router-dom";
+import HomePage from '../home/index'
 import VacancyDetail from "./components/VacancyDetail";
 import { getImageName } from "../utility";
 import NotificationItem from "./components/NotificationItem";
@@ -132,6 +133,7 @@ export default function RegisteredUser({ history }) {
           className="d-none d-md-block col-3 px-2 py-4 px-lg-4 px-xl-5 text-center bg-white shadow border-right"
           style={{ position: "fixed", top: "88px", left: 0, height: "100%" }}
         >
+
           <div className="d-flex flex-column " style={{ height: "90vh" }}>
             <Link to={`${url}/post/create`}
               href=""
@@ -142,54 +144,59 @@ export default function RegisteredUser({ history }) {
               </span>
               create new post
             </Link>
-            <div className="d-flex flex-column text-left  justify-content-around flex-grow-1">
-              <Link to={`${path}/feed`} className={activeTab == 'feed' ? navLinkActive : navLink}
-              >
+            {loggedInUserDetails.type !== 'U' ? "" :
+              <div className="d-flex flex-column text-left  justify-content-around flex-grow-1">
+                <Link to={`${path}/feed`} className={activeTab == 'feed' ? navLinkActive : navLink}
+                >
 
-                <span className="mr-4">
-                  <i class="fas fa-home"></i>
-                </span>
+                  <span className="mr-4">
+                    <i class="fas fa-home"></i>
+                  </span>
                 home
               </Link>
-              <Link to={`${path}/network`}
-                className={activeTab == 'network' ? navLinkActive : navLink}
-              >
-                <span className="mr-4">
-                  <i class="fas fa-user-friends"></i>
-                </span>
+                <Link to={`${path}/network`}
+                  className={activeTab == 'network' ? navLinkActive : navLink}
+                >
+                  <span className="mr-4">
+                    <i class="fas fa-user-friends"></i>
+                  </span>
                 my network
               </Link>
-              <Link to={`${path}/messages`}
-                className={activeTab == 'messages' ? navLinkActive : navLink}
-              >
-                <span className="mr-4">
-                  <i class="far fa-comment-dots"></i>
-                </span>
+                <Link to={`${path}/messages`}
+                  className={activeTab == 'messages' ? navLinkActive : navLink}
+                >
+                  <span className="mr-4">
+                    <i class="far fa-comment-dots"></i>
+                  </span>
                 messages
               </Link>
-              <Link to={`${path}/jobs`}
-                className={activeTab == 'jobs' ? navLinkActive : navLink}
-              >
-                <span className="mr-4">
-                  <i class="fas fa-briefcase"></i>
-                </span>
+                <Link to={`${path}/jobs`}
+                  className={activeTab == 'jobs' ? navLinkActive : navLink}
+                >
+                  <span className="mr-4">
+                    <i class="fas fa-briefcase"></i>
+                  </span>
                 jobs
               </Link>
-              <a
-                href="#"
-                className={activeTab == 4 ? navLinkActive : navLink}
-              >
-                <span className="mr-4">
-                  <i class="fas fa-bookmark"></i>
-                </span>
+                <a
+                  href="#"
+                  className={activeTab == 4 ? navLinkActive : navLink}
+                >
+                  <span className="mr-4">
+                    <i class="fas fa-bookmark"></i>
+                  </span>
                 bla bla
               </a>
-            </div>
+              </div>
+            }
           </div>
         </div>
         <div id="registered-user-container" className="col-12 col-md-9 bg-gray px-4 pt-4">
           {/* todo:make these routes protected */}
           <Switch>
+            <Route exact path={`${path}/`}>
+              <HomePage />
+            </Route>
             <Route exact path={`${path}/vacancy/:id`}>
               <VacancyDetail setActiveTab={setActiveTab} />
             </Route>

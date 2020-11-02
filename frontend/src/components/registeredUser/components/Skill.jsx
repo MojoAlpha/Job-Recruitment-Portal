@@ -12,7 +12,7 @@ const Skill = (props) => {
                 inputMaxLength='50'
                 labelFontWeight='normal'
                 inputFontWeight='normal' />
-            <span onClick={() => props.handleDelete(props.index)}><i class="fas fa-minus-circle text-danger"></i></span>
+            {/* <span onClick={() => props.handleDelete(props.index)}><i class="fas fa-minus-circle text-danger"></i></span> */}
         </div>
     )
 }
