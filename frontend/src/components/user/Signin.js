@@ -23,7 +23,6 @@ export default function Signin() {
 
     signin({ email, password })
       .then(data => {
-        console.log("data: " + JSON.stringify(data))
         if (data.err) {
           setValues({ ...values, error: data.err, loading: false });
         } else {
