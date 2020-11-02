@@ -4,7 +4,8 @@ import MyNetwork from "./MyNetwork";
 import Jobs from './Jobs'
 import Profile from "./Profile";
 import { tokenAxios } from '../api'
-import { BrowserRouter, Switch, Route, useRouteMatch, Link, useLocation } from "react-router-dom";
+import { BrowserRouter, Switch, Route, useRouteMatch, Link, useLocation, Redirect } from "react-router-dom";
+import HomePage from '../home/index'
 import VacancyDetail from "./components/VacancyDetail";
 import { getImageName } from "../utility";
 import NotificationItem from "./components/NotificationItem";
@@ -183,6 +184,9 @@ export default function RegisteredUser({ history }) {
         <div id="registered-user-container" className="col-12 col-md-9 bg-gray px-4 pt-4">
           {/* todo:make these routes protected */}
           <Switch>
+            <Route exact path={`${path}/`}>
+              <HomePage />
+            </Route>
             <Route exact path={`${path}/vacancy/:id`}>
               <VacancyDetail setActiveTab={setActiveTab} />
             </Route>

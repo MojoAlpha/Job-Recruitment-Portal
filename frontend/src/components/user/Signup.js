@@ -38,7 +38,6 @@ export default function Signup() {
 
         userSignup({ name, email, password, type })
             .then(res => {
-                console.log(res);
                 // data.err is custom message written in backend
                 if (!res.success) {
                     setValues({ ...values, error: res.err, success: false });
