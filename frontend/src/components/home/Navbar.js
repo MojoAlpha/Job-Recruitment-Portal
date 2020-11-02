@@ -11,12 +11,17 @@ export default function Navbar() {
         <ul className="nav align-items-center">
           <li className="nav-item align-self-center">
             <Link to="/signin" className="btn btn-outline-primary px-4 m-3 align-self-center">
-              <span style={{ fontWeight: "bold", fontSize: "30px" }}>Login</span>
+              <span style={{ fontWeight: "bold", fontSize: "20px" }}>Login</span>
             </Link>
           </li>
           <li className="nav-item align-self-center ">
             <Link to="/signup" className="btn btn-primary px-4 m-3">
-              <span style={{ fontWeight: "bold", fontSize: "30px" }}>Signup</span>
+              <span style={{ fontWeight: "bold", fontSize: "20px" }}>Signup</span>
+            </Link>
+          </li>
+          <li className="nav-item align-self-center ">
+            <Link to="/forget" className="btn btn-primary px-4 m-3">
+              <span style={{ fontWeight: "bold", fontSize: "20px" }}>Forget</span>
             </Link>
           </li>
         </ul>
