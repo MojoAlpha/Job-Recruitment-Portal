@@ -31,6 +31,22 @@ exports.getVacApplicants = (req, res) => {
     })
 }
 
+exports.getSelectedApplicants = (req, res) => {
+    Vacancy.findById(req.params.vacancyId, (err, vacancy) => {
+
+        if(!vacancy)
+            return res.status(404).json({err: "Vacancy Not Found!!", success: false})
+
+        if(req.root._id.toString() !== vacancy.owner.toString())
+            return res.status(401).json({err: "Not Authorised To Access Applicants!!", success: false})
+         
+        var selected_id = vacancy.accepted.map((id) => { return mongoose.mongo.ObjectID(id) })
+        User.find({ _id: {$in: selected_id }}, {name: 1, dp: 1, email: 1}, (err, selected) => {
+            return res.status(200).json({selected: selected, success: true})
+        })
+    })
+}
+
 // selecting a vacancy applicant for the job
 exports.vacancySelect = (req, res, next) => {
 
